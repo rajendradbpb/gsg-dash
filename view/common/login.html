@@ -1,0 +1,35 @@
+<section class="content-header" >
+  <!-- <h3><strong>Login</strong>page</h3> -->
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+          <div class="box box-primary">
+            <div class="login-box-body">
+              <h1 class="login-box-msg">log in</h1>
+                <div class="form-group has-feedback">
+                  <label class="">Mobile</label>
+                  <input type="text" class="form-control" ng-model="user.mobile" placeholder="Mobile">
+                  <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="">password:</label>
+                  <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
+                  <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="">
+                  <label>
+                    <input type="checkbox"> Remember Me
+                  </label>
+                </div>
+                <div class="col-xm-1">
+                  <button type="submit" class="btn btn-primary btn-block btn-flat" ng-click="login()" >Sign In</button>
+                </div>
+                <!-- <div class="col-xm-2"> -->
+                    <!-- <button type="forget password" class="btn btn-fifo btn-block btn-flat" ng-click="forget password()" >forget password</button> -->
+                  <!-- </div> -->
+            </div>
+          </div>
+        </div>
+    </div>
+</section>

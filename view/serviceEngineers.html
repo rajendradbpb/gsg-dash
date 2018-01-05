@@ -1,0 +1,231 @@
+<section class="content-header m-b-40">
+    <h1 class="pull-left">
+      Service Engineers List
+    </h1>
+    <button type="button"  class="btn btn-primary pull-right" data-toggle="modal" data-target="#modal-engineer">
+      <i class="fa fa-plus"></i> Add A New Engineer
+    </button>
+    <div class="modal modal-success fade" id="modal-engineer">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">New Engineer</h4>
+            </div>
+            <div class="modal-body">
+              <p>Fill In The Form&hellip;</p>
+              
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label  class="col-sm-3 control-label"
+                            for="new.firstname">First Name</label>
+                  <div class="col-sm-6">
+                      <input type="text" class="form-control" 
+                      id="new.firstname" placeholder="First Name"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label  class="col-sm-3 control-label"
+                            for="new.middlename">Middle Name</label>
+                  <div class="col-sm-6">
+                      <input type="text" class="form-control" 
+                      id="new.middlename" placeholder="First Name"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label"
+                        for="new.lastname" >Last Name</label>
+                  <div class="col-sm-6">
+                      <input type="text" class="form-control"
+                          id="new.lastname" placeholder="Last Name"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                          for="new.email" >Email</label>
+                    <div class="col-sm-6">
+                        <input type="eamil" class="form-control"
+                            id="new.email" placeholder="Email"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                          for="new.mobile" >Mobile No</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control"
+                            id="new.mobile" placeholder="Mobile No"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                        for="new.gender">Gender</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="new.gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"
+                    for="new.dob" >Date Of Birth</label>
+                 <div class="col-sm-6">
+                    <input type="date" class="form-control"
+                      id="new.dob"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label"
+                    for="new.address">Address</label>
+                    <div class="col-sm-6">
+                      <textarea class="form-control" id="new.address"></textarea>
+                    </div>
+                </div>
+              </form>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+  </section>
+  <section class="content" >
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-success">
+          <div class="box-body over-x-sc">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <tr class="info">
+                  <th>First Name</th>
+                 <th>Last Name</th>
+                  <th>Mobile No.</th>
+                  <th>Email Id</th>
+                  <th>Location</th>
+                  <th>Delete Enginner</th>
+                  <th>Show Details</th>
+                  </tr>
+                  <tr>
+                      <td>Somyaranjan </td>
+                      <td>Kar</td>
+                      <td>9556819801</td>
+                      <td>somya.ricky@gmail.com</td>
+                      <td>Saheed Nagar</td>
+                      <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                          </div>
+                      </td>
+                      <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#engineer-details">Show Details
+                            </button>
+                        </div>
+      
+                      </td>
+                  </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal modal-primary fade" id="engineer-details">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">User Details</h4>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label  class="col-sm-2 control-label"
+                            for="firstname" >First Name</label>
+                  <div class="col-sm-6">
+                      <input type="text" class="form-control" 
+                      id="firstname" placeholder="First Name" value="Somyaranjan" disabled/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"
+                        for="lastname" >Last Name</label>
+                  <div class="col-sm-6">
+                      <input type="text" class="form-control"
+                          id="lastname" placeholder="Last Name" value="Kar" disabled/>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                          for="email" >Email</label>
+                    <div class="col-sm-6">
+                        <input type="eamil" class="form-control"
+                            id="email" placeholder="Email" value="somya.ricky@gmail.com" disabled/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                          for="mobile" >Mobile No</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" 
+                            id="mobile" placeholder="Mobile No" value="9556819801" disabled/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                          for="plan" >Plan</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" id="plan" disabled>
+                        <option value="goSpecial">Go Special</option>
+                        <option value="goSilver">Go Silver</option>
+                        <option value="goGold">Go Gold</option>
+                        <option value="goPlatinum">Go Platinum</option>
+                    </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                        for="gender">Gender</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="gender" disabled>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                    for="dob" >Date Of Birth</label>
+                 <div class="col-sm-6">
+                    <input type="date" class="form-control"
+                      id="dob" disabled/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"
+                    for="address">Address</label>
+                    <div class="col-sm-6">
+                      <textarea class="form-control" id="address" disabled></textarea>
+                    </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline">OK</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+  </section>
+  

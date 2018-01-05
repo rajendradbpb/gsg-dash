@@ -1,0 +1,267 @@
+<div class="modal-info" style="width:150%;" ng-init="getVle()">
+    <div class="modal-header">
+        <h3 class="modal-title">User Update</h3>
+    </div>
+    <div class="modal-body vleDetails" ng-init="vleRegdInit()" >
+        <div class="row">
+            <div class="col-xs-12 col-md-12">            
+                <form class="form-horizontal" name="basic">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group has-feedback col-md-12" ng-class="{'has-error':basic.vleName.$touched && basic.vleName.$invalid}">
+                                    <label for="vleName" class="col-sm-10 text-left control-label">Firstname*</label>
+                                    
+                                        <input type="text" name="vleName" ng-model="vle.name" class="form-control" placeholder="VLE Name" required ng-pattern="/^[A-Za-z\s]+$/">
+                                        <span class="help-block" ng-show="basic.vleName.$error.required && basic.vleName.$touched">VLE Name is required</span>
+                                        <span class="help-block" ng-show="basic.vleName.$error.pattern && basic.vleName.$touched">Please Enter Valid VLE Name(Only Alphabets Allowed)</span>
+
+                                </div>
+                                <div class="form-group  has-feedback col-md-12" ng-class="{'has-error':basic.user_email.$touched && basic.user_email.$invalid}">
+                                    <label for="lname" class="col-sm-10 text-left control-label">Email:</label>
+                                    
+                                        <input type="email" name="user_email" ng-model="vle.email" class="form-control" placeholder=" Email " required ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,7}$/">
+                                        <span class="help-block" ng-show="basic.user_email.$error.required && basic.user_email.$touched">Email is required</span>
+                                        <span class="help-block" ng-show="basic.user_email.$error.pattern && basic.user_email.$touched">Please Enter Valid Email</span>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="form-group has-feedback col-md-12" ng-class="{'has-error':basic.vleName.$touched && basic.vleName.$invalid}">
+                                    <label for="vleName" class="col-sm-10 text-left control-label">Middlename:</label>
+                                    
+                                        <input type="text" name="vleName" ng-model="vle.name" class="form-control col-md-6" placeholder="VLE Name" required ng-pattern="/^[A-Za-z\s]+$/">
+                                        <span class="help-block" ng-show="basic.vleName.$error.required && basic.vleName.$touched">VLE Name is required</span>
+                                        <span class="help-block" ng-show="basic.vleName.$error.pattern && basic.vleName.$touched">Please Enter Valid VLE Name(Only Alphabets Allowed)</span>
+                                    
+                                </div>
+                                <div class="form-group has-feedback col-md-12" ng-class="{'has-error':basic.mobile.$touched && basic.mobile.$invalid}">
+                                    <label for="pass" class="col-sm-10 text-left control-label">Mobile:</label>
+                                    
+                                        <input type="text" class="form-control" name="mobile" ui-mask="999-999-9999" placeholder="xxx-xxx-xxxx" ng-model="vle.mobile" required>
+                                        <!-- <input type="text" class="form-control" name="mobile" ng-model="user.mobile" placeholder="Mobile" required ng-pattern="/^[0-9]{10,10}$/"> -->
+                                        <span class="help-block" ng-show="basic.mobile.$error.required && basic.mobile.$touched">Mobile is required</span>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="form-group has-feedback col-md-12" ng-class="{'has-error':basic.vleName.$touched && basic.vleName.$invalid}">
+                                    <label for="vleName" class="col-sm-10 text-left control-label">Lastname*:</label>
+                                    
+                                        <input type="text" name="vleName" ng-model="vle.name" class="form-control col-md-6" placeholder="VLE Name" required ng-pattern="/^[A-Za-z\s]+$/">
+                                        <span class="help-block" ng-show="basic.vleName.$error.required && basic.vleName.$touched">VLE Name is required</span>
+                                        <span class="help-block" ng-show="basic.vleName.$error.pattern && basic.vleName.$touched">Please Enter Valid VLE Name(Only Alphabets Allowed)</span>
+                                    
+                                </div>
+                                <div class="form-group has-feedback col-md-12" ng-class="{'has-error':basic.mobile.$touched && basic.mobile.$invalid}">
+                                    <label for="pass" class="col-sm-10 text-left control-label">Alternate Mobile(optional):</label>
+                                    
+                                        <input type="text" class="form-control" name="mobile" ui-mask="999-999-9999" placeholder="xxx-xxx-xxxx" ng-model="vle.mobile" required>
+                                        <!-- <input type="text" class="form-control" name="mobile" ng-model="user.mobile" placeholder="Mobile" required ng-pattern="/^[0-9]{10,10}$/"> -->
+                                        <span class="help-block" ng-show="basic.mobile.$error.required && basic.mobile.$touched">Mobile is required</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <div class="box box-success">
+                                    <div class="box-header">
+                                        <h3 class="box-title"> Address Details</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.flat_door_block.$touched && basic.flat_door_block.$invalid}">
+                                                <input type="text" class="form-control" placeholder="House No/Building Name" name="flat_door_block" ng-model="vle.plotNo" ng-pattern="/^[A-Za-z\d\s]+$/">
+                                                <span class="help-block" ng-show="basic.flat_door_block.$error.required && basic.flat_door_block.$touched">This Field Can not be empty</span>
+                                                <span class="help-block" ng-show="basic.flat_door_block.$error.pattern && basic.flat_door_block.$touched">Enter a valid Plot No.(Only Alphabets and Numerics allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.road_street.$touched && basic.road_street.$invalid}">
+                                                <input type="text" class="form-control" placeholder="Locality/Area/Street" name="road_street" ng-model="vle.lane" ng-pattern="/^[A-Za-z\d\s]+$/" >
+                                                <span class="help-block" ng-show="basic.road_street.$error.required && basic.road_street.$touched">Please Enter this field</span>
+                                                <span class="help-block" ng-show="basic.road_street.$error.pattern && basic.road_street.$touched">Enter a valid Lane(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.local_city.$touched && basic.local_city.$invalid}">
+                                                <input type="text" class="form-control" placeholder="City" name="local_city" ng-model="vle.city"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.local_city.$error.required && basic.local_city.$touched">Please Enter City</span>
+                                                <span class="help-block" ng-show="basic.local_city.$error.pattern && basic.local_city.$touched">Enter a valid City(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.state.$touched && basic.state.$invalid}">
+                                                <input type="text" class="form-control" placeholder="State" name="state" ng-model="vle.state"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.state.$error.required && basic.state.$touched">Please Enter State</span>
+                                                <span class="help-block" ng-show="basic.state.$error.pattern && basic.state.$touched">State name is invalid(Only Alphabets allowed)</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-4" ng-class="{'has-error':basic.dist.$touched && basic.dist.$invalid}">
+                                                <input type="text" class="form-control" placeholder="District" name="dist" ng-model="vle.dist"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.dist.$error.required && basic.dist.$touched">Please Enter District</span>
+                                                <span class="help-block" ng-show="basic.dist.$error.pattern && basic.dist.$touched">Enter a valid District(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-4" ng-class="{'has-error':basic.country.$touched && basic.country.$invalid}">
+                                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="vle.country"  ng-pattern="/^[A-Za-z]+$/">
+                                                <span class="help-block" ng-show="basic.country.$error.required && basic.country.$touched">Please Enter Country</span>
+                                                <span class="help-block" ng-show="basic.country.$error.pattern && basic.country.$touched">Country name is invalid(Only Alphabets allowed)</span>
+                                            </div>
+                                        
+                                            <div class="col-xs-12 col-sm-6 col-md-4" ng-class="{'has-error':basic.pin.$touched && basic.pin.$invalid}">
+                                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="vle.pin" ui-mask="999999" >
+                                                <span class="help-block" ng-show="basic.pin.$error.required && basic.pin.$touched">Please Enter Pin</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <div class="box box-success">
+                                    <div class="box-header">
+                                        <h3 class="box-title"> Vehicle</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.flat_door_block.$touched && basic.flat_door_block.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Make</label>
+                                                <input type="text" class="form-control" placeholder="House No/Building Name" name="flat_door_block" ng-model="vle.plotNo" ng-pattern="/^[A-Za-z\d\s]+$/">
+                                                <span class="help-block" ng-show="basic.flat_door_block.$error.required && basic.flat_door_block.$touched">This Field Can not be empty</span>
+                                                <span class="help-block" ng-show="basic.flat_door_block.$error.pattern && basic.flat_door_block.$touched">Enter a valid Plot No.(Only Alphabets and Numerics allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.road_street.$touched && basic.road_street.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Model</label>
+                                                <input type="text" class="form-control" placeholder="Locality/Area/Street" name="road_street" ng-model="vle.lane" ng-pattern="/^[A-Za-z\d\s]+$/" >
+                                                <span class="help-block" ng-show="basic.road_street.$error.required && basic.road_street.$touched">Please Enter this field</span>
+                                                <span class="help-block" ng-show="basic.road_street.$error.pattern && basic.road_street.$touched">Enter a valid Lane(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.local_city.$touched && basic.local_city.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Regd. No</label>
+                                                <input type="text" class="form-control" placeholder="City" name="local_city" ng-model="vle.city"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.local_city.$error.required && basic.local_city.$touched">Please Enter City</span>
+                                                <span class="help-block" ng-show="basic.local_city.$error.pattern && basic.local_city.$touched">Enter a valid City(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.state.$touched && basic.state.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Manufacturing Year</label>
+                                                <input type="text" class="form-control" placeholder="State" name="state" ng-model="vle.state"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.state.$error.required && basic.state.$touched">Please Enter State</span>
+                                                <span class="help-block" ng-show="basic.state.$error.pattern && basic.state.$touched">State name is invalid(Only Alphabets allowed)</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.dist.$touched && basic.dist.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Version</label>
+                                                <input type="text" class="form-control" placeholder="District" name="dist" ng-model="vle.dist"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.dist.$error.required && basic.dist.$touched">Please Enter District</span>
+                                                <span class="help-block" ng-show="basic.dist.$error.pattern && basic.dist.$touched">Enter a valid District(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.country.$touched && basic.country.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Variant</label>
+                                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="vle.country"  ng-pattern="/^[A-Za-z]+$/">
+                                                <span class="help-block" ng-show="basic.country.$error.required && basic.country.$touched">Please Enter Country</span>
+                                                <span class="help-block" ng-show="basic.country.$error.pattern && basic.country.$touched">Country name is invalid(Only Alphabets allowed)</span>
+                                            </div>
+                                        
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.pin.$touched && basic.pin.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Cubic capacity</label>
+                                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="vle.pin" ui-mask="999999" >
+                                                <span class="help-block" ng-show="basic.pin.$error.required && basic.pin.$touched">Please Enter Pin</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.pin.$touched && basic.pin.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">No of wheels</label>
+                                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="vle.pin" ui-mask="999999" >
+                                                <span class="help-block" ng-show="basic.pin.$error.required && basic.pin.$touched">Please Enter Pin</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.dist.$touched && basic.dist.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Vehicle type</label>
+                                                <input type="text" class="form-control" placeholder="District" name="dist" ng-model="vle.dist"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.dist.$error.required && basic.dist.$touched">Please Enter District</span>
+                                                <span class="help-block" ng-show="basic.dist.$error.pattern && basic.dist.$touched">Enter a valid District(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.dist.$touched && basic.dist.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Insurance available</label>
+                                                <input type="text" class="form-control" placeholder="District" name="dist" ng-model="vle.dist"  ng-pattern="/^[A-Za-z\s]+$/">
+                                                <span class="help-block" ng-show="basic.dist.$error.required && basic.dist.$touched">Please Enter District</span>
+                                                <span class="help-block" ng-show="basic.dist.$error.pattern && basic.dist.$touched">Enter a valid District(Only Alphabets allowed)</span>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.country.$touched && basic.country.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Expiry Date</label>
+                                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="vle.country"  ng-pattern="/^[A-Za-z]+$/">
+                                                <span class="help-block" ng-show="basic.country.$error.required && basic.country.$touched">Please Enter Country</span>
+                                                <span class="help-block" ng-show="basic.country.$error.pattern && basic.country.$touched">Country name is invalid(Only Alphabets allowed)</span>
+                                            </div>
+                                        
+                                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':basic.pin.$touched && basic.pin.$invalid}">
+                                                <label for="lname" class="col-sm-10 text-left control-label">Insurance Type</label>
+                                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="vle.pin" ui-mask="999999" >
+                                                <span class="help-block" ng-show="basic.pin.$error.required && basic.pin.$touched">Please Enter Pin</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

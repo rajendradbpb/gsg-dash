@@ -1,0 +1,43 @@
+<section class="content-header m-b-40" ng-init="getAllUsers()">
+    <h1>
+      Users list
+      
+    </h1>  
+    <button type="button"  class="btn btn-primary pull-right" ng-click="createTicket()">
+        <i class="fa fa-plus"></i> Add new user
+      </button>
+      
+</section>
+<section  ng-init="getTickets()">
+  <div class="row">
+    <div class="col-md-10 col-xs-12 col-md-offset-1">      
+        <div class="box box-info">
+          <div class="box-body over-x-sc">
+            <div class="table-responsive">
+                <table ng-table="userData" class="table table-bordered table-hover table-t-a-c">
+                    <tr ng-repeat="row in $data">
+                        <td data-title="'Sl No'" ng-class="{'not-covered':!row.isCover}">{{ $index + 1}}</td>
+                        <td data-title="' Name '" filter="{ 'firstName': 'text'}" sortable="'Name'">{{row.firstName +" "+ row.middleName +" "+ row.lastName}}</td>
+                        <td data-title="' Mobile'" filter="{ 'contactNbr': 'text'}" sortable="'Mobile'">{{row.contactNbr}}</td>
+                        <td data-title="' Email'" filter="{ 'email': 'text'}" sortable="'Email'">{{row.email}}</td>
+                        <td data-title="' No of vehicles'" sortable="'Email'">{{row.userVehicles.length}}</td>
+                        <td data-title="'Action'">
+                            <div class="btn-group">
+                                 <button type="button" class="btn btn-info"><a href="" class="option-btn" ng-click="updateUserModal(row)">View/Edit</a>
+                                 </button>
+                             </div>
+                             <div class="btn-group">
+                                 <button type="button" class="btn btn-danger"><a href="" class="option-btn" ng-click="createTicket(row)">New Ticket</a>
+                                 </button>
+                               
+                             </div>
+           
+                           </td>
+                    </tr>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

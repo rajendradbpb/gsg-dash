@@ -1,0 +1,65 @@
+{
+	"user":[
+		{
+			"first_name":"santosh",
+			"last_name":"majhi",
+			"email":"santosh@gmail.com",
+			"mobile":"9776993796",
+			"user_name":"santosh99",
+			"password":"0000",
+			"user_role":"enterer"
+		},
+		{
+			"first_name":"Subhra",
+			"last_name":"majhi",
+			"email":"subhra@gmail.com",
+			"mobile":"7540951096",
+			"user_name":"subhra",
+			"password":"123456",
+			"user_role":"verifier"
+		}
+	],
+
+	"client":[
+				{
+					"firm_name":"BBM & co",
+					"firm_type":"Chartard Accountants",
+					"date_inc" :"20-7-2017",
+			             "gst" :"5744877",
+					"is_active":false
+				},
+				{
+					"firm_name":"Go Apps Solutions",
+					"firm_type":"Software",
+					"date_inc" :"20-7-2017",
+			             "gst" :"5744877",
+					"is_active":true
+				},
+				{
+					"firm_name":"BBM & co",
+					"firm_type":"Chartard Accountants",
+					"date_inc" :"20-7-2017",
+			             "gst" :"5744877",
+					"is_active":true
+				}
+	],
+
+	"role":[
+				{
+					"type":"Enterer",
+					"desc":"The person can only entry data",
+					"nos" :"8"
+			       
+				},
+				{
+					"type":"verifier",
+					"desc":"The person will verify the data",
+					"nos" :"6"
+				},
+				{
+					"type":"Auditor",
+					"desc":"He is the boss",
+					"nos" :"5"
+				}
+	]
+}

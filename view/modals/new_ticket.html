@@ -1,0 +1,79 @@
+<div class="modal-info">
+    <form class="form-horizontal" name="createTicket">
+        <div class="modal-header">
+            <h3 class="modal-title">Add a new Ticket</h3>
+        </div>
+        <div class="modal-body vleDetails" >
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="form-group p-l-20" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
+                        <label for="uname" class="control-label col-sm-4">Service Type:</label>
+                        <div class="col-xs-8">
+                            <select class="form-control" name="service_type" ng-model="service.serviceType" ng-change="getSelectedServices(service.serviceType)" required>
+                                <option value=""><i class="fa fa-sort-desc">Service Type</i></option>
+                                <option value="MAJOR">Major Service</option>
+                                <option value="MINOR">Minor Service</option>
+                                <option value="RA">Roadside Assistance</option>
+                            </select>
+                            <span class="help-block" ng-show="createTicket.service_type.$error.required && createTicket.service_type.$touched">Choose a service type</span>
+                        </div>
+                    </div>
+                    <div class="form-group p-l-20" ng-show="ServiceArr.length > 0" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
+                        <label for="uname" class="control-label col-sm-4">Services:</label>
+                        <div class="col-xs-8 serviceList">
+                            <label class="container label-text" ng-repeat="services in ServiceArr">
+                                <input type="checkbox" ng-model="services.isSelect">
+                                <span class="checkmark"></span>{{services.subCategory}} {{services.isSelect &&  createTicket.vehicle.vehicle.type ? '-'+services.price[createTicket.vehicle.vehicle.type]+' (' + createTicket.vehicle.vehicle.type +' )' : " " }}
+                            </label>
+                            
+                        </div>
+                    </div>                   
+                     <div class="form-group p-l-20" ng-class="{'has-error':createTicket.vehicle.$touched && createTicket.vehicle.$invalid}">
+                        <label for="uname" class="control-label col-sm-4">Vehicles:</label>
+                        <div class="col-xs-8">
+                            <select class="form-control" name="vehicle" ng-model="createTicket.vehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles" ng-change="selectScheme(createTicket.vehicle.vehicle.subType)" required>
+                               
+                            </select>
+                            <span class="help-block" ng-show="createTicket.vehicle.$error.required && createTicket.vehicle.$touched">Choose a vehicle.</span>
+                        </div>
+                    </div>
+                    <div class="form-group p-l-20"  ng-class="{'has-error':createTicket.amount.$touched && createTicket.amount.$invalid}">
+                            <label class="col-sm-4 control-label" for="uname" >Amount</label>
+                         <div class="col-xs-8">
+                            <input type="number" class="form-control" ng-model="newTicket.amount" name="amount" placeholder="Amount" required/>
+                            <span class="help-block" ng-show="createTicket.amount.$error.required && createTicket.amount.$touched">Enter Amount.</span>
+                          </div>
+                     </div>
+                     <div class="form-group p-l-20" ng-class="{'has-error':createTicket.vehicle.$touched && createTicket.vehicle.$invalid}">
+                            <label for="uname" class="control-label col-sm-4">Assign to:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" ng-model="newTicket.amount" name="amount" placeholder="Amount" required/>
+                                <span class="help-block" ng-show="createTicket.vehicle.$error.required && createTicket.vehicle.$touched">Choose a vehicle.</span>
+                            </div>
+                    </div>
+                     <div ng-show="schemeList.length > 0" class="form-group p-1-20"  ng-class="{'has-error':createTicket.scheme.$touched && createTicket.scheme.$invalid}">
+                            <label  class="col-sm-4 control-label"
+                                    for="uname">User Scheme:</label>
+                            <div class="col-xs-8">
+                              <input type="text" class="form-control" name="scheme" placeholder="schemes.description" ng-model="newTicket.userScheme" ng-value="schemes.schemeId" ng-repeat="schemes in schemeList" required/>
+                              <span class="help-block" ng-show="createTicket.scheme.$error.required && createTicket.scheme.$touched">User Scheme is required.</span>
+                            </div>
+                     </div>
+                    <div ng-show="schemeList.length > 0" class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">                            
+                        <div class="col-xs-8 col-md-offset-2">
+                            <label class="container label-text">
+                                <input type="checkbox" ng-model="items.isSelect">
+                                <span class="checkmark"></span>Use free services
+                            </label>                                
+                        </div>
+                    </div>      
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary pull-right" type="button" ng-click="ok()">Submit</button>
+           
+        </div>
+    </form>
+</div>
