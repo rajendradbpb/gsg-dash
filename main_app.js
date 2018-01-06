@@ -1,19 +1,19 @@
 var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap', 'ngStorage','ngTable','ngResource','ui.utils','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
-  $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
-    return {
-      request: function (config) {
-        config.headers['Authorization'] = 'token '+Constants.rtToken;
-        return config;
-      },
-      response: function (response) {
-        if (response.status === 401) {
-          $location.path('/');
-        }
-        return response || $q.when(response);
-      }
-    };
-  });
+  // $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
+  //   return {
+  //     request: function (config) {
+  //       config.headers['Authorization'] = 'token '+Constants.rtToken;
+  //       return config;
+  //     },
+  //     response: function (response) {
+  //       if (response.status === 401) {
+  //         $location.path('/');
+  //       }
+  //       return response || $q.when(response);
+  //     }
+  //   };
+  //});
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('dashboard', {
@@ -58,7 +58,7 @@ resolve: {
 })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
-  if($localStorage.token){
+  if($localStorage.token != null){
     $timeout(function(){
       deferred.resolve();
       $rootScope.isLoggedin = true;

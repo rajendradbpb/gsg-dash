@@ -2,26 +2,10 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,Util){
-    $scope.user = {};
+
     $scope.active_tab = 'lists';
     $scope.tabChange = function(tab) {
       $scope.active_tab = tab;
-    }
-
-    // login user
-    $scope.signin = function() {
-      // here we need to make service call
-
-      // making static comparision
-      if($scope.user.username == "admin" && $scope.user.password == "admin") {
-        $rootScope.is_loggedin = true;
-        $state.go("dashboard");
-      }
-      else{
-        Util.alertMessage("warning","Invalid username/password")
-      }
-
-
     }
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
