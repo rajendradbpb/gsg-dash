@@ -20,3 +20,9 @@ app.filter('capitalize', function() {
       return (!!input) ? input.charAt(0,3).toUpperCase() : '';
     }
 });
+
+// this is dummy text
+
+
+
+
