@@ -15,13 +15,30 @@ module.exports = function(grunt) {
             },
             custom: {
                 src: [
+                    // "./main_app.js",
+                    // "./filter.js",
+                    // "./constants.js",
+                    // "./modules/*.js",
+                    // "./modules/**/*.js",
+                    // "./models/*.js",
+                    // "./models/**/*.js",
+                    // "./controller/*.js",
+                    // "./controller/**/*.js",
+                    // "./directive/*.js",
+                    // "./directive/**/*.js"
                     "./main_app.js",
                     "./filter.js",
                     "./constants.js",
-                    "./modules/**/*.js",
-                    "./models/**/*.js",
-                    "./controller/**/*.js",
-                    "./directive/**/*.js"
+                    "modules/*.js",
+                    "modules/**/*.js",
+                    "controller/*.js",
+                    "controller/**/*.js",
+                    "services/*.js",
+                    "services/**/*.js",
+                    "models/*.js",
+                    "models/**/*.js",
+                    "directive/*.js",
+                    "directive/**/*.js"
                 ],
                 dest: 'custom.js'
             },
@@ -179,7 +196,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     // grunt.loadNpmTasks('grunt-nodemon');
     // Default task(s).
-    grunt.registerTask('default', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','watch:debug']);
+    grunt.registerTask('default', ['concat','watch:debug']);
+    // grunt.registerTask('default', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','watch:debug']);
     grunt.registerTask('built', ['clean','concat','ngAnnotate:appannotate','uglify:my_target','cssmin:combine','copy:main','htmlmin:dist','comments:my_target','cachebreaker:dev','watch:built']);
     // grunt.registerTask('server', ["nodemon:server"]);
 

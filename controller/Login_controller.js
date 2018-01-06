@@ -4,7 +4,7 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
     //     password : "admin"
 
 
-        
+
     // };
     // $scope.login = function(){
     //     console.log($scope.user);
@@ -18,15 +18,11 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
     //         console.log("error");
     //     }
     // };
+
     
-    $scope.signOut = function(){
-        $localStorage.token =null;
-        $rootScope.isLoggedin=false;
-        $state.go('login');
-    }
     $scope.user={mobile:'',password:''};
     $scope.login = function() {
-        
+
         $scope.data = {
             grant_type:"password",
             username: $scope.user.mobile,
@@ -43,15 +39,15 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
                 } ,
             data: $httpParamSerializer($scope.data)
             }
-        $http(req).then(function(data){                   
+        $http(req).then(function(data){
             console.log(data);
             $localStorage.token = data.data.access_token;
-            $rootScope.isLoggedin = true; 
+            $rootScope.isLoggedin = true;
             $state.go('dashboard');
             console.log($localStorage.token);
-                            
+
         },function(error){
-            
+
             console.log(error);
         });
   }

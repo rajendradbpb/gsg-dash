@@ -1,11 +1,16 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
-app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,Util){
+app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util){
 
     $scope.active_tab = 'lists';
     $scope.tabChange = function(tab) {
       $scope.active_tab = tab;
+    }
+    $scope.signOut = function(){
+        $localStorage.token =null;
+        $rootScope.isLoggedin=false;
+        $state.go('login');
     }
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
