@@ -23,7 +23,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     resolve: {
       logout: checkLoggedout
     }
-   
+
   })
   .state('login',{
     templateUrl:'view/common/login.html',
@@ -85,14 +85,14 @@ function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
     },200)
   }
   else{
-   
+
     $timeout(function(){
       $localStorage.token = null;
       $rootScope.isLoggedin = false;
       deferred.resolve();
       $state.go('login');
     },200)
-  
+
 }
 }
 });
@@ -115,7 +115,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
   return Util;
 }]);
 app.constant('CONFIG', {
-  
+
   //  'HTTP_HOST_APP':'http://localhost:8090',
    'HTTP_HOST_APP':'http://101.53.136.166:8090'
 });

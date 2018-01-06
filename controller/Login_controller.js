@@ -1,7 +1,10 @@
 app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,Util,$localStorage){
     $scope.data = {
-        mobile : "9776993796",
-        password : "0000"
+        mobile : "admin",
+        password : "admin"
+
+
+        
     };
     $scope.login = function(){
         console.log($scope.user);

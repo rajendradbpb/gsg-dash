@@ -7,40 +7,41 @@ module.exports = function(grunt) {
             },
             libs: {
                 src: [
-                    "/plugins/jQuery/jQuery-2.2.0.min.js",
-                    "/dist/bootstrap/js/bootstrap.min.js",
-                    "/dist/js/app.js"
+                    "./plugins/jQuery/jQuery-2.2.0.min.js",
+                    "./dist/bootstrap/js/bootstrap.min.js",
+                    "./dist/js/app.js"
                 ],
                 dest: 'libs.js'
             },
             custom: {
                 src: [
-                    "/main_app.js",
-                    "/filter.js",
-                    "/constants.js",
-                    "/modules/**/*.js",
-                    "/models/**/*.js",
-                    "/controller/**/*.js",
-                    "/directive/**/*.js"
+                    "./main_app.js",
+                    "./filter.js",
+                    "./constants.js",
+                    "./modules/**/*.js",
+                    "./models/**/*.js",
+                    "./controller/**/*.js",
+                    "./directive/**/*.js"
                 ],
                 dest: 'custom.js'
             },
             angular: {
                 src: [
-                    "/dist/js/angular/angular.js",
-                    "/dist/js/angular/angular-animate.js",
-                    "/dist/js/angular/ngStorage.min.js",
-                    "/dist/js/angular/angular-resource.js",
-                    "/dist/js/angular/angular-ui-router.js",
-                    "/dist/js/angular/angular-ui-utils.min.js",
-                    "/dist/js/angular/ui-bootstrap-tpls-0.14.3.min.js",
-                    "/dist/js/angular/ng-table.min.js",
-                    "/dist/js/angular/xlsx.core.min.js",
-                    "/dist/js/angular/angular-js-xlsx.js",
-                    "/dist/js/angular/angular-sanitize.min.js",
-                    "/dist/js/date-picker/angular-datepicker.min.js",
-                    "/dist/js/date-picker/moment.js",
-                    "/plugins/textEditor/textAngular.min.js",
+                    "./dist/js/angular/angular.js",
+                    "./dist/js/angular/angular-animate.js",
+                    "./dist/js/angular/ngStorage.min.js",
+                    "./dist/js/angular/angular-resource.js",
+                    "./dist/js/angular/ng-animate.js",
+                    "./dist/js/angular/angular-ui-router.js",
+                    "./dist/js/angular/angular-ui-utils.min.js",
+                    "./dist/js/angular/ui-bootstrap-tpls-0.14.3.min.js",
+                    "./dist/js/angular/ng-table.min.js",
+                    "./dist/js/angular/xlsx.core.min.js",
+                    "./dist/js/angular/angular-js-xlsx.js",
+                    "./dist/js/angular/angular-sanitize.min.js",
+                    "./dist/js/date-picker/angular-datepicker.min.js",
+                    "./dist/js/date-picker/moment.js",
+                    "./plugins/textEditor/textAngular.min.js",
 
                 ],
                 dest: 'ng-libs.js'
@@ -108,13 +109,14 @@ module.exports = function(grunt) {
         cssmin: {
             combine: {
                 files: {
-                    '/dist/css/all.css': [
-                    "/dist/bootstrap/css/bootstrap.min.css",
-                    "/dist/css/style.css",
-                    "/dist/css/ng-table.min.css",
-                    "/dist/css/skins/_all-skins.css",
-                    "/dist/css/font-awesome.min.css",
-                    "/dist/js/date-picker/angular-datepicker.min.css",
+                    './dist/css/all.css': [
+                    "./dist/bootstrap/css/bootstrap.min.css",
+                    "./dist/css/style.css",
+                    "./dist/css/ng-table.min.css",
+		    "./dist/css/AdminTamda.css",
+                    "./dist/css/skins/_all-skins.css",
+                    "./dist/css/font-awesome.min.css",
+                    "./dist/js/date-picker/angular-datepicker.min.css",
                     ],
                 }
             }
@@ -155,16 +157,12 @@ module.exports = function(grunt) {
               }]
             }
         },
-        nodemon: {
-          // start: {
-          //   script: './bin/www',
-          //   tasks: ["concat:client","watch:client"]
-          // },
-          server: {
-            script: './bin/www',
-            tasks: ['watch:server']
-          }
-        },
+        // nodemon: {
+        //   server: {
+        //     script: './bin/www',
+        //     tasks: ['watch:server']
+        //   }
+        // },
     });
 
     // Load the plugin that provides the "uglify" task.
@@ -179,10 +177,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
-    grunt.loadNpmTasks('grunt-nodemon');
+    // grunt.loadNpmTasks('grunt-nodemon');
     // Default task(s).
-    grunt.registerTask('default', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','cachebreaker:dev','watch:debug']);
+    grunt.registerTask('default', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','watch:debug']);
     grunt.registerTask('built', ['clean','concat','ngAnnotate:appannotate','uglify:my_target','cssmin:combine','copy:main','htmlmin:dist','comments:my_target','cachebreaker:dev','watch:built']);
-    grunt.registerTask('server', ["nodemon:server"]);
+    // grunt.registerTask('server', ["nodemon:server"]);
 
 };
