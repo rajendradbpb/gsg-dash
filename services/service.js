@@ -23,6 +23,13 @@ angular.module('serviceModule', ['ngResource'])
 			  isArray : true
             })
         },
+        createTicket: function(){
+            return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/order',{
+                save:{method:'POST'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
+                isArray : true
+            })
+        },
     }
 })
 .factory('UserService', function ($resource,CONFIG,$http) {
@@ -40,6 +47,17 @@ angular.module('serviceModule', ['ngResource'])
     return{
         getAllServices: function(){
             return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/master/services',{
+                get:{method:'GET'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
+                isArray : true
+            })
+        }
+    }
+})
+.factory('MasterService',function(CONFIG,$resource,$http){
+    return{
+        getAllStates: function(){
+            return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/master/states',{
                 get:{method:'GET'},
                 // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true

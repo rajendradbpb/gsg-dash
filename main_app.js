@@ -33,29 +33,38 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
-.state('tickets',{
-templateUrl:'view/tickets.html',
-url:'/tickets',
-controller:'TicketController',
-resolve: {
-  logout: checkLoggedout
-}
-})
-.state('users',{
-  templateUrl:'view/users.html',
-  url:'/users',
-  controller : 'User_controller',
+  .state('tickets',{
+  templateUrl:'view/tickets.html',
+  url:'/tickets',
+  controller:'TicketController',
   resolve: {
     logout: checkLoggedout
   }
-})
-.state('serviceEngineers',{
-  templateUrl:'view/serviceEngineers.html',
-  url:'/serviceEngineers',
-  resolve: {
-    logout: checkLoggedout
-  }
-})
+  })
+  .state('users',{
+    templateUrl:'view/users.html',
+    url:'/users',
+    controller : 'User_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('user-details',{
+    templateUrl:'view/userDetails.html',
+    url:'/user-details',
+    controller : 'User_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+
+  .state('serviceEngineers',{
+    templateUrl:'view/serviceEngineers.html',
+    url:'/serviceEngineers',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){

@@ -1,4 +1,4 @@
-app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,Util,$localStorage,UserService,$uibModal){
+app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,Util,$localStorage,UserService,$uibModal,MasterService){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
@@ -16,20 +16,20 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
 
         });
     };
-    $scope.updateUserModal = function(userData){
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'view/modals/updateUser.html',
-            controller: 'User_controller',
-            size: 'md',
-            resolve: {
-                userUpdate: function () {
-                    return userData;
-                }
+    // $scope.updateUserModal = function(userData){
+    //     var modalInstance = $uibModal.open({
+    //         animation: true,
+    //         templateUrl: 'view/modals/updateUser.html',
+    //         controller: 'User_controller',
+    //         size: 'md',
+    //         resolve: {
+    //             userUpdate: function () {
+    //                 return userData;
+    //             }
                
-            }
-        });
-    };
+    //         }
+    //     });
+    // };
     $scope.createTicket = function(userData) {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -43,9 +43,29 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
           }
         });
     };
+
+    $scope.getAllStates = function(){
+        $scope.stateList = [];
+        MasterService.getAllStates().get(function(response){
+            console.log(response);
+            $scope.stateList = response.data;
+        },function(error){
+            console.log(error);
+        });
+    };
+    $scope.getDistrict = function(state){
+        $scope.districtList = [];
+        angular.forEach( $scope.stateList,function(item){
+            if(item.stateCd == state){
+                $scope.districtList = item.districts;
+                // vm.type = item.type;
+            }
+        });
+    };
+
    
 });
-app.controller('addTicketModalController', function ($scope, $uibModalInstance,ApiCall,$timeout,Util,ServicesService,userId) {
+app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userId,CONFIG,$http,TicketService) {
     $scope.userdata = userId;
     $scope.createTicket = {};
 
@@ -58,6 +78,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,A
                 $scope.schemeList.push(item);
             }
         });
+        console.log($scope.schemeList);
     }
     $scope.getSelectedServices = function(serviceType){
         ServicesService.getAllServices().get(function(response){
@@ -76,27 +97,37 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,A
     
     $scope.ticket = {};
     $scope.ok = function () {
-      $scope.serviceArray = [];
-      angular.forEach($scope.repeatArr, function(items){
-        if(items.isSelect){
-          $scope.serviceArray.push(items);
+        console.log('coming')
+      //service call to create a ticket
+      console.log($scope.userdata.userId);
+        $scope.ticket.userId = $scope.userdata.userId;
+        $scope.ticket.location = [20.2897321,85.8469173];
+        $scope.ticket.services=[];
+        angular.forEach($scope.ServiceArr,function(service){
+            if(service.isSelect){
+                $scope.ticket.services.push(service.serviceId);
+            }
+        });
+        console.log( $scope.ticket);
+        if( $scope.ticket.services.length > 0 && $scope.ticket.vehicle)
+        {
+            TicketService.createTicket().save($scope.ticket,function(response){
+                console.log(response);
+                Util.alertMessage('alert','Ticket Created successfully...');
+
+            },function(error){
+                console.log(error);
+            });
         }
-      });
-      console.log( $scope.serviceArray);
-      console.log("$scope.ticket   ",$scope.ticket);
-      // service call to save ticket
-      ApiCall.createTicket($scope.ticket,function(response) {
-        Util.alertMessage("success","Ticket created");
-        $timeout(function(){
-          $uibModalInstance.close($scope.selected.item);
-        },2000)
-      },function(err) {
-        Util.alertMessage("warning","ticket creation failed")
-      })
-      
+        else{
+            Util.alertMessage('alert','Please choose one service and vechile');
+        }
+        $uibModalInstance.close();
     };
   
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
   });
+
+  

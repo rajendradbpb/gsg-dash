@@ -16,17 +16,7 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
         console.log(error);
       });
     }
-    $scope.createTicket = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'view/modals/new_ticket.html',
-        controller: 'addTicketModalController',
-        size: 'md',
-        // resolve: {
-          
-        // }
-      });
-    }
+   
 });
 
 
