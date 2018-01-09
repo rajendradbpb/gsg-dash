@@ -1,4 +1,4 @@
-app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,Util,$localStorage,UserService,$uibModal,MasterService){
+app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
@@ -62,10 +62,46 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
             }
         });
     };
+    $scope.user = {};
+    $scope.isCollapsed= false;
+    $scope.getUserDetails = function(user_id){
+        $scope.user_id = $stateParams.user_id;
+        console.log($scope.user_id);
+        UserService.getUsersById($scope.user_id).get(function(response){
+            // console.log(response);
+            $scope.user = response.data;
+            console.log($scope.user);
+            console.log($scope.user.address[0].zip);
+            console.log($scope.user.address[0].district);
+            $scope.vehicleData = new NgTableParams;
+            $scope.vehicleData.settings({
+                dataset : $scope.user.userVehicles
+            })
+        },function(error){
+
+        });
+
+    };
+
+    $scope.addVehicle = function(userData){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'view/modals/new_vehicle.html',
+            controller: 'addVehicleModalController',
+            size: 'md',
+            resolve: {
+              userId : function(){
+                  return userData;
+              }
+            }
+        });
+
+    };
+   
 
    
 });
-app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userId,CONFIG,$http,TicketService) {
+app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userI,$http,TicketService) {
     $scope.userdata = userId;
     $scope.createTicket = {};
 
@@ -115,6 +151,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
                 console.log(response);
                 Util.alertMessage('alert','Ticket Created successfully...');
 
+
             },function(error){
                 console.log(error);
             });
@@ -128,6 +165,16 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
-  });
+});
+
+app.controller('addVehicleModalController',function($scope,$uibModalInstance){
+    $scope.ok = function () {
+        $uibModalInstance.close();
+      };
+    
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+});
 
   

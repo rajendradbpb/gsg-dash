@@ -53,9 +53,9 @@
                                     <div class="col-sm-9">
                                         <select class="form-control" name="gender" ng-model="user.gender" required>
                                             <option value=""><i class="fa fa-sort-desc">Gender</i></option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Others</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                            <option value="O">Others</option>
                                         </select> 
                                         <span class="help-block" ng-show="update.gender.$error.required && update.gender.$touched">Please select gender</span>
                                     </div> 
@@ -113,19 +113,19 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.houseNo.$touched && update.houseNo.$invalid}">
-                                <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="user.houseNbr" required>
+                                <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="user.address[0].houseNbr" required>
                                 <span class="help-block" ng-show="update.houseNo.$error.required && update.houseNo.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.locality.$touched && update.locality.$invalid}">
-                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="user.locality" required>
+                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="user.address[0].locality" required>
                                 <span class="help-block" ng-show="update.locality.$error.required && update.locality.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.city.$touched && update.city.$invalid}">
-                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="user.city" required>
+                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="user.address[0].city" required>
                                 <span class="help-block" ng-show="update.city.$error.required && update.city.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.state.$touched && update.state.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="state" ng-model="user.state" ng-change="getDistrict(user.state)" required>
+                                <select class="form-control" name="state" ng-model="user.address[0].state" ng-change="getDistrict(user.state)" required>
                                     <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option>
                                 </select>
@@ -134,18 +134,18 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.district.$touched && update.district.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="district" ng-model="user.district"  required>
+                                <select class="form-control" name="district" ng-model="user.address[0].district"  required>
                                     <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option>
                                 </select>
                                 <span class="help-block" ng-show="update.district.$error.required && update.district.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.country.$touched && update.country.$invalid}">
-                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="user.country" required>
+                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="user.address[0].country" required>
                                 <span class="help-block" ng-show="update.country.$error.required && update.country.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.pin.$touched && update.pin.$invalid}">
-                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="user.zip" ui-mask="999999" >
+                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="user.address[0].zip" ui-mask="999999" >
                                 <span class="help-block" ng-show="update.pin.$error.required && update.pin.$touched">Please Enter Pin</span>
                             </div>
                         </div>
@@ -154,9 +154,34 @@
                 <div class="box box-success ">
                     <div class="box-header with-border">
                         <h3 class="box-title">Vechile Details:</h3>
+                        <button type="button"  class="btn btn-primary pull-right" ng-click="addVehicle()">
+                            <i class="fa fa-plus"></i> Add new Vehicle
+                        </button>
                     </div>
                     <div class="box-body">
                         <div class="row">
+                            <div class="table-responsive">
+                                <table ng-table="vehicleData" class="table table-bordered table-hover table-t-a-c">
+                                    <tr ng-repeat="row in $data" style="text-align:center">
+                                        <td data-title="'Sl No'" ng-class="{'not-covered':!row.isCover}">{{ $index + 1}}</td>
+                                        <td data-title="' Make '">{{row.vehicle.make}}</td>
+                                        <td data-title="' Model'">{{row.vehicle.models}}</td>
+                                        <td data-title="' Regd.No'">{{row.registrationNumber}}</td>
+                                        <td data-title="'Insurance Type'">{{row.insuranceType}}</td>
+                                        <td data-title="'Action'">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-success"><a href="" class="option-btn" ng-click="isCollapsed = !isCollapsed" >Details</a>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <div uib-collapse="isCollapsed">
+                                        <div>
+                                            some content
+                                        </div>
+                                    </div>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

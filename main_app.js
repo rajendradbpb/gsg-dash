@@ -51,8 +51,11 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   })
   .state('user-details',{
     templateUrl:'view/userDetails.html',
-    url:'/user-details',
+    url:'/user-details/:user_id',
     controller : 'User_controller',
+    params : {
+      user_id : null
+    },
     resolve: {
       logout: checkLoggedout
     }

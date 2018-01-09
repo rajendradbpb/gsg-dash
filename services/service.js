@@ -40,6 +40,13 @@ angular.module('serviceModule', ['ngResource'])
 			//   header:{'Authorization':'bearer '+$localStorage.user_token},
 			  isArray : true
             })
+        },
+        getUsersById: function (user_id) {
+            return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/users/id/' + user_id ,{
+			  get:{method:'GET'},
+			//   header:{'Authorization':'bearer '+$localStorage.user_token},
+			  isArray : true
+            })
         }
     }
 })
