@@ -4580,7 +4580,7 @@ table.text-center th {
 .modal-warning .modal-header,
 .modal-warning .modal-footer {
   background-color: #db8b0b !important;
-  
+
 }
 .bg-aqua-active,
 .modal-info .modal-header,
@@ -5271,3 +5271,12 @@ table.text-center th {
 }
 
 /*overdding modal styling ends*/
+.table-t-a-c{
+  text-align: center;
+}
+.userData td button a {
+    color: #fff;
+}
+.div-vehicle-details button a{
+  color:#fff;
+}

@@ -26,7 +26,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
     //             userUpdate: function () {
     //                 return userData;
     //             }
-               
+
     //         }
     //     });
     // };
@@ -53,10 +53,10 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
             console.log(error);
         });
     };
-    $scope.getDistrict = function(state){
+    $scope.getDistrict = function(user){
         $scope.districtList = [];
         angular.forEach( $scope.stateList,function(item){
-            if(item.stateCd == state){
+            if(item.stateName == user.address[0].state){
                 $scope.districtList = item.districts;
                 // vm.type = item.type;
             }
@@ -70,6 +70,8 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
         UserService.getUsersById($scope.user_id).get(function(response){
             // console.log(response);
             $scope.user = response.data;
+            // get districtList based on state
+            $scope.getDistrict($scope.user);
             console.log($scope.user);
             console.log($scope.user.address[0].zip);
             console.log($scope.user.address[0].district);
@@ -97,9 +99,9 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
         });
 
     };
-   
 
-   
+
+
 });
 app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userI,$http,TicketService) {
     $scope.userdata = userId;
@@ -119,7 +121,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
     $scope.getSelectedServices = function(serviceType){
         ServicesService.getAllServices().get(function(response){
             console.log(response);
-            $scope.ServiceArr = [];          
+            $scope.ServiceArr = [];
             angular.forEach(response.data,function(item){
                 if(item.category == serviceType){
                     $scope.ServiceArr.push(item);
@@ -130,7 +132,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
             console.log(error);
         });
     };
-    
+
     $scope.ticket = {};
     $scope.ok = function () {
         console.log('coming')
@@ -161,7 +163,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
         }
         $uibModalInstance.close();
     };
-  
+
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -171,10 +173,8 @@ app.controller('addVehicleModalController',function($scope,$uibModalInstance){
     $scope.ok = function () {
         $uibModalInstance.close();
       };
-    
+
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
 });
-
-  

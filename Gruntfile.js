@@ -9,7 +9,8 @@ module.exports = function(grunt) {
                 src: [
                     "./plugins/jQuery/jQuery-2.2.0.min.js",
                     "./dist/bootstrap/js/bootstrap.min.js",
-                    "./dist/js/app.js"
+                    "./dist/js/app.js",
+                    "./dist/js/ext/lodash.js",
                 ],
                 dest: 'libs.js'
             },
@@ -197,7 +198,7 @@ module.exports = function(grunt) {
     // grunt.loadNpmTasks('grunt-nodemon');
     // Default task(s).
     grunt.registerTask('default', ['concat','watch:debug']);
-    // grunt.registerTask('default', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','watch:debug']);
+    grunt.registerTask('dev', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','default']);
     grunt.registerTask('built', ['clean','concat','ngAnnotate:appannotate','uglify:my_target','cssmin:combine','copy:main','htmlmin:dist','comments:my_target','cachebreaker:dev','watch:built']);
     // grunt.registerTask('server', ["nodemon:server"]);
 

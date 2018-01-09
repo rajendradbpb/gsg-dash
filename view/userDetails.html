@@ -1,7 +1,7 @@
 <section class="content-header m-b-40">
     <h1>
       User Details
-     
+
     </h1>
   </section>
   <section class="content" ng-init="getUserDetails()">
@@ -39,7 +39,7 @@
                                         <span class="help-block" ng-show="update.lname.$error.pattern && !update.lname.$pristine">Please Enter Valid Last Name(Only Alphabets Allowed)</span>
                                     </div>
                                 </div>
-                               
+
                                 <div class="form-group" ng-class="{'has-error':(update.user_email.$touched && update.user_email.$invalid) || (update.user_email.$error.pattern && !update.user_email.$pristine)}">
                                             <label  class="col-sm-3 control-label">Email:</label>
                                     <div class="col-sm-9">
@@ -56,16 +56,16 @@
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
                                             <option value="O">Others</option>
-                                        </select> 
+                                        </select>
                                         <span class="help-block" ng-show="update.gender.$error.required && update.gender.$touched">Please select gender</span>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-6">
                                 <div class="form-group has-feedback" ng-controller="DatePickerCtrl">
                                         <label for="lname" class="col-sm-3 control-label">DOB:</label>
                                         <div class="col-sm-9">
-                                            
+
                                             <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" ng-model="user.dob" datepicker-popup="dd MMM, yyyy" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
                                             <!-- <span class="help-block" ng-show="update.dob.$error.required && update.dob.$touched">DOB is required</span> -->
                                         </div>
@@ -92,12 +92,12 @@
                                             <option value=""><i class="fa fa-sort-desc">MARITAL STATUS</i></option>
                                             <option value="1">Married</option>
                                             <option value="0">Unmarried</option>
-                                        </select> 
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group"  ng-if="user.maritalStatus =='1'" ng-controller="DatePickerCtrl">
                                     <label class="col-sm-3 control-label">Anniversary date</label>
-                                    <div class="col-sm-9">  
+                                    <div class="col-sm-9">
                                         <input type="text" class="form-control" name="anniversary" placeholder="01 Jan, 2017" ng-model="user.anniversaryDate" datepicker-popup="dd MMM, yyyy" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
                                         <!-- <span class="help-block" ng-show="update.dob.$error.required && update.dob.$touched">DOB is required</span> -->
                                     </div>
@@ -125,18 +125,18 @@
                                 <span class="help-block" ng-show="update.city.$error.required && update.city.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.state.$touched && update.state.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="state" ng-model="user.address[0].state" ng-change="getDistrict(user.state)" required>
-                                    <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
-                                    <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option>
+                                <select class="form-control" name="state" ng-model="user.address[0].state" ng-options="state.stateName as state.stateCd for state in stateList" ng-change="getDistrict(user)" required>
+                                    <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
+                                    <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                 </select>
                                 <span class="help-block" ng-show="update.state.$error.required && update.state.$touched"> cannot be empty</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.district.$touched && update.district.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="district" ng-model="user.address[0].district"  required>
-                                    <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
-                                    <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option>
+                                <select class="form-control" name="district" ng-model="user.address[0].district"  ng-options="district as district for district in districtList" required>
+                                    <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
+                                    <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
                                 </select>
                                 <span class="help-block" ng-show="update.district.$error.required && update.district.$touched"> cannot be empty</span>
                             </div>
@@ -151,10 +151,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="box box-success ">
+                <div class="box box-success div-vehicle-details">
                     <div class="box-header with-border">
                         <h3 class="box-title">Vechile Details:</h3>
-                        <button type="button"  class="btn btn-primary pull-right" ng-click="addVehicle()">
+                        <button type="button"  class="btn btn-success pull-right" ng-click="addVehicle()">
                             <i class="fa fa-plus"></i> Add new Vehicle
                         </button>
                     </div>
@@ -175,11 +175,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <div uib-collapse="isCollapsed">
-                                        <div>
-                                            some content
-                                        </div>
-                                    </div>
                                 </table>
                             </div>
                         </div>
@@ -194,6 +189,3 @@
         <button type="submit" class="btn btn-default"  ui-sref="user-profile">Back</button>
         <button type="submit" ng-disabled="update.$invalid" class="btn btn-info pull-right" ng-click="profileUpdate()">Submit</button>
   </div>
-
-
-  
