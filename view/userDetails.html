@@ -7,7 +7,7 @@
   <section class="content" ng-init="getUserDetails()">
       <div class="row">
           <div class="col-sm-10 col-md-offset-1">
-            <form class="form-horizontal" name="update">
+            <form class="form-horizontal" name="userUpdateForm">
                 <div class="box box-info ">
                     <div class="box-header with-border">
                         <h3 class="box-title">Update Your Profile Here</h3>
@@ -15,40 +15,40 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-xs-6">
-                                <div class="form-group has-feedback" ng-class="{'has-error':(update.fname.$touched && update.fname.$invalid) ||(update.fname.$error.pattern && !update.fname.$pristine)}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':(userUpdateForm.fname.$touched && userUpdateForm.fname.$invalid) ||(userUpdateForm.fname.$error.pattern && !userUpdateForm.fname.$pristine)}">
                                     <label for="fname" class="col-sm-3 control-label">First Name:</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="fname" ng-model="user.firstName" class="form-control" placeholder="First Name" required ng-pattern="/^[a-zA-Z ]*$/">
-                                        <span class="help-block" ng-show="update.fname.$error.required && update.fname.$touched">First Name is required</span>
-                                        <span class="help-block" ng-show="update.fname.$error.pattern && !update.fname.$pristine">Please Enter Valid First Name(Only Alphabets Allowed)</span>
+                                        <span class="help-block" ng-show="userUpdateForm.fname.$error.required && userUpdateForm.fname.$touched">First Name is required</span>
+                                        <span class="help-block" ng-show="userUpdateForm.fname.$error.pattern && !userUpdateForm.fname.$pristine">Please Enter Valid First Name(Only Alphabets Allowed)</span>
                                     </div>
                                 </div>
-                                <div class="form-group has-feedback" ng-class="{'has-error':update.mname.$error.pattern && !update.mname.$pristine}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':userUpdateForm.mname.$error.pattern && !userUpdateForm.mname.$pristine}">
                                     <label for="mname" class="col-sm-3 control-label">Middle Name:</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="mname" ng-model="user.middleName" class="form-control" placeholder="Middle Name"  ng-pattern="/^[a-zA-Z ]*$/">
-                                        <!-- <span class="help-block" ng-show="update.mname.$error.required && update.mname.$touched">Middle Name is required</span> -->
-                                        <span class="help-block" ng-show="update.mname.$error.pattern && !update.mname.$pristine">Please Enter Valid Middle Name(Only Alphabets Allowed)</span>
+                                        <!-- <span class="help-block" ng-show="userUpdateForm.mname.$error.required && userUpdateForm.mname.$touched">Middle Name is required</span> -->
+                                        <span class="help-block" ng-show="userUpdateForm.mname.$error.pattern && !userUpdateForm.mname.$pristine">Please Enter Valid Middle Name(Only Alphabets Allowed)</span>
                                     </div>
                                 </div>
-                                <div class="form-group has-feedback" ng-class="{'has-error':(update.lname.$touched && update.lname.$invalid) || (update.lname.$error.pattern && !update.lname.$pristine)}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':(userUpdateForm.lname.$touched && userUpdateForm.lname.$invalid) || (userUpdateForm.lname.$error.pattern && !userUpdateForm.lname.$pristine)}">
                                     <label  class="col-sm-3 control-label">Last Name:</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="lname" ng-model="user.lastName" class="form-control" placeholder="Name" required ng-pattern="/^[a-zA-Z ]*$/">
-                                        <span class="help-block" ng-show="update.lname.$error.required && update.lname.$touched">Last Name is required</span>
-                                        <span class="help-block" ng-show="update.lname.$error.pattern && !update.lname.$pristine">Please Enter Valid Last Name(Only Alphabets Allowed)</span>
+                                        <span class="help-block" ng-show="userUpdateForm.lname.$error.required && userUpdateForm.lname.$touched">Last Name is required</span>
+                                        <span class="help-block" ng-show="userUpdateForm.lname.$error.pattern && !userUpdateForm.lname.$pristine">Please Enter Valid Last Name(Only Alphabets Allowed)</span>
                                     </div>
                                 </div>
 
-                                <div class="form-group" ng-class="{'has-error':(update.user_email.$touched && update.user_email.$invalid) || (update.user_email.$error.pattern && !update.user_email.$pristine)}">
+                                <div class="form-group" ng-class="{'has-error':(userUpdateForm.user_email.$touched && userUpdateForm.user_email.$invalid) || (userUpdateForm.user_email.$error.pattern && !userUpdateForm.user_email.$pristine)}">
                                             <label  class="col-sm-3 control-label">Email:</label>
                                     <div class="col-sm-9">
                                         <input type="email" name="user_email" ng-model="user.email" class="form-control" placeholder=" Email " required ng-pattern="/\S+@\S+\.\S+/">
-                                        <span class="help-block" ng-show="update.user_email.$error.required && update.user_email.$touched">Email is required</span>
-                                        <span class="help-block" ng-show="update.user_email.$error.pattern && !update.user_email.$pristine">Please Enter Valid Email</span>
+                                        <span class="help-block" ng-show="userUpdateForm.user_email.$error.required && userUpdateForm.user_email.$touched">Email is required</span>
+                                        <span class="help-block" ng-show="userUpdateForm.user_email.$error.pattern && !userUpdateForm.user_email.$pristine">Please Enter Valid Email</span>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-class="{'has-error':update.gender.$error.required && update.gender.$touched }">
+                                <div class="form-group" ng-class="{'has-error':userUpdateForm.gender.$error.required && userUpdateForm.gender.$touched }">
                                     <label for="gender" class="col-sm-3 control-label">Gender:</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" name="gender" ng-model="user.gender" required>
@@ -57,7 +57,7 @@
                                             <option value="F">Female</option>
                                             <option value="O">Others</option>
                                         </select>
-                                        <span class="help-block" ng-show="update.gender.$error.required && update.gender.$touched">Please select gender</span>
+                                        <span class="help-block" ng-show="userUpdateForm.gender.$error.required && userUpdateForm.gender.$touched">Please select gender</span>
                                     </div>
                                 </div>
                             </div>
@@ -67,18 +67,18 @@
                                         <div class="col-sm-9">
 
                                             <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" ng-model="user.dob" datepicker-popup="dd MMM, yyyy" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
-                                            <!-- <span class="help-block" ng-show="update.dob.$error.required && update.dob.$touched">DOB is required</span> -->
+                                            <!-- <span class="help-block" ng-show="userUpdateForm.dob.$error.required && userUpdateForm.dob.$touched">DOB is required</span> -->
                                         </div>
                                 </div>
-                                <div class="form-group has-feedback" ng-class="{'has-error':update.mobile.$touched && update.mobile.$invalid}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':userUpdateForm.mobile.$touched && userUpdateForm.mobile.$invalid}">
                                     <label for="pass" class="col-sm-3 control-label">Mobile:</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="mobile" ui-mask="999-999-9999" placeholder="xxx-xxx-xxxx" ng-model="user.contactNbr" required>
                                         <!-- <input type="text" class="form-control" name="mobile" ng-model="user.mobile" placeholder="Mobile" required ng-pattern="/^[0-9]{10,10}$/"> -->
-                                        <span class="help-block" ng-show="update.mobile.$error.required && update.mobile.$touched">Mobile is required</span>
+                                        <span class="help-block" ng-show="userUpdateForm.mobile.$error.required && userUpdateForm.mobile.$touched">Mobile is required</span>
                                     </div>
                                 </div>
-                                <div class="form-group has-feedback" ng-class="{'has-error':update.telephone.$touched && update.telephone.$invalid}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':userUpdateForm.telephone.$touched && userUpdateForm.telephone.$invalid}">
                                     <label for="pass" class="col-sm-3 control-label">Telephone:</label>
                                     <div class="col-sm-9">
                                         <!-- <input type="text" class="form-control" name="telephone" ng-model="user.telephone" placeholder="Telephone(optional)" ng-pattern="/^[0-9]{10,10}$/"> -->
@@ -99,7 +99,7 @@
                                     <label class="col-sm-3 control-label">Anniversary date</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="anniversary" placeholder="01 Jan, 2017" ng-model="user.anniversaryDate" datepicker-popup="dd MMM, yyyy" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
-                                        <!-- <span class="help-block" ng-show="update.dob.$error.required && update.dob.$touched">DOB is required</span> -->
+                                        <!-- <span class="help-block" ng-show="userUpdateForm.dob.$error.required && userUpdateForm.dob.$touched">DOB is required</span> -->
                                     </div>
                                 </div>
                             </div>
@@ -112,41 +112,41 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.houseNo.$touched && update.houseNo.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.houseNo.$touched && userUpdateForm.houseNo.$invalid}">
                                 <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="user.address[0].houseNbr" required>
-                                <span class="help-block" ng-show="update.houseNo.$error.required && update.houseNo.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.houseNo.$error.required && userUpdateForm.houseNo.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.locality.$touched && update.locality.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.locality.$touched && userUpdateForm.locality.$invalid}">
                                 <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="user.address[0].locality" required>
-                                <span class="help-block" ng-show="update.locality.$error.required && update.locality.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.locality.$error.required && userUpdateForm.locality.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.city.$touched && update.city.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.city.$touched && userUpdateForm.city.$invalid}">
                                 <input type="text" class="form-control" placeholder="City" name="city" ng-model="user.address[0].city" required>
-                                <span class="help-block" ng-show="update.city.$error.required && update.city.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.city.$error.required && userUpdateForm.city.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.state.$touched && update.state.$invalid}" ng-init="getAllStates()">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates()">
                                 <select class="form-control" name="state" ng-model="user.address[0].state" ng-options="state.stateName as state.stateCd for state in stateList" ng-change="getDistrict(user)" required>
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                 </select>
-                                <span class="help-block" ng-show="update.state.$error.required && update.state.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.state.$error.required && userUpdateForm.state.$touched"> cannot be empty</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.district.$touched && update.district.$invalid}" ng-init="getAllStates()">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}" ng-init="getAllStates()">
                                 <select class="form-control" name="district" ng-model="user.address[0].district"  ng-options="district as district for district in districtList" required>
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
                                 </select>
-                                <span class="help-block" ng-show="update.district.$error.required && update.district.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.district.$error.required && userUpdateForm.district.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.country.$touched && update.country.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.country.$touched && userUpdateForm.country.$invalid}">
                                 <input type="text" class="form-control" placeholder="Country" name="country" ng-model="user.address[0].country" required>
-                                <span class="help-block" ng-show="update.country.$error.required && update.country.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.country.$error.required && userUpdateForm.country.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':update.pin.$touched && update.pin.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.pin.$touched && userUpdateForm.pin.$invalid}">
                                 <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="user.address[0].zip" ui-mask="999999" >
-                                <span class="help-block" ng-show="update.pin.$error.required && update.pin.$touched">Please Enter Pin</span>
+                                <span class="help-block" ng-show="userUpdateForm.pin.$error.required && userUpdateForm.pin.$touched">Please Enter Pin</span>
                             </div>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                                         <td data-title="'Insurance Type'">{{row.insuranceType}}</td>
                                         <td data-title="'Action'">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-success"><a href="" class="option-btn" ng-click="vehicleDetails()" >Details</a>
+                                                <button type="button" class="btn btn-success"><a href="" class="option-btn" ng-click="showVehicleDetails(row)" >Details</a>
                                                 </button>
                                             </div>
                                         </td>
@@ -187,5 +187,5 @@
 
 <div class="box-footer">
         <button type="submit" class="btn btn-default"  ui-sref="user-profile">Back</button>
-        <button type="submit" ng-disabled="update.$invalid" class="btn btn-info pull-right" ng-click="profileUpdate()">Submit</button>
+        <button type="submit"  class="btn btn-info pull-right" ng-click="profileUpdate(userUpdateForm)">Submit</button>
   </div>

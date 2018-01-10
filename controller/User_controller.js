@@ -1,4 +1,4 @@
-app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
+app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
@@ -30,6 +30,13 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
     //         }
     //     });
     // };
+    $scope.profileUpdate = function(form) {
+      console.log('form' , form);
+      var status = FormService.validateForm(form,function(status,message){
+        console.log('form 2' , status,message);
+        Util.alertMessage("warning","Invalid data for "+message+" fields");
+      })
+    }
     $scope.createTicket = function(userData) {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -99,21 +106,21 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
         });
 
     };
-    $scope.vehicleDetails = function(userData){
+    $scope.showVehicleDetails = function(vehicleData){
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'view/modals/vehicleDetails.html',
             controller: 'vehicleModalController',
             size: 'md',
             resolve: {
-              userId : function(){
-                  return userData;
+              vehicleData : function(){
+                  return vehicleData;
               }
             }
         });
 
     };
-    
+
 
 
 });
@@ -183,9 +190,9 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
     };
 });
 
-app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
-    
-    $scope.insuranceArr = [true,false];    
+app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util,vehicleData){
+
+    $scope.insuranceArr = [true,false];
     $scope.insuranceTypeArr =["edfes","Comprehensive","Zero Depreciation","Third party only"];
     $scope.getVehicledata = function(){
         VehicleService.getVehicleMakeModel().get(function(response){
@@ -199,12 +206,12 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
         },function(error){
             console.log(error);
         });
-        
+
     };
     $scope.getModel = function(selectedModel){
         console.log("coming");
         console.log(selectedModel);
-        
+
         console.log($scope.vehicleDatas);
         angular.forEach($scope.vehicleDatas,function(item){
             if(item.make == selectedModel){
@@ -216,8 +223,8 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
             }
         });
         console.log($scope.vehicleModelList);
-        
-    
+
+
     };
     $scope.getVehicleType = function(model){
         console.log(model);
@@ -258,9 +265,9 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
          VehicleService.addVehicle( $scope.user_id).save($scope.vehicle,function(response){
             console.log(response);
             Util.alertMessage('danger','Vehicle added successfully...');
-             
+
          },function(error){
-              
+
              console.log(error);
              Util.alertMessage('danger','Vehicle is not added try again');
          });
@@ -271,4 +278,3 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
         $uibModalInstance.dismiss('cancel');
       };
 });
-

@@ -12,6 +12,7 @@ app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams
         $rootScope.isLoggedin=false;
         $state.go('login');
     }
+    
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
   // $scope.task = {};
