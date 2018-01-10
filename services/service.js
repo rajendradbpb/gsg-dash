@@ -71,5 +71,24 @@ angular.module('serviceModule', ['ngResource'])
             })
         }
     }
-});
+})
+.factory('VehicleService',function(CONFIG,$resource,$http){
+    return{
+        getVehicleMakeModel: function() {
+            return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/master/vehicles',{
+                get:{method:'GET'},
+                // oheader:{'Authorization':'bearer '+$localStrage.user_token},
+                isArray : true
+            })
+        } ,
+        addVehicle: function(user_id) {
+            return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/users/' + user_id + '/vehicle',{
+                save:{method:'POST'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
+                isArray : true
+            })
+        }, 
+    }
+})
+
 

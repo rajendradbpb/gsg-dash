@@ -1,16 +1,93 @@
-<div class="modal-info">
-        <form class="form-horizontal" name="">
-            <div class="modal-header">
-                <h3 class="modal-title">Add a new Vehicle</h3>
+<div class="modal-info" ng-init="getVehicledata()">
+    <form class="form-horizontal" name="newVehicle" ng-init="getMfgYear()">
+        <div class="modal-header">
+            <h3 class="modal-title">Add a new Vehicle</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            <div class="col-md-10">
+                <div class="form-group" ng-class="{'has-error':newVehicle.make.$touched && newVehicle.make.$invalid}">
+                    <div class="col-xs-10 col-md-offset-2">
+                        <select class="form-control" name="make" ng-model="vehicle.make" 
+                        ng-options="makes as makes for makes in makes" ng-change="getModel(vehicle.make)" required>
+                        <option value=""><i class="fa fa-sort-desc">Vehicle Manufacturer</i></option>
+                            
+                        </select>
+                        <span class="help-block" ng-show="newVehicle.make.$error.required && newVehicle.make.$touched">Choose a manufacturer</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error':newVehicle.vehicle_no.$touched && newVehicle.vehicle_no.$invalid}">
+                    <div class="col-xs-10 col-md-offset-2">
+                        <input type="text" class="form-control" name="vehicle_no" ng-model="vehicle.registrationNumber" placeholder="Vehicle No" required/>
+                        <span class="help-block" ng-show="newVehicle.vehicle_no.$error.required && newVehicle.vehicle_no.$touched">Enter regd. no.</span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="row">
+                        <div class="col-xs-5 col-md-offset-2" ng-class="{'has-error':newVehicle.model.$touched && newVehicle.model.$invalid}">
+                                <select class="form-control" name="model" ng-model="vehicle.model" ng-options="models as models for models in vehicleModelList" ng-change="getVehicleType(vehicle.model)" required>
+                                        <option value=""><i class="fa fa-sort-desc">Model</i></option>
+                                    
+                                </select>
+                            <span class="help-block" ng-show="newVehicle.varient.$error.required && newVehicle.varient.$touched">Choose a Model.</span>
+                        </div>
+                        <div class="col-xs-5" >
+                            <input type="text" class="form-control" name="varient" placeholder="Variant" ng-model="vehicle.variant"/>
+                            <!-- <span class="help-block" ng-show="newVehicle.varient.$error.required && newVehicle.varient.$touched">Enter a variant.</span> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="row">
+                        <div class="col-xs-5 col-md-offset-2" >
+                            <input type="text" class="form-control" name="version" placeholder="Model Version" ng-model="vehicle.modelVersion"/>
+                            <!-- <span class="help-block" ng-show="newVehicle.version.$error.required && newVehicle.version.$touched">Enter model version.</span> -->
+                        </div>
+                        <div class="col-xs-5" ng-class="{'has-error':newVehicle.cc.$error.pattern && newVehicle.cc.$invalid}">
+                            <input type="text" class="form-control" name="cc" placeholder="Cubic capacity" ng-model="vehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/"/>
+                            <span class="help-block" ng-show="newVehicle.cc.$error.pattern && newVehicle.cc.$touched">Cubic Capacity must be numeric.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="col-xs-10 col-md-offset-2">
+                        <select class="form-control" name="manufacturing_year" ng-model="vehicle.mfgYear" ng-options="years as years for years in mfgYearArr">
+                            <option value="">Manufacturing year</option>
+                        </select>
+                        <!-- <span class="help-block" ng-show="newVehicle.engineer.$error.required && newVehicle.engineer.$touched">Choose an Engineer.</span> -->
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error':newVehicle.insurance_status.$touched && newVehicle.insurance_status.$invalid}">
+                    <div class="col-xs-10 col-md-offset-2">
+                        <select class="form-control" name="insurance_status" ng-model="vehicle.insuranceValid" ng-options="status as status == true?'Active':'Expired' for status in insuranceArr" required>
+                            <option value="">Vehicle Insurance Status</option>
+                                                                
+                        </select>
+                        <span class="help-block" ng-show="newVehicle.insurance_status.$error.required && newVehicle.insurance_status.$touched">Insurance status is required</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="vehicle.insuranceValid == true">
+                    <div class="col-xs-10 col-md-offset-2">
+                        <input type="date" class="form-control" name="expiry_date" placeholder="Expiry Date" ng-model="vehicle.expiryDate" readonly/>
+                        <!-- <span class="help-block" ng-show="newVehicle.expiry_date.$error.required && newVehicle.expiry_date.$touched">Choose an Engineer.</span> -->
+                    </div>
+                 </div>
+                 <div class="form-group" >
+                    <div class="col-xs-10 col-md-offset-2">
+                        <select class="form-control" name="insurance_type" ng-model="vehicleCtrl.vehicle.insuranceType" ng-options="insType as insType for insType in insuranceTypeArr" >
+                            <option value=""><i class="fa fa-sort-desc">Insurance Type</i></option>
+                        </select>
+                        <!-- <span class="help-block" ng-show="newVehicle.insurance_type.$error.required && newVehicle.insurance_type.$touched">Choose an insurance type.</span> -->
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                
             </div>
-            <div class="modal-footer">
-                    <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
-                <button class="btn btn-primary pull-right" type="button" ng-click="ok()">Submit</button>
-               
-            </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary pull-right" type="button"ng-disabled="newVehicle.$invalid" ng-click="addVehicle()">Submit</button>
+            
+        </div>
+    </form>
 </div>
     
