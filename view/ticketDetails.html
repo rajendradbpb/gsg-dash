@@ -1,0 +1,98 @@
+<section class="content-header m-b-40" >
+    <h1>
+      Ticket Details
+
+    </h1>
+</section>
+<section class="content" ng-init="ticketDetails()">
+    <div class="row">
+        <div class="col-sm-10 col-md-offset-1">
+            <div class="box box-info ">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Basic Details</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Order Id:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.orderId" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">User Id:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.userId" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Service Date:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.serviceDate" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Total Price:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.totalPrice" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-success ">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Vehicle Details</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Make:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.make" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Model:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.models" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Type:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.type" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Subtype:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.subType" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Model Version:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.modelVersion" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Regd. No.:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.registrationNumber" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Variant:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.variant" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Manufactuering Year:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.mfgYear" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Cubic Capacity:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.cubicCapacity" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Insurane Valid:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.insuranceValid" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Insurance Type:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.insuranceType" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Expiry Date:</label>
+                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.expiryDate" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

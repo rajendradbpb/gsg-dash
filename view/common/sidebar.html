@@ -23,23 +23,14 @@
     <ul class="sidebar-menu" data-widget="tree">
       <li class="header">MAIN NAVIGATION</li>
       <li class="treeview" ng-class="{'active':stateName='dashboard'}">
-        <a href="index.html">
+        <a href="" ui-sref="dashboard">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           <!-- <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
           </span> -->
         </a>
       </li>
-      <li class="treeview" ng-class="{'active':stateName=='mailbox'}">
-        <a href="pages/mailbox2.html">
-          <i class="fa fa-envelope"></i> <span>Mailbox</span>
-          <span class="pull-right-container">
-            <small class="label pull-right bg-yellow">12</small>
-            <small class="label pull-right bg-green">16</small>
-            <small class="label pull-right bg-red">5</small>
-          </span>
-        </a>
-      </li>
+     
       <li class="treeview" ng-class="{'active':stateName=='tickets'}">
         <a href="" ui-sref="tickets">
           <i class="fa fa-edit"></i> <span>Tickets</span>
@@ -51,6 +42,11 @@
       <li class="treeview" ng-class="{'active':stateName == 'users'}" >
         <a href="" ui-sref="users">
           <i class="fa fa-users"></i> <span>Users</span>
+        </a>
+      </li>
+      <li class="treeview" ng-class="{'active':stateName=='services'}">
+        <a href="" ui-sref="services">
+          <i class="fa fa-edit"></i> <span>Services</span>
         </a>
       </li>
       <li class="treeview" ng-class="{'active':stateName=='serviceEngineers'}">

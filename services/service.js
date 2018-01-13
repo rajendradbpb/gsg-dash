@@ -30,6 +30,14 @@ angular.module('serviceModule', ['ngResource'])
                 isArray : true
             })
         },
+        //service to get ticket by orderid
+        getTicketdetailsById: function(orderId){
+            return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/order/' + orderId,{
+                get:{method:'GET'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
+                isArray : true
+            })
+        },
     }
 })
 .factory('UserService', function ($resource,CONFIG,$http) {

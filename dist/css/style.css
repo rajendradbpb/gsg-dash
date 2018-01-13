@@ -2275,6 +2275,7 @@ a:focus {
  * -----------------
  */
 .btn {
+  color:white;
   border-radius: 3px;
   -webkit-box-shadow: none;
   box-shadow: none;

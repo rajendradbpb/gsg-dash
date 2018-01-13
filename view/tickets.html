@@ -1,12 +1,8 @@
 <section class="content-header m-b-40">
     <h1>
       Ticket System
-      <small>Control Panel</small>
+     
     </h1>  
-    <button type="button"  class="btn btn-primary pull-right" ng-click="createTicket()">
-        <i class="fa fa-plus"></i> New Ticket
-      </button>
-      
 </section>
 <section  ng-init="getTickets()">
   <div class="row">
@@ -39,15 +35,10 @@
                           <td data-title="'Total price'" sortable="'totalPrice'">{{row.totalPrice}}</td>
                           <td data-title="'Action'">
                              <div class="btn-group">
-                                  <button type="button" class="btn btn-info"><a href="" class="option-btn" ui-sref="previous-return-file-details({'client_id':row._id})">Update</a>
+                                  <button type="button" class="btn btn-primary"><a href="" class="option-btn" ui-sref="ticketDetails(row)">Details</a>
                                   </button>
                               </div>
-                              <div class="btn-group">
-                                  <button type="button" class="btn btn-success"><a href="" class="option-btn" ui-sref="previous-return-file-details({'client_id':row._id})">view</a>
-                                  </button>
-                              </div>
-            
-                            </td>
+                          </td>
                         </tr>
                       </table>
                     </div>

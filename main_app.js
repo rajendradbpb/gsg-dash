@@ -34,12 +34,23 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     }
   })
   .state('tickets',{
-  templateUrl:'view/tickets.html',
-  url:'/tickets',
-  controller:'TicketController',
-  resolve: {
-    logout: checkLoggedout
-  }
+    templateUrl:'view/tickets.html',
+    url:'/tickets',
+    controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('ticketDetails',{
+    templateUrl:'view/ticketDetails.html',
+    url:'/ticketDetails/:orderId',
+    controller:'TicketController',
+    params : {
+      orderId : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
   })
   .state('users',{
     templateUrl:'view/users.html',
@@ -64,6 +75,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('serviceEngineers',{
     templateUrl:'view/serviceEngineers.html',
     url:'/serviceEngineers',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('services',{
+    templateUrl:'view/services.html',
+    url:'/services',
     resolve: {
       logout: checkLoggedout
     }

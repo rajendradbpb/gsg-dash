@@ -70,7 +70,6 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
         });
     };
     $scope.user = {};
-    $scope.isCollapsed= false;
     $scope.getUserDetails = function(user_id){
         $scope.user_id = $stateParams.user_id;
         console.log($scope.user_id);
@@ -110,7 +109,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'view/modals/vehicleDetails.html',
-            controller: 'vehicleModalController',
+            controller: 'vehicleDetailsModalController',
             size: 'md',
             resolve: {
               vehicleData : function(){
@@ -190,8 +189,8 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
     };
 });
 
-app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util,vehicleData){
-
+app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
+    
     $scope.insuranceArr = [true,false];
     $scope.insuranceTypeArr =["edfes","Comprehensive","Zero Depreciation","Third party only"];
     $scope.getVehicledata = function(){
@@ -244,14 +243,8 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
             $scope.mfgYearArr.push($scope.currentYear--);
         }
         console.log($scope.mfgYearArr);
-    }
-
-
-    $scope.ok = function () {
-        $uibModalInstance.close();
-      };
-
-      $scope.addVehicle = function(){
+    };
+     $scope.addVehicle = function(){
         $scope.user_id = $stateParams.user_id;
         console.log($scope.user_id);
         $scope.vehicle.vehicle = {
@@ -274,7 +267,27 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
          $uibModalInstance.close();
      };
 
+     
+
       $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+});
+
+app.controller('vehicleDetailsModalController',function($scope,vehicleData,$uibModalInstance){
+
+    $scope.getVehicleDetails = function(){
+        
+         $scope.vehicle =vehicleData;
+         
+         console.log($scope.vehicle);
+      };
+ 
+      $scope.ok = function () {
+         
+         $uibModalInstance.close();
+       };
+    $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
 });
