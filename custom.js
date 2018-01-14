@@ -1,7 +1,19 @@
 var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap', 'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
-app.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider,$httpProvider) {
-checkLoggedout.$inject = ["$q", "$timeout", "$rootScope", "$http", "$state", "$localStorage"];
-checkLoggedin.$inject = ["$q", "$timeout", "$rootScope", "$http", "$state", "$localStorage"];
+app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+  // $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
+  //   return {
+  //     request: function (config) {
+  //       config.headers['Authorization'] = 'token '+Constants.rtToken;
+  //       return config;
+  //     },
+  //     response: function (response) {
+  //       if (response.status === 401) {
+  //         $location.path('/');
+  //       }
+  //       return response || $q.when(response);
+  //     }
+  //   };
+  //});
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('dashboard', {
@@ -89,6 +101,7 @@ function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
       $localStorage.token = null;
       $rootScope.isLoggedin = false;
       deferred.resolve();
+      // $state.go('app.mapView');
     },100)
   }
 }
@@ -112,10 +125,10 @@ function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
 
 }
 }
-}]);
-app.run(["$http", "$rootScope", "$localStorage", "$timeout", "EnvService", "Constants", function($http,$rootScope,$localStorage,$timeout,EnvService,Constants){
-  EnvService.setSettings(Constants);
-}]);
+});
+// app.run(function($http,$rootScope,$localStorage,$timeout,EnvService,Constants){
+//   EnvService.setSettings(Constants);
+// });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
   var Util = {};
   $rootScope.alerts =[];
@@ -132,7 +145,9 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
   return Util;
 }]);
 app.constant('CONFIG', {
-   'HTTP_HOST_APP':'http://101.53.136.166:8090'
+
+  //  'HTTP_HOST_APP':'http://localhost:8090',
+   'HTTP_HOST_APP':'http://192.168.0.8:8090'
 });
 ;app.filter('dateformat', function(){
   return function(date){
@@ -156,6 +171,8 @@ app.filter('capitalize', function() {
       return (!!input) ? input.charAt(0,3).toUpperCase() : '';
     }
 });
+
+// this is dummy text
 
 
 
@@ -182,7 +199,7 @@ app.filter('capitalize', function() {
         },
 });
 ;angular.module('Logger', [])
-  .factory('LOG', ["$rootScope", "$timeout", function($rootScope,$timeout) {
+  .factory('LOG', function($rootScope,$timeout) {
     return {
       debug: function(message) {
         console.log(message);
@@ -202,7 +219,7 @@ app.filter('capitalize', function() {
         }, 5000);
       },
     }
-  }])
+  })
 ;angular.module("Utility",[])
 .factory("FormService",function() {
   var formService = {};
@@ -223,6 +240,7 @@ app.filter('capitalize', function() {
           }
         })
     }
+    //return true;
   }
 
 
@@ -232,7 +250,7 @@ app.filter('capitalize', function() {
 
 })
 ;angular.module('WebService', [])
-.factory('API', ["$http", "$resource", "EnvService", function($http, $resource, EnvService) {
+.factory('API', function($http, $resource) {
   return {
     createTicket: {
       "url": "/ticket",
@@ -250,57 +268,67 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-    
+    getSchemes: {
+      "url": "/gsg/api/master/schemes",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    createUser: {
+      "url": "/gsg/api/users/create",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+
   }
-}])
-.factory('ApiCall', ["$http", "$resource", "API", "EnvService", "ApiGenerator", function($http, $resource, API, EnvService,ApiGenerator) {
+})
+.factory('ApiCall', function($http, $resource, API,ApiGenerator) {
   return $resource('/',null, {
     createTicket: ApiGenerator.getApi('createTicket'),
     createTicket: ApiGenerator.getApi('gertTicket'),
-    
-  })
-}])
+    getSchemes: ApiGenerator.getApi('getSchemes'),
+    createUser: ApiGenerator.getApi('createUser'),
 
-.factory('ApiGenerator', ["$http", "$resource", "API", "EnvService", function($http, $resource, API, EnvService) {
+  })
+})
+
+.factory('ApiGenerator', function($http, $resource, API, CONFIG) {
     return {
       getApi: function(api) {
         var obj = {};
         obj = angular.copy(API[api]);
-        obj.url = EnvService.getBasePath() + obj.url;
+        obj.url = CONFIG.HTTP_HOST_APP + obj.url;
         return obj;
       }
     }
-}])
+})
+;app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http){
+    // $scope.data = {
+    //     mobile : "admin",
+    //     password : "admin"
 
-.factory('EnvService',["$http", "$localStorage", function($http,$localStorage){
-  var envData = env = {};
-  var settings =  {};
 
-  return{
-    setSettings : function(setting) {
-      settings = setting;
-      this.setEnvData(setting.envData);
-    },
-    getSettings : function(param) {
-      if(param){
-        return settings[param];
-      }
-      return null; // default
-    },
-    setEnvData: function (data) {
-      envData = data[data.env];
-    },
-    getEnvData: function () {
-      return envData;
-    },
-    getBasePath: function (env) {
-      return this.getEnvData()['basePath']
-    }
-  }
-}]);
-;app.controller("Login_controller",["$scope", "$state", "$rootScope", "NgTableParams", "Util", "$localStorage", "$httpParamSerializer", "$http", function($scope,$state,$rootScope,NgTableParams,Util,$localStorage,$httpParamSerializer,$http){
 
-    
+    // };
+    // $scope.login = function(){
+    //     console.log($scope.user);
+    //     if($scope.user.mobile == $scope.data.mobile && $scope.user.password == $scope.data.password){
+    //         console.log("success");
+    //         $rootScope.isLoggedin = true;
+    //         $localStorage.token = true;
+    //         $state.go('dashboard');
+    //     }
+    //     else {
+    //         console.log("error");
+    //     }
+    // };
+
+
     $scope.user={mobile:'',password:''};
     $scope.login = function() {
 
@@ -310,9 +338,10 @@ app.filter('capitalize', function() {
             password: $scope.user.password
         };
          $scope.encoded = btoa("android-client:anrdroid-XY7kmzoNzl100");
+        // if($scope.isOnline()){
         var req = {
             method: 'POST',
-            url: "http://101.53.136.166:8090/gsg/oauth/token",
+            url: CONFIG.HTTP_HOST_APP+"/gsg/oauth/token",
             headers: {
                 "Authorization": "Basic " + $scope.encoded,
                 "Content-type": "application/x-www-form-urlencoded"
@@ -332,9 +361,11 @@ app.filter('capitalize', function() {
         });
   }
 
-}]);
+});
 ;/*****************************************************************************************************************/
-app.controller("Main_Controller",["$scope", "$state", "$rootScope", "NgTableParams", "$localStorage", "Util", function($scope,$state,$rootScope,NgTableParams,$localStorage,Util){
+/*****************************************************************************************************************/
+/*****************************************************************************************************************/
+app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util){
 
     $scope.active_tab = 'lists';
     $scope.tabChange = function(tab) {
@@ -346,8 +377,13 @@ app.controller("Main_Controller",["$scope", "$state", "$rootScope", "NgTablePara
         $state.go('login');
     }
     
-}]);
+});
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
+  // $scope.task = {};
+  // $scope.ClosingDateLimit  = function(){
+  //   $scope.startDates = $scope.task.startDate;
+  //   console.log($scope.startDates);
+  // }
       $scope.today = function() {
           $scope.dt = new Date();
       };
@@ -357,7 +393,14 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
           $scope.dt = null;
       };
 
+      // Disable weekend selection
+      /*
+       $scope.disabled = function(date, mode) {
+       return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+       };*/
+
       $scope.toggleMin = function() {
+          // $scope.minDate = $scope.task.startDate;
           $scope.minDate = new Date();
           $scope.maxDate = new Date();
           $scope.dateMin = null || new Date();
@@ -385,7 +428,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
   }
 ]);
-;app.controller("TicketController",["$scope", "$state", "$rootScope", "NgTableParams", "Util", "$uibModal", "TicketService", "$stateParams", function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
+;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
   $scope.active_tab = "new";
   $scope.tabChange = function(tab){
     $scope.active_tab = tab;
@@ -403,6 +446,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         console.log(error);
       });
     };
+//function to get ticket details by orderid
 
     $scope.ticketDetails =  function(){
       console.log("inside ticket details.");
@@ -421,14 +465,27 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
     };
     
    
-}]);
+});
 
 
-;app.controller("User_controller",["$scope", "$state", "$rootScope", "NgTableParams", "FormService", "$stateParams", "Util", "$localStorage", "UserService", "$uibModal", "MasterService", function($scope,$state,$rootScope,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
+;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
         $scope.active_tab = tab;
+    }
+    $scope.createUserModal = function() {
+      var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'view/modals/newUserModal.html',
+          controller: "createUserModalCtrl",
+          size: 'md',
+          resolve: {
+            getUsers : function(){
+              return $scope.getAllUsers;
+            }
+          }
+      });
     }
     $scope.getAllUsers = function(){
         UserService.getAllUsers().get(function(response){
@@ -442,8 +499,23 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
         });
     };
+    // $scope.updateUserModal = function(userData){
+    //     var modalInstance = $uibModal.open({
+    //         animation: true,
+    //         templateUrl: 'view/modals/updateUser.html',
+    //         controller: 'User_controller',
+    //         size: 'md',
+    //         resolve: {
+    //             userUpdate: function () {
+    //                 return userData;
+    //             }
+
+    //         }
+    //     });
+    // };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
+      console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
         console.log('form 2' , status,message);
         Util.alertMessage("warning","Invalid data for "+message+" fields");
@@ -477,6 +549,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         angular.forEach( $scope.stateList,function(item){
             if(item.stateName == user.address[0].state){
                 $scope.districtList = item.districts;
+                // vm.type = item.type;
             }
         });
     };
@@ -485,7 +558,9 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         $scope.user_id = $stateParams.user_id;
         console.log($scope.user_id);
         UserService.getUsersById($scope.user_id).get(function(response){
+            // console.log(response);
             $scope.user = response.data;
+            // get districtList based on state
             $scope.getDistrict($scope.user);
             console.log($scope.user);
             console.log($scope.user.address[0].zip);
@@ -517,7 +592,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
     $scope.showVehicleDetails = function(vehicleData){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'view/modals/vehicleDetails.html',
+            templateUrl: 'view/modals/vehicleDetailsModal.html',
             controller: 'vehicleDetailsModalController',
             size: 'md',
             resolve: {
@@ -531,8 +606,8 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
 
 
-}]);
-app.controller('addTicketModalController', ["$scope", "$uibModalInstance", "$timeout", "Util", "ServicesService", "userId", "$http", "TicketService", function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userId,$http,TicketService) {
+});
+app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userId,$http,TicketService) {
     $scope.userdata = userId;
     $scope.createTicket = {};
 
@@ -565,6 +640,7 @@ app.controller('addTicketModalController', ["$scope", "$uibModalInstance", "$tim
     $scope.ticket = {};
     $scope.ok = function () {
         console.log('coming')
+      //service call to create a ticket
       console.log($scope.userdata.userId);
         $scope.ticket.userId = $scope.userdata.userId;
         $scope.ticket.location = [20.2897321,85.8469173];
@@ -595,10 +671,10 @@ app.controller('addTicketModalController', ["$scope", "$uibModalInstance", "$tim
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
-}]);
+});
 
-app.controller('vehicleModalController',["$scope", "$uibModalInstance", "VehicleService", "$stateParams", "Util", function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
-    
+app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
+
     $scope.insuranceArr = [true,false];
     $scope.insuranceTypeArr =["edfes","Comprehensive","Zero Depreciation","Third party only"];
     $scope.getVehicledata = function(){
@@ -675,32 +751,47 @@ app.controller('vehicleModalController',["$scope", "$uibModalInstance", "Vehicle
          $uibModalInstance.close();
      };
 
-     
+
 
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
-}]);
+});
 
-app.controller('vehicleDetailsModalController',["$scope", "vehicleData", "$uibModalInstance", function($scope,vehicleData,$uibModalInstance){
+app.controller('vehicleDetailsModalController',function($scope,vehicleData,$uibModalInstance){
 
     $scope.getVehicleDetails = function(){
-        
          $scope.vehicle =vehicleData;
-         
-         console.log($scope.vehicle);
       };
- 
+
       $scope.ok = function () {
-         
+        // service call to update vihicle details
          $uibModalInstance.close();
        };
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
-}]);
+});
+// create user modal , used to create new user by ccare
+app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall,getUsers){
+      $scope.ok = function (user) {
+        // service call to update vihicle details
+        ApiCall.createUser(user,function(response) {
+          Util.alertMessage("success","User created");
+          getUsers();// calls parent function to update user listing
+          $uibModalInstance.close();
+        },function(error){
+          Util.alertMessage("warning","Error in user creation");
+          $uibModalInstance.close();
+        })
+
+       };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+});
 ;angular.module('serviceModule', ['ngResource'])
-.factory('loginService', ["$resource", "CONFIG", "$http", function ($resource,CONFIG,$http) {
+.factory('loginService', function ($resource,CONFIG,$http) {
     return{
 
         loginOAuth: function (contactNbr,password) {
@@ -714,83 +805,114 @@ app.controller('vehicleDetailsModalController',["$scope", "vehicleData", "$uibMo
             })
         },
     }
-}])
-.factory('TicketService', ["$resource", "CONFIG", "$http", function ($resource,CONFIG,$http) {
+})
+.factory('TicketService', function ($resource,CONFIG,$http) {
     return{
         getTickets: function () {
             return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/order',{
 			  get:{method:'GET'},
+			//   header:{'Authorization':'bearer '+$localStorage.user_token},
 			  isArray : true
             })
         },
         createTicket: function(){
             return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/order',{
                 save:{method:'POST'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true
             })
         },
+        //service to get ticket by orderid
         getTicketdetailsById: function(orderId){
             return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/order/' + orderId,{
                 get:{method:'GET'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true
             })
         },
     }
-}])
-.factory('UserService', ["$resource", "CONFIG", "$http", function ($resource,CONFIG,$http) {
+})
+.factory('UserService', function ($resource,CONFIG,$http) {
     return{
         getAllUsers: function () {
             return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/users',{
 			  get:{method:'GET'},
+			//   header:{'Authorization':'bearer '+$localStorage.user_token},
 			  isArray : true
             })
         },
         getUsersById: function (user_id) {
             return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/users/id/' + user_id ,{
 			  get:{method:'GET'},
+			//   header:{'Authorization':'bearer '+$localStorage.user_token},
 			  isArray : true
             })
         }
     }
-}])
-.factory('ServicesService', ["$resource", "CONFIG", "$http", function ($resource,CONFIG,$http) {
+})
+.factory('ServicesService', function ($resource,CONFIG,$http) {
     return{
         getAllServices: function(){
             return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/master/services',{
                 get:{method:'GET'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true
             })
         }
     }
-}])
-.factory('MasterService',["CONFIG", "$resource", "$http", function(CONFIG,$resource,$http){
+})
+.factory('MasterService',function(CONFIG,$resource,$http){
     return{
         getAllStates: function(){
             return $resource(CONFIG.HTTP_HOST_APP + '/gsg/api/master/states',{
                 get:{method:'GET'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true
             })
         }
     }
-}])
-.factory('VehicleService',["CONFIG", "$resource", "$http", function(CONFIG,$resource,$http){
+})
+.factory('VehicleService',function(CONFIG,$resource,$http){
     return{
         getVehicleMakeModel: function() {
             return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/master/vehicles',{
                 get:{method:'GET'},
+                // oheader:{'Authorization':'bearer '+$localStrage.user_token},
                 isArray : true
             })
         } ,
         addVehicle: function(user_id) {
             return $resource( CONFIG.HTTP_HOST_APP +'/gsg/api/users/' + user_id + '/vehicle',{
                 save:{method:'POST'},
+                // header:{'Authorization':'bearer '+$localStorage.user_token},
                 isArray : true
             })
         }, 
     }
-}])
+})
 
 
+;app.factory("MasterModel",function(ApiCall) {
+  var masterModel = {
+    schemes : null
+  };
+  masterModel.getSchemes = function() {
+    if(this.schemes) {
+      return this.schemes;
+    }
+    else{
+      // api call to get server data and keep in schemes
+      ApiCall.getSchemes(function(data){
+        this.schemes = data.data;
+        return this.schemes ;
+      },function(err){
+        console.error("error in getting schemes ",err);
+        return null;
+      })
+    }
+  }
+  return masterModel;
+})
 ;app.factory("UserModel",function() {
   var userModel = {};
   userModel.setUser = function(user){
@@ -818,6 +940,18 @@ app.controller('vehicleDetailsModalController',["$scope", "vehicleData", "$uibMo
         }
     };
 }]);
+// app.directive('updateHeight',function () {
+//     return {
+//         restrict: 'A',
+//         link: function(scope, element, attrs) {
+//             $ta = element;
+//             var window_height = $(window).height();
+//             $ta.css({
+//               'min-height':window_height - 100+'px'
+//             })
+//         }
+//     };
+// });
 app.directive('fileModel', ['$parse', function ($parse) {
    return {
       restrict: 'A',
@@ -863,19 +997,21 @@ app.directive('floatsOnly', function () {
         require: 'ngModel',
         link: function (scope, element, attr, ngModelCtrl) {
             function fromUser(text) {
+                // if (text) {
                     var transformedInput = text.replace(/[^[0-9\.]/g, '');
                     if (transformedInput !== text) {
                         ngModelCtrl.$setViewValue(transformedInput);
                         ngModelCtrl.$render();
                     }
                     return transformedInput;
+                // }
                 return undefined;
             }            
             ngModelCtrl.$parsers.push(fromUser);
         }
     };
 });
-app.directive('capitalize', ["uppercaseFilter", "$parse", function(uppercaseFilter, $parse) {
+app.directive('capitalize', function(uppercaseFilter, $parse) {
    return {
      require: 'ngModel',
      link: function(scope, element, attrs, modelCtrl) {
@@ -895,4 +1031,4 @@ app.directive('capitalize', ["uppercaseFilter", "$parse", function(uppercaseFilt
          capitalize(model(scope));
      }
    };
-}]);
+});

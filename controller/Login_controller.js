@@ -1,4 +1,4 @@
-app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,Util,$localStorage,$httpParamSerializer,$http){
+app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http){
     // $scope.data = {
     //     mobile : "admin",
     //     password : "admin"
@@ -19,7 +19,7 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
     //     }
     // };
 
-    
+
     $scope.user={mobile:'',password:''};
     $scope.login = function() {
 
@@ -32,7 +32,7 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
         // if($scope.isOnline()){
         var req = {
             method: 'POST',
-            url: "http://101.53.136.166:8090/gsg/oauth/token",
+            url: CONFIG.HTTP_HOST_APP+"/gsg/oauth/token",
             headers: {
                 "Authorization": "Basic " + $scope.encoded,
                 "Content-type": "application/x-www-form-urlencoded"

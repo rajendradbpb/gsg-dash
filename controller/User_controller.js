@@ -1,8 +1,21 @@
-app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
+app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
         $scope.active_tab = tab;
+    }
+    $scope.createUserModal = function() {
+      var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'view/modals/newUserModal.html',
+          controller: "createUserModalCtrl",
+          size: 'md',
+          resolve: {
+            getUsers : function(){
+              return $scope.getAllUsers;
+            }
+          }
+      });
     }
     $scope.getAllUsers = function(){
         UserService.getAllUsers().get(function(response){
@@ -32,6 +45,8 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
     // };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
+      $scope.user.dob = $scope.user.dob ? $scope.user.dob.getFullYear()+"-"+($scope.user.dob.getMonth()+1)+"-"+$scope.user.dob.getDate() : null ;
+      console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
         console.log('form 2' , status,message);
         Util.alertMessage("warning","Invalid data for "+message+" fields");
@@ -108,7 +123,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,NgTableParams
     $scope.showVehicleDetails = function(vehicleData){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'view/modals/vehicleDetails.html',
+            templateUrl: 'view/modals/vehicleDetailsModal.html',
             controller: 'vehicleDetailsModalController',
             size: 'md',
             resolve: {
@@ -190,7 +205,7 @@ app.controller('addTicketModalController', function ($scope, $uibModalInstance,$
 });
 
 app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
-    
+
     $scope.insuranceArr = [true,false];
     $scope.insuranceTypeArr =["edfes","Comprehensive","Zero Depreciation","Third party only"];
     $scope.getVehicledata = function(){
@@ -267,7 +282,7 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
          $uibModalInstance.close();
      };
 
-     
+
 
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -277,15 +292,30 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
 app.controller('vehicleDetailsModalController',function($scope,vehicleData,$uibModalInstance){
 
     $scope.getVehicleDetails = function(){
-        
          $scope.vehicle =vehicleData;
-         
-         console.log($scope.vehicle);
       };
- 
+
       $scope.ok = function () {
-         
+        // service call to update vihicle details
          $uibModalInstance.close();
+       };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+});
+// create user modal , used to create new user by ccare
+app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall,getUsers){
+      $scope.ok = function (user) {
+        // service call to update vihicle details
+        ApiCall.createUser(user,function(response) {
+          Util.alertMessage("success","User created");
+          getUsers();// calls parent function to update user listing
+          $uibModalInstance.close();
+        },function(error){
+          Util.alertMessage("warning","Error in user creation");
+          $uibModalInstance.close();
+        })
+
        };
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');

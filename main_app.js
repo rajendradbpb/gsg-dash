@@ -126,9 +126,9 @@ function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
 }
 }
 });
-app.run(function($http,$rootScope,$localStorage,$timeout,EnvService,Constants){
-  EnvService.setSettings(Constants);
-});
+// app.run(function($http,$rootScope,$localStorage,$timeout,EnvService,Constants){
+//   EnvService.setSettings(Constants);
+// });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
   var Util = {};
   $rootScope.alerts =[];
@@ -147,5 +147,5 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090'
+   'HTTP_HOST_APP':'http://192.168.0.8:8090'
 });

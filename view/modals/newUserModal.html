@@ -1,0 +1,40 @@
+<div class="modal-info">
+  <form class="form-horizontal" name="createUserform">
+    <div class="modal-header">
+      <h3 class="modal-title">Create User</h3>
+    </div>
+    <div class="modal-body ">
+      <div class="row">
+        <div class="form-group" ng-class="{'has-error':createUserform.mobileNbr.$touched && createUserform.mobileNbr.$invalid}">
+          <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
+            <input type="text" class="form-control" ng-model="user.mobileNbr" name="mobileNbr" placeholder="Mobile" required/>
+            <span class="help-block" ng-show="createUserform.mobileNbr.$error.required && createUserform.mobileNbr.$touched">Please Enter Mobile No</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group" ng-class="{'has-error':createUserform.email.$touched && createUserform.email.$invalid}">
+          <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
+            <input type="text" class="form-control" ng-model="user.email" name="email" placeholder="Email" required/>
+            <span class="help-block" ng-show="createUserform.email.$error.required && createUserform.email.$touched">Please Enter email</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group" ng-class="{'has-error':createUserform.password.$touched && createUserform.password.$invalid}">
+          <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
+            <input type="text" class="form-control" ng-model="user.password" name="password" placeholder="password" required/>
+            <span class="help-block" ng-show="createUserform.password.$error.required && createUserform.password.$touched">Please Enter Password</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-primary pull-right" type="button" ng-click="ok(user)">Submit</button>
+
+    </div>
+  </form>
+</div>

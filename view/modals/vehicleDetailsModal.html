@@ -1,17 +1,17 @@
 <div class="modal-info" ng-init="getVehicledata()">
         <form class="form-horizontal" name="updateVehicle" ng-init="getMfgYear()">
             <div class="modal-header">
-                <h3 class="modal-title">Add a new Vehicle</h3>
+                <h3 class="modal-title">Vehicle Details</h3>
             </div>
             <div class="modal-body" ng-init="getVehicleDetails()">
                 <div class="row">
                 <div class="col-md-10">
                     <div class="form-group" ng-class="{'has-error':updateVehicle.make.$touched && updateVehicle.make.$invalid}">
                         <div class="col-xs-10 col-md-offset-2">
-                            <select class="form-control" name="make" ng-model="vehicle.vehicle.make" 
+                            <select class="form-control" name="make" ng-model="vehicle.vehicle.make"
                             ng-options="makes as makes for makes in makes" ng-change="getModel(vehicle.make)" required>
                             <option value=""><i class="fa fa-sort-desc">Vehicle Manufacturer</i></option>
-                                
+
                             </select>
                             <span class="help-block" ng-show="updateVehicle.make.$error.required && updateVehicle.make.$touched">Choose a manufacturer</span>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="col-xs-5 col-md-offset-2" ng-class="{'has-error':updateVehicle.model.$touched && updateVehicle.model.$invalid}">
                                     <select class="form-control" name="model" ng-model="vehicle.model" ng-options="models as models for models in vehicleModelList" ng-change="getVehicleType(vehicle.model)" required>
                                             <option value=""><i class="fa fa-sort-desc">Model</i></option>
-                                        
+
                                     </select>
                                 <span class="help-block" ng-show="updateVehicle.varient.$error.required && updateVehicle.varient.$touched">Choose a Model.</span>
                             </div>
@@ -61,7 +61,7 @@
                         <div class="col-xs-10 col-md-offset-2">
                             <select class="form-control" name="insurance_status" ng-model="vehicle.insuranceValid" ng-options="status as status == true?'Active':'Expired' for status in insuranceArr" required>
                                 <option value="">Vehicle Insurance Status</option>
-                                                                    
+
                             </select>
                             <span class="help-block" ng-show="updateVehicle.insurance_status.$error.required && updateVehicle.insurance_status.$touched">Insurance status is required</span>
                         </div>
@@ -86,8 +86,7 @@
             <div class="modal-footer">
                     <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
                 <button class="btn btn-primary pull-right" type="button" ng-click="ok()">Submit</button>
-                
+
             </div>
         </form>
     </div>
-        
