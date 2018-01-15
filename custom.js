@@ -82,6 +82,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('services',{
     templateUrl:'view/services.html',
     url:'/services',
+    controller : 'service_controller',
     resolve: {
       logout: checkLoggedout
     }
@@ -147,7 +148,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://192.168.0.8:8090'
+   'HTTP_HOST_APP':'http://101.53.136.166:8090'
 });
 ;app.filter('dateformat', function(){
   return function(date){
@@ -253,15 +254,23 @@ app.filter('capitalize', function() {
 .factory('API', function($http, $resource) {
   return {
     createTicket: {
-      "url": "/ticket",
+      "url": "/gsg/api/order",
       "method": "POST",
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
       },
     },
-    gertTicket: {
-      "url": "/ticket",
+    getTickets: {
+      "url": "/gsg/api/order",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getTicketdetailsById:{
+      "url": "/gsg/api/order/:orderId",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -284,15 +293,73 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    getAllUsers: {
+      "url": "/gsg/api/users",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getUserById: {
+      "url": "/gsg/api/users/id/:user_id",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getAllServices: {
+      "url": "/gsg/api/master/services",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getAllStates: {
+      "url": "/gsg/api/master/states",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getVehicleMakeModal: {
+      "url": "/gsg/api/master/vehicles",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    addVehicle: {
+      "url": "/gsg/api/users/:user_id/vehicle",
+      "method": "POST",
+      "params":{user_id:"@user_id"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+
 
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
   return $resource('/',null, {
     createTicket: ApiGenerator.getApi('createTicket'),
-    createTicket: ApiGenerator.getApi('gertTicket'),
     getSchemes: ApiGenerator.getApi('getSchemes'),
     createUser: ApiGenerator.getApi('createUser'),
+    addVehicle: ApiGenerator.getApi('addVehicle'),
+    getVehicleMakeModal: ApiGenerator.getApi('getVehicleMakeModal'),
+    getAllStates: ApiGenerator.getApi('getAllStates'),
+    getAllServices: ApiGenerator.getApi('getAllServices'),
+    getUserById: ApiGenerator.getApi('getUserById'),
+    getAllUsers: ApiGenerator.getApi('getAllUsers'),
+    getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
+    getTickets: ApiGenerator.getApi('getTickets'),
+   
 
   })
 })
@@ -428,7 +495,12 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
   }
 ]);
-;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
+;app.controller('service_controller',function($scope){
+    $scope.active_tab = "major";
+    $scope.tabChange = function(tab){
+      $scope.active_tab = tab;
+    }
+});;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
   $scope.active_tab = "new";
   $scope.tabChange = function(tab){
     $scope.active_tab = tab;
@@ -468,7 +540,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 });
 
 
-;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService){
+;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};
     $scope.active_tab = "BD";
     $scope.tabChange = function(tab){
@@ -488,33 +560,21 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
       });
     }
     $scope.getAllUsers = function(){
-        UserService.getAllUsers().get(function(response){
+        ApiCall.getAllUsers(function(response){
             console.log(response);
-            $scope.userList = response.data;
-            $scope.userData = new NgTableParams;
-            $scope.userData.settings({
-                dataset : $scope.userList
-            })
-        },function(error){
+                $scope.userList = response.data;
+                $scope.userData = new NgTableParams;
+                $scope.userData.settings({
+                    dataset : $scope.userList
+                })
+        }, function(error){
 
         });
+        
     };
-    // $scope.updateUserModal = function(userData){
-    //     var modalInstance = $uibModal.open({
-    //         animation: true,
-    //         templateUrl: 'view/modals/updateUser.html',
-    //         controller: 'User_controller',
-    //         size: 'md',
-    //         resolve: {
-    //             userUpdate: function () {
-    //                 return userData;
-    //             }
-
-    //         }
-    //     });
-    // };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
+      $scope.user.dob = $scope.user.dob ? $scope.user.dob.getFullYear()+"-"+($scope.user.dob.getMonth()+1)+"-"+$scope.user.dob.getDate() : null ;
       console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
         console.log('form 2' , status,message);
@@ -522,27 +582,29 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
       })
     }
     $scope.createTicket = function(userData) {
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'view/modals/new_ticket.html',
-          controller: 'addTicketModalController',
-          size: 'md',
-          resolve: {
-            userId : function(){
-                return userData;
-            }
-          }
+        console.log(userData);
+        $scope.ticket ={};
+        $scope.ticket.userId = userData.userId;
+        $scope.ticket.location = [0,0];
+        $scope.ticket.serviceType = "EMERGENCY";
+        ApiCall.createTicket($scope.ticket ,function(response){
+            console.log(response);
+            Util.alertMessage('danger','Ticket Created successfully...');
+
+        },function(error){
+            console.log(error);
         });
     };
 
     $scope.getAllStates = function(){
         $scope.stateList = [];
-        MasterService.getAllStates().get(function(response){
+        ApiCall.getAllStates(function(response){
             console.log(response);
             $scope.stateList = response.data;
-        },function(error){
-            console.log(error);
+        }, function(error){
+
         });
+        
     };
     $scope.getDistrict = function(user){
         $scope.districtList = [];
@@ -555,16 +617,17 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
     };
     $scope.user = {};
     $scope.getUserDetails = function(user_id){
-        $scope.user_id = $stateParams.user_id;
-        console.log($scope.user_id);
-        UserService.getUsersById($scope.user_id).get(function(response){
-            // console.log(response);
+        $scope.obj = {
+            user_id :$stateParams.user_id
+        }
+        
+        console.log($scope.obj);
+        ApiCall.getUserById($scope.obj ,function(response){
+            console.log(response);
             $scope.user = response.data;
             // get districtList based on state
             $scope.getDistrict($scope.user);
             console.log($scope.user);
-            console.log($scope.user.address[0].zip);
-            console.log($scope.user.address[0].district);
             $scope.vehicleData = new NgTableParams;
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
@@ -572,6 +635,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         },function(error){
 
         });
+        
 
     };
 
@@ -607,88 +671,25 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
 
 });
-app.controller('addTicketModalController', function ($scope, $uibModalInstance,$timeout,Util,ServicesService,userId,$http,TicketService) {
-    $scope.userdata = userId;
-    $scope.createTicket = {};
-
-    $scope.selectScheme = function(subType){
-        console.log("coming");
-        console.log(subType);
-        $scope.schemeList = [];
-        angular.forEach($scope.userdata.schemes, function(item){
-            if(item.schemeType == subType){
-                $scope.schemeList.push(item);
-            }
-        });
-        console.log($scope.schemeList);
-    }
-    $scope.getSelectedServices = function(serviceType){
-        ServicesService.getAllServices().get(function(response){
-            console.log(response);
-            $scope.ServiceArr = [];
-            angular.forEach(response.data,function(item){
-                if(item.category == serviceType){
-                    $scope.ServiceArr.push(item);
-                }
-            });
-            console.log($scope.ServiceArr);
-        },function(error){
-            console.log(error);
-        });
-    };
-
-    $scope.ticket = {};
-    $scope.ok = function () {
-        console.log('coming')
-      //service call to create a ticket
-      console.log($scope.userdata.userId);
-        $scope.ticket.userId = $scope.userdata.userId;
-        $scope.ticket.location = [20.2897321,85.8469173];
-        $scope.ticket.services=[];
-        angular.forEach($scope.ServiceArr,function(service){
-            if(service.isSelect){
-                $scope.ticket.services.push(service.serviceId);
-            }
-        });
-        console.log( $scope.ticket);
-        if( $scope.ticket.services.length > 0 && $scope.ticket.vehicle)
-        {
-            TicketService.createTicket().save($scope.ticket,function(response){
-                console.log(response);
-                Util.alertMessage('danger','Ticket Created successfully...');
 
 
-            },function(error){
-                console.log(error);
-            });
-        }
-        else{
-            Util.alertMessage('danger','Please choose one service and vechile');
-        }
-        $uibModalInstance.close();
-    };
-
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
-});
-
-app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util){
+app.controller('vehicleModalController',function($scope,$uibModalInstance,VehicleService,$stateParams,Util,ApiCall){
 
     $scope.insuranceArr = [true,false];
-    $scope.insuranceTypeArr =["edfes","Comprehensive","Zero Depreciation","Third party only"];
+    $scope.insuranceTypeArr =["Comprehensive","Zero Depreciation","Third party only"];
     $scope.getVehicledata = function(){
-        VehicleService.getVehicleMakeModel().get(function(response){
+        ApiCall.getVehicleMakeModal(function(response){
             console.log(response);
-            $scope.vehicleDatas = response.data;
-            $scope.makes = [];
-            angular.forEach(response.data,function(item){
-                $scope.makes.push(item.make);
-            })
-            console.log($scope.makes);
-        },function(error){
+                $scope.vehicleDatas = response.data;
+                $scope.makes = [];
+                angular.forEach(response.data,function(item){
+                    $scope.makes.push(item.make);
+                })
+                console.log($scope.makes);
+        }, function(error){
             console.log(error);
         });
+        
 
     };
     $scope.getModel = function(selectedModel){
@@ -729,25 +730,32 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
         console.log($scope.mfgYearArr);
     };
      $scope.addVehicle = function(){
-        $scope.user_id = $stateParams.user_id;
-        console.log($scope.user_id);
+        $scope.vehicle.user_id = $stateParams.user_id;
+        console.log($scope.vehicle.user_id);
         $scope.vehicle.vehicle = {
-            make : $scope.vehicle.make,
+            make :$scope.vehicle.make,
             models : $scope.vehicle.model,
             subType : $scope.subType,
             type :  $scope.type,
             wheels : $scope.wheels
         }
         console.log($scope.vehicle);
-         VehicleService.addVehicle( $scope.user_id).save($scope.vehicle,function(response){
+        ApiCall.addVehicle($scope.vehicle , function(response){
             console.log(response);
-            Util.alertMessage('danger','Vehicle added successfully...');
+              Util.alertMessage('success','Vehicle added successfully...');
+        }, function(error){
+            console.log(error);
+              Util.alertMessage('danger','Vehicle is not added try again');
+        });
+        //  VehicleService.addVehicle( $scope.user_id).save($scope.vehicle,function(response){
+        //     console.log(response);
+        //     Util.alertMessage('danger','Vehicle added successfully...');
 
-         },function(error){
+        //  },function(error){
 
-             console.log(error);
-             Util.alertMessage('danger','Vehicle is not added try again');
-         });
+        //      console.log(error);
+        //      Util.alertMessage('danger','Vehicle is not added try again');
+        //  });
          $uibModalInstance.close();
      };
 

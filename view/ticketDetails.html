@@ -15,19 +15,55 @@
                     <div class="row">
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Order Id:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.orderId" readonly>
+                            <input type="text" class="form-control" placeholder="Order Id"  ng-model="data.orderId" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">User Id:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.userId" readonly>
+                            <input type="text" class="form-control" placeholder="User Id"  ng-model="data.userId" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Service Date:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.serviceDate" readonly>
+                            <input type="text" class="form-control" placeholder="Service Date"  ng-model="data.serviceDate" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Total Price:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="data.totalPrice" readonly>
+                            <input type="text" class="form-control" placeholder="Total Price "  ng-model="data.totalPrice" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Product type:</label>
+                            <input type="text" class="form-control" placeholder="Product type"  ng-model="data.orderDtls[0].produtType" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Request Status:</label>
+                            <input type="text" class="form-control" placeholder="Request Status"  ng-model="data.orderDtls[0].requestStatus" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Transaction Id:</label>
+                            <input type="text" class="form-control" placeholder="Transaction Id"  ng-model="data.orderDtls[0].transactionId" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Transaction Mode:</label>
+                            <input type="text" class="form-control" placeholder="Transaction Mode"  ng-model="data.orderDtls[0].transactionMode" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Transaction Status:</label>
+                            <input type="text" class="form-control" placeholder="Transaction Status"  ng-model="data.orderDtls[0].transactionStatus" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Service Type:</label>
+                            <input type="text" class="form-control" placeholder="Service Type"  ng-model="data.orderDtls[0].product.serviceType" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Use User Scheme:</label>
+                            <input type="text" class="form-control" placeholder="User Scheme"  ng-model="data.orderDtls[0].product.useUserScheme" readonly>
+                        </div>
+                        <div class="col-sm-3" >
+                            <label  class=" text-left control-label">Services:</label>
+                            <input type="text" class="form-control" placeholder="services"  ng-model="" readonly>
                         </div>
                     </div>
                 </div>
@@ -40,55 +76,55 @@
                     <div class="row">
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Make:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.make" readonly>
+                            <input type="text" class="form-control" placeholder="Make"  ng-model="vehicleData.vehicle.make" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Model:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.models" readonly>
+                            <input type="text" class="form-control" placeholder="Model"  ng-model="vehicleData.vehicle.models" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Type:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.type" readonly>
+                            <input type="text" class="form-control" placeholder="Type"  ng-model="vehicleData.vehicle.type" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Subtype:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.vehicle.subType" readonly>
+                            <input type="text" class="form-control" placeholder="Subtype"  ng-model="vehicleData.vehicle.subType" readonly>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Model Version:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.modelVersion" readonly>
+                            <input type="text" class="form-control" placeholder="Model Version"  ng-model="vehicleData.modelVersion" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Regd. No.:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.registrationNumber" readonly>
+                            <input type="text" class="form-control" placeholder="Regd. No"  ng-model="vehicleData.registrationNumber" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Variant:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.variant" readonly>
+                            <input type="text" class="form-control" placeholder="Variant"  ng-model="vehicleData.variant" readonly>
                         </div>
                         <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Manufactuering Year:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.mfgYear" readonly>
+                            <label  class=" text-left control-label">Manufacturing Year:</label>
+                            <input type="text" class="form-control" placeholder="Manufacturing Year"  ng-model="vehicleData.mfgYear" readonly>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Cubic Capacity:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.cubicCapacity" readonly>
+                            <input type="text" class="form-control" placeholder="Cubic Capacity"  ng-model="vehicleData.cubicCapacity" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Insurane Valid:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.insuranceValid" readonly>
+                            <input type="text" class="form-control" placeholder="Insurance Valid"  ng-model="vehicleData.insuranceValid" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Insurance Type:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.insuranceType" readonly>
+                            <input type="text" class="form-control" placeholder="Insurance Type"  ng-model="vehicleData.insuranceType" readonly>
                         </div>
                         <div class="col-sm-3" >
                             <label  class=" text-left control-label">Expiry Date:</label>
-                            <input type="text" class="form-control" placeholder="House No/Building Name"  ng-model="vehicleData.expiryDate" readonly>
+                            <input type="text" class="form-control" placeholder="Expiry Date"  ng-model="vehicleData.expiryDate" readonly>
                         </div>
                     </div>
                 </div>

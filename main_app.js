@@ -82,6 +82,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('services',{
     templateUrl:'view/services.html',
     url:'/services',
+    controller : 'service_controller',
     resolve: {
       logout: checkLoggedout
     }
@@ -147,5 +148,5 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://192.168.0.8:8090'
+   'HTTP_HOST_APP':'http://101.53.136.166:8090'
 });

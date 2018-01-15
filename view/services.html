@@ -1,1 +1,35 @@
-welcome 
+<section class="content-header m-b-40">
+    <h1>
+      Services
+    </h1>  
+</section>
+<section>
+    <div class="row">
+        <div class="col-md-10 col-xs-12 col-md-offset-1">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li ng-class="{'active':active_tab == 'major'}">
+                      <a href="" ng-click="tabChange('major')" data-toggle="tab">Major Services</a>
+                    </li>
+                    <li ng-class="{'active':active_tab == 'minor'}">
+                      <a href="" ng-click="tabChange('minor')" data-toggle="tab" >Minor Services</a>
+                    </li>
+                    <li ng-class="{'active':active_tab == 'roadside'}">
+                        <a href="" ng-click="tabChange('roadside')" data-toggle="tab" >Roadside Assitance</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="major" ng-class="{'active':active_tab == 'major'}">
+                        major
+                    </div>
+                    <div class="tab-pane" id="minor" ng-class="{'active':active_tab == 'minor'}">
+                           minor 
+                    </div>
+                    <div class="tab-pane" id="roadside" ng-class="{'active':active_tab == 'roadside'}">
+                           roadside 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
