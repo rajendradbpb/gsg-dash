@@ -621,7 +621,16 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
     $scope.getUserDetails = function(user_id){
         $scope.obj = {
             user_id :$stateParams.user_id
-        }
+        };
+        var domyData = {
+            houseNbr:'',
+            locality:'',
+            city :'',
+            state :'',
+            district :'',
+            country :'',
+            zip :''
+        };
         
         console.log($scope.obj);
         ApiCall.getUserById($scope.obj ,function(response){
@@ -629,6 +638,9 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
             $scope.user = response.data;
             $scope.getDistrict($scope.user);
             console.log($scope.user);
+            if($scope.user.address.length == 0){
+                $scope.user.address.push(domyData);
+            };
             $scope.vehicleData = new NgTableParams;
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
