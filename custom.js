@@ -329,6 +329,15 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    updateUserById: {
+      "url": "/gsg/api/users/id/:userId",
+      "method": "PUT",
+      "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -346,6 +355,7 @@ app.filter('capitalize', function() {
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
     getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
     getTickets: ApiGenerator.getApi('getTickets'),
+    updateUserById: ApiGenerator.getApi('updateUserById'),
    
 
   })
@@ -451,31 +461,34 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 ;app.controller('scheme_controller' , ["$scope", function($scope){
     
 }]);;app.controller('service_controller',["$scope", "ApiCall", "NgTableParams", function($scope,ApiCall,NgTableParams){
-    $scope.active_tab = "major";
-    $scope.tabChange = function(tab){
-      $scope.active_tab = tab;
-    };
-    $scope.getAllServices = function(serviceType){
-
-        $scope.serviceType = serviceType;
-        console.log($scope.serviceType);
+    $scope.active_tab = "MAJOR";
+    $scope.getAllServices = function(){
+        $scope.services = {};
         ApiCall.getAllServices(function(response){
-            console.log(response);
-            $scope.serviceArr = [];
-            angular.forEach(response.data,function(item){
-                if(item.category == serviceType){
-                    $scope.serviceArr.push(item);
-                }
-            });
-            console.log($scope.serviceArr);
-            $scope.serviceData = new NgTableParams;
-            $scope.serviceData.settings({
-              dataset : $scope.serviceArr 
-            })
+            $scope.services.serviceList = response.data;
+            console.log($scope.services);
+            $scope.tabChange("MAJOR");
         }, function(error){
             console.log(error);
         });
     };
+    $scope.tabChange = function(tab){
+         $scope.active_tab = tab;
+         if(!$scope.services[tab] || $scope.services[tab].length == 0){
+            $scope.services[tab] = [];
+             angular.forEach($scope.services.serviceList , function(item){
+                if(item.category == tab){
+                    $scope.services[tab].push(item);
+                }
+             });
+         }
+         
+        $scope.serviceData = new NgTableParams;
+                $scope.serviceData.settings({
+                  dataset :$scope.services[tab] 
+                }) 
+         console.log($scope.services);
+     };
 }]);;app.controller("TicketController",["$scope", "$state", "$rootScope", "NgTableParams", "Util", "$uibModal", "TicketService", "$stateParams", function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
   $scope.active_tab = "new";
   $scope.tabChange = function(tab){
@@ -551,11 +564,24 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
     };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
-      $scope.user.dob = $scope.user.dob ? $scope.user.dob.getFullYear()+"-"+($scope.user.dob.getMonth()+1)+"-"+$scope.user.dob.getDate() : null ;
+      
       console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
-        console.log('form 2' , status,message);
-        Util.alertMessage("warning","Invalid data for "+message+" fields");
+        if(!status){
+            console.log('form 2' , status,message);
+            Util.alertMessage("warning","Invalid data for "+message+" fields");
+        }
+        else{
+            $scope.user.dob = moment($scope.user.dob).format('YYYY-MM-DD');
+            $scope.user.anniversaryDate = moment($scope.user.anniversaryDate).format('YYYY-MM-DD');
+            ApiCall.updateUserById($scope.user, function(response){
+                console.log(response);
+                Util.alertMessage('success','User Details Updated successfully...');
+            }, function(error){
+                console.log(error);
+                Util.alertMessage('danger','User Details Cannot be updated...');
+            });
+        }
       })
     }
     $scope.createTicket = function(userData) {
@@ -607,6 +633,7 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
             })
+            console.log($scope.user.address);
         },function(error){
 
         });
@@ -713,7 +740,8 @@ app.controller('vehicleModalController',["$scope", "$uibModalInstance", "Vehicle
             subType : $scope.subType,
             type :  $scope.type,
             wheels : $scope.wheels
-        }
+        };
+        $scope.vehicle.expiryDate = moment($scope.vehicle.expiryDate).format('YYYY-MM-DD');
         console.log($scope.vehicle);
         ApiCall.addVehicle($scope.vehicle , function(response){
             console.log(response);

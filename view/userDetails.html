@@ -66,7 +66,7 @@
                                         <label for="lname" class="col-sm-3 control-label">DOB:</label>
                                         <div class="col-sm-9">
 
-                                            <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" ng-model="user.dob" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
+                                            <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" required ng-model="user.dob" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
                                             <!-- <span class="help-block" ng-show="userUpdateForm.dob.$error.required && userUpdateForm.dob.$touched">DOB is required</span> -->
                                         </div>
                                 </div>
@@ -106,26 +106,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="box box-success ">
+                <div class="box box-success " ng-repeat="address in user.address">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Adress:</h3>
+                        <h3 class="box-title">Adress: {{$index+1}}</h3>
                     </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.houseNo.$touched && userUpdateForm.houseNo.$invalid}">
-                                <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="user.address[0].houseNbr" >
+                                <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="address.houseNbr" >
                                 <span class="help-block" ng-show="userUpdateForm.houseNo.$error.required && userUpdateForm.houseNo.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.locality.$touched && userUpdateForm.locality.$invalid}">
-                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="user.address[0].locality" >
+                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="address.locality" >
                                 <span class="help-block" ng-show="userUpdateForm.locality.$error.required && userUpdateForm.locality.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.city.$touched && userUpdateForm.city.$invalid}">
-                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="user.address[0].city" >
+                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="address.city" >
                                 <span class="help-block" ng-show="userUpdateForm.city.$error.required && userUpdateForm.city.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="state" ng-model="user.address[0].state" ng-options="state.stateName as state.stateCd for state in stateList" ng-change="getDistrict(user)" required>
+                                <select class="form-control" name="state" ng-model="address.state" ng-options="state.stateName as state.stateCd for state in stateList" ng-change="getDistrict(user)" required>
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                 </select>
@@ -134,18 +134,18 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="district" ng-model="user.address[0].district"  ng-options="district as district for district in districtList" >
+                                <select class="form-control" name="district" ng-model="address.district"  ng-options="district as district for district in districtList" >
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
                                 </select>
                                 <span class="help-block" ng-show="userUpdateForm.district.$error.required && userUpdateForm.district.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.country.$touched && userUpdateForm.country.$invalid}">
-                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="user.address[0].country" >
+                                <input type="text" class="form-control" placeholder="Country" name="country" ng-model="address.country" >
                                 <span class="help-block" ng-show="userUpdateForm.country.$error.required && userUpdateForm.country.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.pin.$touched && userUpdateForm.pin.$invalid}">
-                                <input type="number" class="form-control" placeholder="000000" name="pin" ng-model="user.address[0].zip"  >
+                                <input type="text" class="form-control" placeholder="000000" name="pin" ng-model="address.zip"  >
                                 <span class="help-block" ng-show="userUpdateForm.pin.$error.required && userUpdateForm.pin.$touched">Please Enter Pin</span>
                             </div>
                         </div>

@@ -1,29 +1,31 @@
 app.controller('service_controller',function($scope,ApiCall,NgTableParams){
-    $scope.active_tab = "major";
-    $scope.tabChange = function(tab){
-      $scope.active_tab = tab;
-    };
-    //function to get all services
-    $scope.getAllServices = function(serviceType){
-
-        $scope.serviceType = serviceType;
-        console.log($scope.serviceType);
-        // service to get all services
+    $scope.active_tab = "MAJOR";
+    $scope.getAllServices = function(){
+        $scope.services = {};
         ApiCall.getAllServices(function(response){
-            console.log(response);
-            $scope.serviceArr = [];
-            angular.forEach(response.data,function(item){
-                if(item.category == serviceType){
-                    $scope.serviceArr.push(item);
-                }
-            });
-            console.log($scope.serviceArr);
-            $scope.serviceData = new NgTableParams;
-            $scope.serviceData.settings({
-              dataset : $scope.serviceArr 
-            })
+            $scope.services.serviceList = response.data;
+            console.log($scope.services);
+            $scope.tabChange("MAJOR");
         }, function(error){
             console.log(error);
         });
     };
+    $scope.tabChange = function(tab){
+         $scope.active_tab = tab;
+        //  $scope.serviceList = [];
+         if(!$scope.services[tab] || $scope.services[tab].length == 0){
+            $scope.services[tab] = [];
+             angular.forEach($scope.services.serviceList , function(item){
+                if(item.category == tab){
+                    $scope.services[tab].push(item);
+                }
+             });
+         }
+         
+        $scope.serviceData = new NgTableParams;
+                $scope.serviceData.settings({
+                  dataset :$scope.services[tab] 
+                }) 
+         console.log($scope.services);
+     };
 });

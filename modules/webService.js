@@ -90,6 +90,15 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    updateUserById: {
+      "url": "/gsg/api/users/id/:userId",
+      "method": "PUT",
+      "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -107,6 +116,7 @@ angular.module('WebService', [])
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
     getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
     getTickets: ApiGenerator.getApi('getTickets'),
+    updateUserById: ApiGenerator.getApi('updateUserById'),
    
 
   })

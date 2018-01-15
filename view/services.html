@@ -3,23 +3,23 @@
       Services
     </h1>  
 </section>
-<section >
+<section  ng-init="getAllServices()">
     <div class="row">
         <div class="col-md-10  col-md-offset-1">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li ng-class="{'active':active_tab == 'major'}">
-                      <a href="" ng-click="tabChange('major');getAllServices('MAJOR')" data-toggle="tab" >Major Services</a>
+                    <li ng-class="{'active':active_tab == 'MAJOR'}">
+                      <a href="" ng-click="tabChange('MAJOR')" data-toggle="tab" >Major Services</a>
                     </li>
-                    <li ng-class="{'active':active_tab == 'minor'}">
-                      <a href="" ng-click="tabChange('minor');getAllServices('MINOR')" data-toggle="tab" ng-model="MINOR">Minor Services</a>
+                    <li ng-class="{'active':active_tab == 'MINOR'}">
+                      <a href="" ng-click="tabChange('MINOR')" data-toggle="tab" >Minor Services</a>
                     </li>
-                    <li ng-class="{'active':active_tab == 'roadside'}">
-                        <a href="" ng-click="tabChange('roadside');getAllServices('RA')" data-toggle="tab" ng-model="RA">Roadside Assitance</a>
+                    <li ng-class="{'active':active_tab == 'RA'}">
+                        <a href="" ng-click="tabChange('RA')" data-toggle="tab" >Roadside Assitance</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane" id="major" ng-class="{'active':active_tab == 'major'}" ng-init="getAllServices('MAJOR')">
+                    <div class="tab-pane" id="MAJOR" ng-class="{'active':active_tab == 'MAJOR'}" >
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="box box-success">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="minor" ng-class="{'active':active_tab == 'minor'}" >
+                    <div class="tab-pane" id="MINOR" ng-class="{'active':active_tab == 'MINOR'}" >
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="box box-success">
@@ -93,7 +93,7 @@
                             </div>
                         </div>   
                     </div>
-                    <div class="tab-pane" id="roadside" ng-class="{'active':active_tab == 'roadside'}" >
+                    <div class="tab-pane" id="RA" ng-class="{'active':active_tab == 'RA'}" >
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="box box-success">

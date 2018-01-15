@@ -32,11 +32,24 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
     };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
-      $scope.user.dob = $scope.user.dob ? $scope.user.dob.getFullYear()+"-"+($scope.user.dob.getMonth()+1)+"-"+$scope.user.dob.getDate() : null ;
+      
       console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
-        console.log('form 2' , status,message);
-        Util.alertMessage("warning","Invalid data for "+message+" fields");
+        if(!status){
+            console.log('form 2' , status,message);
+            Util.alertMessage("warning","Invalid data for "+message+" fields");
+        }
+        else{
+            $scope.user.dob = moment($scope.user.dob).format('YYYY-MM-DD');
+            $scope.user.anniversaryDate = moment($scope.user.anniversaryDate).format('YYYY-MM-DD');
+            ApiCall.updateUserById($scope.user, function(response){
+                console.log(response);
+                Util.alertMessage('success','User Details Updated successfully...');
+            }, function(error){
+                console.log(error);
+                Util.alertMessage('danger','User Details Cannot be updated...');
+            });
+        }
       })
     }
     $scope.createTicket = function(userData) {
@@ -83,6 +96,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         ApiCall.getUserById($scope.obj ,function(response){
             console.log(response);
             $scope.user = response.data;
+            // $scope.user.dob = new Date(dob);
             // get districtList based on state
             $scope.getDistrict($scope.user);
             console.log($scope.user);
@@ -90,6 +104,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
             })
+            console.log($scope.user.address);
         },function(error){
 
         });
@@ -196,7 +211,8 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
             subType : $scope.subType,
             type :  $scope.type,
             wheels : $scope.wheels
-        }
+        };
+        $scope.vehicle.expiryDate = moment($scope.vehicle.expiryDate).format('YYYY-MM-DD');
         console.log($scope.vehicle);
         ApiCall.addVehicle($scope.vehicle , function(response){
             console.log(response);
