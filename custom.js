@@ -75,6 +75,14 @@ checkLoggedin.$inject = ["$q", "$timeout", "$rootScope", "$http", "$state", "$lo
       logout: checkLoggedout
     }
   })
+  .state('schemes',{
+    templateUrl:'view/schemes.html',
+    url:'/schemes',
+    controller : 'scheme_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){
@@ -440,7 +448,9 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
   }
 ]);
-;app.controller('service_controller',["$scope", "ApiCall", function($scope,ApiCall){
+;app.controller('scheme_controller' , ["$scope", function($scope){
+    
+}]);;app.controller('service_controller',["$scope", "ApiCall", "NgTableParams", function($scope,ApiCall,NgTableParams){
     $scope.active_tab = "major";
     $scope.tabChange = function(tab){
       $scope.active_tab = tab;
@@ -451,6 +461,17 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         console.log($scope.serviceType);
         ApiCall.getAllServices(function(response){
             console.log(response);
+            $scope.serviceArr = [];
+            angular.forEach(response.data,function(item){
+                if(item.category == serviceType){
+                    $scope.serviceArr.push(item);
+                }
+            });
+            console.log($scope.serviceArr);
+            $scope.serviceData = new NgTableParams;
+            $scope.serviceData.settings({
+              dataset : $scope.serviceArr 
+            })
         }, function(error){
             console.log(error);
         });
@@ -462,7 +483,9 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
   }
     $scope.getTickets = function(){
       console.log("inside the method");
+      $rootScope.showPreloader = true;
       TicketService.getTickets().get(function(response){
+        $rootScope.showPreloader= false;
         console.log(response);
        $scope.ticketList = response.data;
        $scope.ticketData = new NgTableParams;

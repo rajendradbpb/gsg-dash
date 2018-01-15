@@ -87,6 +87,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('schemes',{
+    templateUrl:'view/schemes.html',
+    url:'/schemes',
+    controller : 'scheme_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){

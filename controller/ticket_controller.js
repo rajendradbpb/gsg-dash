@@ -5,7 +5,9 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
   }
     $scope.getTickets = function(){
       console.log("inside the method");
+      $rootScope.showPreloader = true;
       TicketService.getTickets().get(function(response){
+        $rootScope.showPreloader= false;
         console.log(response);
        $scope.ticketList = response.data;
        $scope.ticketData = new NgTableParams;

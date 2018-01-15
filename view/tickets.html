@@ -3,6 +3,9 @@
       Ticket System
      
     </h1>  
+    <div id="preloader" ng-if="showPreloader">
+        <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+      </div>
 </section>
 <section  ng-init="getTickets()">
   <div class="row">

@@ -5,28 +5,130 @@
 </section>
 <section >
     <div class="row">
-        <div class="col-md-10 col-xs-12 col-md-offset-1">
+        <div class="col-md-10  col-md-offset-1">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li ng-class="{'active':active_tab == 'major'}">
-                      <a href="" ng-click="getAllServices('MAJOR')" data-toggle="tab" >Major Services</a>
+                      <a href="" ng-click="tabChange('major');getAllServices('MAJOR')" data-toggle="tab" >Major Services</a>
                     </li>
                     <li ng-class="{'active':active_tab == 'minor'}">
-                      <a href="" ng-click="tabChange('minor')" data-toggle="tab" ng-model="MINOR">Minor Services</a>
+                      <a href="" ng-click="tabChange('minor');getAllServices('MINOR')" data-toggle="tab" ng-model="MINOR">Minor Services</a>
                     </li>
                     <li ng-class="{'active':active_tab == 'roadside'}">
-                        <a href="" ng-click="tabChange('roadside')" data-toggle="tab" ng-model="RA">Roadside Assitance</a>
+                        <a href="" ng-click="tabChange('roadside');getAllServices('RA')" data-toggle="tab" ng-model="RA">Roadside Assitance</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane" id="major" ng-class="{'active':active_tab == 'major'}">
-                        major
+                    <div class="tab-pane" id="major" ng-class="{'active':active_tab == 'major'}" ng-init="getAllServices('MAJOR')">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="box box-success">
+                                    <div class="box-body over-x-sc">
+                                        <div class="table-responsive">
+                                        <table ng-table="serviceData" class="table table-bordered table-hover">
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Details</th>
+                                            </tr>
+                                            <tr ng-repeat="row in $data">
+                                                <td>{{row.subCategory}}</td>
+                                                <td>
+                                                   <table>
+                                                       <tr><td>Service Id : {{row.serviceId}}</td></tr>
+                                                       <tr><td>Service Cd : {{row.serviceCd}}</td></tr>
+                                                       <tr>
+                                                           <td>Price</td>
+                                                           <td>
+                                                               <table>
+                                                                   <tr><td>Small : {{row.price.small}}</td></tr>
+                                                                   <tr><td>Medium : {{row.price.medium}}</td></tr>
+                                                                   <tr><td>Luxury : {{row.price.luxury}}</td></tr>
+                                                               </table>
+                                                           </td>
+                                                       </tr>
+                                                   </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane" id="minor" ng-class="{'active':active_tab == 'minor'}">
-                           minor 
+                    <div class="tab-pane" id="minor" ng-class="{'active':active_tab == 'minor'}" >
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="box box-success">
+                                    <div class="box-body over-x-sc">
+                                        <div class="table-responsive">
+                                        <table ng-table="serviceData" class="table table-bordered table-hover">
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Details</th>
+                                            </tr>
+                                            <tr ng-repeat="row in $data">
+                                                <td>{{row.subCategory}}</td>
+                                                <td>
+                                                    <table>
+                                                        <tr><td>Service Id : {{row.serviceId}}</td></tr>
+                                                        <tr><td>Service Cd : {{row.serviceCd}}</td></tr>
+                                                        <tr>
+                                                            <td>Price</td>
+                                                            <td>
+                                                                <table>
+                                                                    <tr><td>Small : {{row.price.small}}</td></tr>
+                                                                    <tr><td>Medium : {{row.price.medium}}</td></tr>
+                                                                    <tr><td>Luxury : {{row.price.luxury}}</td></tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
                     </div>
-                    <div class="tab-pane" id="roadside" ng-class="{'active':active_tab == 'roadside'}">
-                           roadside 
+                    <div class="tab-pane" id="roadside" ng-class="{'active':active_tab == 'roadside'}" >
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="box box-success">
+                                    <div class="box-body over-x-sc">
+                                        <div class="table-responsive">
+                                        <table ng-table="serviceData" class="table table-bordered table-hover">
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Details</th>
+                                            </tr>
+                                            <tr ng-repeat="row in $data">
+                                                <td>{{row.subCategory}}</td>
+                                                <td>
+                                                    <table>
+                                                        <tr><td>Service Id : {{row.serviceId}}</td></tr>
+                                                        <tr><td>Service Cd : {{row.serviceCd}}</td></tr>
+                                                        <tr>
+                                                            <td>Price</td>
+                                                            <td>
+                                                                <table>
+                                                                    <tr><td>Small : {{row.price.small}}</td></tr>
+                                                                    <tr><td>Medium : {{row.price.medium}}</td></tr>
+                                                                    <tr><td>Luxury : {{row.price.luxury}}</td></tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
