@@ -47,7 +47,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         $scope.ticket.serviceType = "EMERGENCY";
         ApiCall.createTicket($scope.ticket ,function(response){
             console.log(response);
-            Util.alertMessage('danger','Ticket Created successfully...');
+            Util.alertMessage('success','Ticket Created successfully...');
 
         },function(error){
             console.log(error);
