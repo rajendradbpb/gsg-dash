@@ -26,6 +26,12 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
+/* Global starts */
+.p-10{
+  padding: 10px;
+}
+
+/* Global Ends */
 #preloader {
     position: fixed;
     top: 0;

@@ -1,8 +1,8 @@
 <section class="content-header m-b-40">
     <h1>
       Ticket System
-     
-    </h1>  
+
+    </h1>
     <div id="preloader" ng-if="showPreloader">
         <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
       </div>
@@ -10,84 +10,31 @@
 <section  ng-init="getTickets()">
   <div class="row">
     <div class="col-md-10 col-xs-12 col-md-offset-1">
-      <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-          <li ng-class="{'active':active_tab == 'new'}">
-            <a href="" ng-click="tabChange('new')" data-toggle="tab">New Tickets</a>
-          </li>
-          <li ng-class="{'active':active_tab == 'pendings'}">
-            <a href="" ng-click="tabChange('pendings')" data-toggle="tab" >Pending Tickets</a>
-          </li>
-          <li ng-class="{'active':active_tab == 'total'}">
-              <a href="" ng-click="tabChange('total')" data-toggle="tab" >Total Tickets</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane" id="new" ng-class="{'active':active_tab == 'new'}">
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="box box-info">
-                  <div class="box-body over-x-sc">
-                    <div class="table-responsive">
-                      <table ng-table="ticketData" class="table table-bordered table-hover">
-                        <tr ng-repeat="row in $data" >
-                          <td data-title="'UserId'" sortable="'UserId'">{{row.userId}}</td>
-                          <td data-title="'Order Id'" sortable="'orderId'">{{row.orderId}}</td>
-                          <td data-title="'Status'" sortable="'Status'">{{row.status}}</td>
-                          <td data-title="'Vehicle'" sortable="'usrVehicle.vehicle.make'">{{row.usrVehicle.vehicle.make + " " + row.usrVehicle.vehicle.models }}</td>
-                          <td data-title="'Total price'" sortable="'totalPrice'">{{row.totalPrice}}</td>
-                          <td data-title="'Action'">
-                             <div class="btn-group">
-                                  <button type="button" class="btn btn-primary"><a href="" class="option-btn" ui-sref="ticketDetails(row)">Details</a>
-                                  </button>
-                              </div>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        <div class="tab-pane" id="total" ng-class="{'active':active_tab == 'total'}">
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="box box-success">
-                <div class="box-body over-x-sc">
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                    
-                    </table>
-                  </div>
-                </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-info">
+            <div class="box-body over-x-sc">
+              <div class="table-responsive">
+                <table ng-table="ticketData" class="table table-bordered table-hover">
+                  <tr ng-repeat="row in $data" >
+                    <td data-title="'UserId'" filter="{ 'UserId': 'text'}"  sortable="'UserId'">{{row.userId}}</td>
+                    <td data-title="'Order Id'" filter="{ 'orderId': 'text'}" sortable="'orderId'">{{row.orderId}}</td>
+                    <td data-title="'Status'" filter="{ 'requestStatus': 'text'}" sortable="'requestStatus'">{{row.requestStatus}}</td>
+                    <td data-title="'Vehicle'" filter="{ 'usrVehicle.vehicle.make': 'text'}" sortable="'usrVehicle.vehicle.make'">{{row.usrVehicle.vehicle.make + " " + row.usrVehicle.vehicle.models }}</td>
+                    <td data-title="'Total price'" sortable="'totalPrice'">{{row.totalPrice}}</td>
+                    <td data-title="'Action'">
+                       <div class="btn-group">
+                            <button type="button" class="btn btn-primary"><a href="" class="option-btn" ui-sref="ticketDetails(row)">Details</a>
+                            </button>
+                        </div>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
         </div>
-      <div class="tab-pane" id="pendings" ng-class="{'active':active_tab == 'pendings'}">
-          <div class="row">
-              <div class="col-xs-12">
-                <div class="box box-success">
-                  <div class="box-body over-x-sc">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover">
-                        
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> 
+      </div>
     </div>
   </div>
 </section>
-
-
-
-
-
-  

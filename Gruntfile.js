@@ -197,7 +197,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     // grunt.loadNpmTasks('grunt-nodemon');
     // Default task(s).
-    grunt.registerTask('default', ['concat','watch:debug']);
+    grunt.registerTask('default', ['concat']);
+    // grunt.registerTask('default', ['concat','watch:debug']);
     grunt.registerTask('dev', ['clean','concat','ngAnnotate:appannotate','cssmin:combine','comments:my_target','default']);
     grunt.registerTask('built', ['clean','concat','ngAnnotate:appannotate','uglify:my_target','cssmin:combine','copy:main','htmlmin:dist','comments:my_target','cachebreaker:dev','watch:built']);
     // grunt.registerTask('server', ["nodemon:server"]);

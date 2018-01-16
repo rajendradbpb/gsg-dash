@@ -1,134 +1,249 @@
-<section class="content-header m-b-40" >
-    <h1>
+<section class="content-header m-b-40">
+  <h1>
       Ticket Details
 
     </h1>
 </section>
 <section class="content" ng-init="ticketDetails()">
-    <div class="row">
-        <div class="col-sm-10 col-md-offset-1">
-            <div class="box box-info ">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Basic Details</h3>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Order Id:</label>
-                            <input type="text" class="form-control" placeholder="Order Id"  ng-model="data.orderId" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">User Id:</label>
-                            <input type="text" class="form-control" placeholder="User Id"  ng-model="data.userId" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Service Date:</label>
-                            <input type="text" class="form-control" placeholder="Service Date"  ng-model="data.serviceDate" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Total Price:</label>
-                            <input type="text" class="form-control" placeholder="Total Price "  ng-model="data.totalPrice" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Product type:</label>
-                            <input type="text" class="form-control" placeholder="Product type"  ng-model="data.orderDtls[0].produtType" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Request Status:</label>
-                            <input type="text" class="form-control" placeholder="Request Status"  ng-model="data.orderDtls[0].requestStatus" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Transaction Id:</label>
-                            <input type="text" class="form-control" placeholder="Transaction Id"  ng-model="data.orderDtls[0].transactionId" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Transaction Mode:</label>
-                            <input type="text" class="form-control" placeholder="Transaction Mode"  ng-model="data.orderDtls[0].transactionMode" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Transaction Status:</label>
-                            <input type="text" class="form-control" placeholder="Transaction Status"  ng-model="data.orderDtls[0].transactionStatus" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Service Type:</label>
-                            <input type="text" class="form-control" placeholder="Service Type"  ng-model="data.orderDtls[0].product.serviceType" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Use User Scheme:</label>
-                            <input type="text" class="form-control" placeholder="User Scheme"  ng-model="data.orderDtls[0].product.useUserScheme" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Services:</label>
-                            <input type="text" class="form-control" placeholder="services"  ng-model="" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="box box-success ">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Vehicle Details</h3>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Make:</label>
-                            <input type="text" class="form-control" placeholder="Make"  ng-model="vehicleData.vehicle.make" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Model:</label>
-                            <input type="text" class="form-control" placeholder="Model"  ng-model="vehicleData.vehicle.models" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Type:</label>
-                            <input type="text" class="form-control" placeholder="Type"  ng-model="vehicleData.vehicle.type" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Subtype:</label>
-                            <input type="text" class="form-control" placeholder="Subtype"  ng-model="vehicleData.vehicle.subType" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Model Version:</label>
-                            <input type="text" class="form-control" placeholder="Model Version"  ng-model="vehicleData.modelVersion" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Regd. No.:</label>
-                            <input type="text" class="form-control" placeholder="Regd. No"  ng-model="vehicleData.registrationNumber" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Variant:</label>
-                            <input type="text" class="form-control" placeholder="Variant"  ng-model="vehicleData.variant" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Manufacturing Year:</label>
-                            <input type="text" class="form-control" placeholder="Manufacturing Year"  ng-model="vehicleData.mfgYear" readonly>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Cubic Capacity:</label>
-                            <input type="text" class="form-control" placeholder="Cubic Capacity"  ng-model="vehicleData.cubicCapacity" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Insurane Valid:</label>
-                            <input type="text" class="form-control" placeholder="Insurance Valid"  ng-model="vehicleData.insuranceValid" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Insurance Type:</label>
-                            <input type="text" class="form-control" placeholder="Insurance Type"  ng-model="vehicleData.insuranceType" readonly>
-                        </div>
-                        <div class="col-sm-3" >
-                            <label  class=" text-left control-label">Expiry Date:</label>
-                            <input type="text" class="form-control" placeholder="Expiry Date"  ng-model="vehicleData.expiryDate" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-sm-10 col-md-offset-1">
+      <!-- Order information -->
+      <div class="box box-info ">
+        <div class="box-header with-border">
+          <h3 class="box-title">Basic Details</h3>
         </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Order Id:</label>
+              <input type="text" class="form-control" placeholder="Order Id" ng-model="orderDetails.orderId" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Product Type:</label>
+              <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.produtType" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Service Date:</label>
+              <input type="text" class="form-control" placeholder="Service Date" ng-model="orderDetails.serviceDate" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Total Price:</label>
+              <input type="text" class="form-control" placeholder="Total Price" ng-model="orderDetails.totalPrice" readonly>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Requested Status:</label>
+              <input type="text" class="form-control" placeholder="Requested Status" ng-model="orderDetails.requestStatus" readonly>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- product details -->
+      <div class="box box-info ">
+        <div class="box-header with-border">
+          <h3 class="box-title">Product Details</h3>
+        </div>
+        <div class="box-body">
+          <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Location:</label>
+              <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.orderDtls[0].product.location" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">UserId:</label>
+              <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.orderDtls[0].product.userId" readonly>
+            </div>
+          </div>
+
+          <div class="row" ng-if="orderDetails.produtType == 'SCHEME' ">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Scheme Id:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.schemeId" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Scheme Type:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.schemeType" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Description:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.description" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Duration In Days:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.durationInDays" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Discount On Consumable:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.discountOnConsumable" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Discount On Labour:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.discountOnLabour" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Discount On Spare Part:</label>
+              <input type="text" class="form-control"  ng-model="orderDetails.orderDtls[0].product.discountOnSparePart" readonly>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- order details array -->
+      <div class="box box-success ">
+        <div class="box-header with-border">
+          <h3 class="box-title">Service details</h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <uib-tabset active="active" class="p-10">
+              <uib-tab index="$index" ng-repeat="orderDtls in orderDetails.orderDtls" heading="{{'Order '+($index+1)}}">
+                <!-- transaction details loop in order details -->
+                <div class="row">
+                  <div class="col-md-3">
+                    <label class=" text-left control-label">Transaction Status</label>
+                    <input type="text" class="form-control" ng-model="service.transactionStatus" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label class=" text-left control-label">Transaction Mode</label>
+                    <input type="text" class="form-control" ng-model="service.transactionMode" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label class=" text-left control-label">Transaction Date</label>
+                    <input type="text" class="form-control" ng-model="service.transactionDate" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label class=" text-left control-label">Transaction Id</label>
+                    <input type="text" class="form-control" ng-model="service.transactionId" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label class=" text-left control-label">Calculated Price</label>
+                    <input type="text" class="form-control" ng-model="service.calculatedPrice" readonly>
+                  </div>
+                </div>
+                <hr/>
+                <!-- services loop in order details -->
+                <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
+                  <div class="col-md-3" ng-repeat="service in orderDtls.product.services">
+                    <label class=" text-left control-label">category</label>
+                    <input type="text" class="form-control" ng-model="service.category" readonly>
+
+                    <label class=" text-left control-label">subCategory</label>
+                    <input type="text" class="form-control" ng-model="service.subCategory" readonly>
+
+                    <label class=" text-left control-label">price</label>
+                    <label class=" text-left control-label">{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}</label>
+                    <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
+                  </div>
+                </div>
+
+                <!-- scheme loop in order details -->
+                <div class="row" ng-if="orderDetails.produtType == 'SCHEME' ">
+                  <div class="col-md-3" ng-repeat="scheme in orderDtls.product.schemeServiceDtls">
+                    <label class=" text-left control-label">Service Desc</label>
+                    <input type="text" class="form-control" ng-model="scheme.serviceDesc" readonly>
+
+                    <label class=" text-left control-label">Free Usage</label>
+                    <input type="text" class="form-control" ng-model="scheme.freeUsage" readonly>
+                    <label class=" text-left control-label">Used</label>
+                    <input type="text" class="form-control" ng-model="scheme.used" readonly>
+
+
+                  </div>
+                </div>
+              </uib-tab>
+
+            </uib-tabset>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="box box-success ">
+        <div class="box-header with-border">
+          <h3 class="box-title">Vehicle Details</h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Make:</label>
+              <input type="text" class="form-control" placeholder="Make" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.make" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Model:</label>
+              <input type="text" class="form-control" placeholder="Model" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.models" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Type:</label>
+              <input type="text" class="form-control" placeholder="Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.type" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Subtype:</label>
+              <input type="text" class="form-control" placeholder="Subtype" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.subType" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Wheels:</label>
+              <input type="text" class="form-control" placeholder="Wheels" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.wheels" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Model Version:</label>
+              <input type="text" class="form-control" placeholder="Model Version" ng-model="orderDetails.orderDtls[0].product.usrVehicle.modelVersion" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Regd. No.:</label>
+              <input type="text" class="form-control" placeholder="Regd. No" ng-model="orderDetails.orderDtls[0].product.usrVehicle.registrationNumber" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Variant:</label>
+              <input type="text" class="form-control" placeholder="Variant" ng-model="orderDetails.orderDtls[0].product.usrVehicle.variant" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Manufacturing Year:</label>
+              <input type="text" class="form-control" placeholder="Manufacturing Year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Cubic Capacity:</label>
+              <input type="text" class="form-control" placeholder="Cubic Capacity" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Insurane Valid:</label>
+              <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Insurance Type:</label>
+              <input type="text" class="form-control" placeholder="Insurance Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Expiry Date:</label>
+              <input type="text" class="form-control" placeholder="Expiry Date" ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Service Type:</label>
+              <input type="text" class="form-control" placeholder="Service Type" ng-model="orderDetails.orderDtls[0].product.serviceType" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Use User Scheme:</label>
+              <input type="text" class="form-control" placeholder="Use User Scheme" ng-model="orderDetails.orderDtls[0].product.useUserScheme" readonly>
+            </div>
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Service Date:</label>
+              <input type="text" class="form-control" placeholder="Use User Scheme" ng-model="orderDetails.orderDtls[0].product.serviceDate" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
