@@ -1,7 +1,7 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
-app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util){
+app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util,ApiCall){
 
     $scope.active_tab = 'lists';
     $scope.tabChange = function(tab) {
@@ -12,6 +12,19 @@ app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams
         $rootScope.isLoggedin=false;
         $state.go('login');
     }
+
+    // function to get ticket counts
+     $scope.getTicketCount = function(){
+         // service to get ticket count.
+        
+         ApiCall.getTicketCount(function(response){
+             console.log(response.data);
+             $scope.counts = response.data;
+         }, function(error){
+            console.log(error);
+         });
+     };
+    
     
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {

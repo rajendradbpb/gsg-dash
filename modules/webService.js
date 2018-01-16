@@ -1,7 +1,7 @@
 angular.module('WebService', [])
 .factory('API', function($http, $resource) {
   return {
-    createTicket: {
+    createOrder: {
       "url": "/gsg/api/order",
       "method": "POST",
       "headers": {
@@ -9,7 +9,7 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-    getTickets: {
+    getOrders: {
       "url": "/gsg/api/order",
       "method": "GET",
       "headers": {
@@ -99,13 +99,29 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getTicketCount: {
+      "url": "/gsg/api/tickets",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getTickets: {
+      "url": "/gsg/api/tickets/status/:status",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
-
+   
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
   return $resource('/',null, {
-    createTicket: ApiGenerator.getApi('createTicket'),
+    createOrder: ApiGenerator.getApi('createOrder'),
     getSchemes: ApiGenerator.getApi('getSchemes'),
     createUser: ApiGenerator.getApi('createUser'),
     addVehicle: ApiGenerator.getApi('addVehicle'),
@@ -115,10 +131,10 @@ angular.module('WebService', [])
     getUserById: ApiGenerator.getApi('getUserById'),
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
     getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
-    getTickets: ApiGenerator.getApi('getTickets'),
+    getOrders: ApiGenerator.getApi('getOrders'),
     updateUserById: ApiGenerator.getApi('updateUserById'),
-   
-
+    getTicketCount: ApiGenerator.getApi('getTicketCount'),
+    getTickets  : ApiGenerator.getApi('getTickets'),
   })
 })
 

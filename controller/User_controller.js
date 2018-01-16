@@ -52,19 +52,33 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         }
       })
     }
-    $scope.createTicket = function(userData) {
-        console.log(userData);
-        $scope.ticket ={};
-        $scope.ticket.userId = userData.userId;
-        $scope.ticket.location = [0,0];
-        $scope.ticket.serviceType = "EMERGENCY";
-        ApiCall.createTicket($scope.ticket ,function(response){
-            console.log(response);
-            Util.alertMessage('success','Ticket Created successfully...');
+    // $scope.createTicket = function(userData) {
+    //     console.log(userData);
+    //     $scope.ticket ={};
+    //     $scope.ticket.userId = userData.userId;
+    //     $scope.ticket.location = [0,0];
+    //     $scope.ticket.serviceType = "EMERGENCY";
+    //     ApiCall.createTicket($scope.ticket ,function(response){
+    //         console.log(response);
+    //         Util.alertMessage('success','Ticket Created successfully...');
 
-        },function(error){
-            console.log(error);
+    //     },function(error){
+    //         console.log(error);
+    //     });
+    // };
+    $scope.addOrderModal = function(userData){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'view/modals/new_ticket.html',
+            controller: 'orderModalController',
+            size: 'md',
+            resolve: {
+              userId : function(){
+                  return userData;
+              }
+            }
         });
+
     };
 
     $scope.getAllStates = function(){
@@ -283,4 +297,86 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
+});
+//new order modal
+app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId){
+    $scope.userdata = userId;
+
+    $scope.getVehicledata = function(){
+        
+        ApiCall.getVehicleMakeModal(function(response){
+            console.log(response);
+                $scope.vehicleDatas = response.data;
+                $scope.makes = [];
+                angular.forEach(response.data,function(item){
+                    $scope.makes.push(item.make);
+                })
+                console.log($scope.makes);
+        }, function(error){
+            console.log(error);
+        });
+        
+
+    };
+    $scope.getModel = function(selectedModel){
+        console.log("coming");
+        console.log(selectedModel);
+
+        console.log($scope.vehicleDatas);
+        angular.forEach($scope.vehicleDatas,function(item){
+            if(item.make == selectedModel){
+                $scope.vehiclesLists = item.vehicles;
+                $scope.vehicleModelList = [];
+                angular.forEach(item.vehicles,function(vehicle){
+                    $scope.vehicleModelList.push(vehicle.models);
+                })
+            }
+        });
+        console.log($scope.vehicleModelList);
+
+
+    };
+    $scope.getVehicleType = function(model){
+        console.log(model);
+        console.log($scope.vehiclesLists);
+        angular.forEach($scope.vehiclesLists,function(item){
+            if(item.models == model){
+                $scope.type = item.type;
+                $scope.subType = item.subType;
+                $scope.wheels = item.wheels;
+            }
+        });
+    };
+
+    $scope.ticket ={};
+    $scope.ok = function(){
+        
+        console.log($scope.userdata.userId);
+    
+        // $scope.ticket.vehicle ={};
+            $scope.ticket.userId = $scope.userdata.userId;
+            $scope.ticket.location = [0,0];
+            $scope.ticket.serviceType = "EMERGENCY";
+            $scope.ticket.vehicle = {
+                make :$scope.ticket.make,
+                models : $scope.ticket.model,
+                subType : $scope.subType,
+                type :  $scope.type,
+                wheels : $scope.wheels
+            };
+            console.log($scope.ticket);
+            ApiCall.createOrder($scope.ticket , function(response){
+                console.log(response);
+                Util.alertMessage("success","Order Created successfully..");
+                $uibModalInstance.close();
+            }, function(error){
+                console.log(error);
+                Util.alertMessage("warning","Error in order creation.");
+                $uibModalInstance.close();
+            });
+       
+    };
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
 });

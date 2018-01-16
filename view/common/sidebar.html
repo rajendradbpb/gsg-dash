@@ -31,14 +31,22 @@
         </a>
       </li>
      
-      <li class="treeview" ng-class="{'active':stateName=='tickets'}">
-        <a href="" ui-sref="tickets">
-          <i class="fa fa-edit"></i> <span>Tickets</span>
+      <li class="treeview" ng-class="{'active':stateName=='orders'}">
+        <a href="" ui-sref="orders">
+          <i class="fa fa-edit"></i> <span>Orders</span>
           <span class="pull-right-container">
             <small class="label pull-right bg-green">new</small>
           </span>
         </a>
       </li>
+      <li class="treeview" ng-class="{'active':stateName=='tickets'}">
+          <a href="" ui-sref="ticketList({ status :'ALL'})">
+            <i class="fa fa-edit"></i> <span>Tickets</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
       <li class="treeview" ng-class="{'active':stateName == 'users'}" >
         <a href="" ui-sref="users">
           <i class="fa fa-users"></i> <span>Users</span>

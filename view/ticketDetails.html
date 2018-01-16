@@ -244,6 +244,31 @@
           </div>
         </div>
       </div>
+      <!-- ticket status and assigned to service engineer -->
+      <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Assign Part:</h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Ticket Status:</label>
+                <select class="form-control" name="ticket_status" ng-model="ticket.status" >
+                    <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option>
+                    <option ng-value="statuses" ng-repeat="statuses in ticket.statuses" >{{statuses}}</option>
+                                                        
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Assign To:</label>
+                <select class="form-control" name="insurance_status" ng-model="tickte.assignedTo">
+                    <option value="" ng-selected><i class="fa fa-sort-desc">Service Engineer</i></option>
+                    <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
+                </select>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

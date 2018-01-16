@@ -1,66 +1,53 @@
-<div class="modal-info">
-    <form class="form-horizontal" name="createTicket">
+<div class="modal-info" ng-init="getVehicledata()">
+    <form class="form-horizontal" name="newOrder">
         <div class="modal-header">
-            <h3 class="modal-title">Add a new Ticket</h3>
+            <h3 class="modal-title">Add a new Order</h3>
         </div>
         <div class="modal-body " >
             <div class="row">
                 <div class="col-md-10">
-                    <div class="form-group p-l-20" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
-                        <label for="uname" class="control-label col-sm-4">Service Type:</label>
+                   
+                                    
+                     <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
+                        <label for="uname" class="control-label col-sm-4"> Registered Vehicles:</label>
                         <div class="col-xs-8">
-                            <select class="form-control" name="service_type" ng-model="ticket.servicetype" ng-change="getSelectedServices(ticket.servicetype)" required>
-                                <option value=""><i class="fa fa-sort-desc">Service Type</i></option>
-                                <option value="MAJOR">Major Service</option>
-                                <option value="MINOR">Minor Service</option>
-                                <option value="RA">Roadside Assistance</option>
-                            </select>
-                            <span class="help-block" ng-show="createTicket.service_type.$error.required && createTicket.service_type.$touched">Choose a service type</span>
-                        </div>
-                    </div>
-                    <div class="form-group p-l-20" ng-show="ServiceArr.length > 0" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
-                        <label for="uname" class="control-label col-sm-4">Services:</label>
-                        <div class="col-xs-8 serviceList">
-                            <label class="container label-text" ng-repeat="services in ServiceArr">
-                                <input type="checkbox" ng-model="services.isSelect">
-                                <span class="checkmark"></span>{{services.subCategory}} {{services.isSelect &&  ticket.vehicle.vehicle.type ? '-'+services.price[ticket.vehicle.vehicle.type]+' (' + ticket.vehicle.vehicle.type +' )' : " " }}
-                            </label>
-                            
-                        </div>
-                    </div>                   
-                     <div class="form-group p-l-20" ng-class="{'has-error':createTicket.vehicle.$touched && createTicket.vehicle.$invalid}">
-                        <label for="uname" class="control-label col-sm-4">Vehicles:</label>
-                        <div class="col-xs-8">
-                            <select class="form-control" name="vehicle" ng-model="ticket.usrVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles" ng-change="selectScheme(ticket.vehicle.vehicle.subType)" required>
+                            <select class="form-control" name="vehicle" ng-model="ticket.userVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>
                                
                             </select>
-                            <span class="help-block" ng-show="createTicket.vehicle.$error.required && createTicket.vehicle.$touched">Choose a vehicle.</span>
+                            <span class="help-block" ng-show="newOrder.vehicle.$error.required && newOrder.vehicle.$touched">Choose a vehicle.</span>
                         </div>
                     </div>
-                    
-                     <div class="form-group p-l-20" ng-class="{'has-error':createTicket.engineer.$touched && createTicket.engineer.$invalid}">
-                            <label for="uname" class="control-label col-sm-4">Assign to:</label>
-                            <div class="col-xs-8">
-                                <input type="text" class="form-control" ng-model="ticket.engineer" name="engineer" placeholder="Amount" required/>
-                                <span class="help-block" ng-show="createTicket.engineer.$error.required && createTicket.engineer.$touched">Choose an Engineer.</span>
-                            </div>
-                    </div>
-                     <div ng-show="schemeList.length > 0" class="form-group p-1-20"  ng-class="{'has-error':createTicket.scheme.$touched && createTicket.scheme.$invalid}">
-                            <label  class="col-sm-4 control-label"
-                                    for="uname">User Scheme:</label>
-                            <div class="col-xs-8">
-                              <input type="text" class="form-control" name="scheme" placeholder="schemes.description" ng-model="ticket.schemeId" ng-value="schemes.schemeId" ng-repeat="schemes in schemeList" required/>
-                              <span class="help-block" ng-show="createTicket.scheme.$error.required && createTicket.scheme.$touched">User Scheme is required.</span>
-                            </div>
-                     </div>
-                    <div ng-show="schemeList.length > 0" class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">                            
+                    <div  class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">                            
                         <div class="col-xs-8 col-md-offset-2">
                             <label class="container label-text">
-                                <input type="checkbox" ng-model="ticket.useUserScheme">
-                                <span class="checkmark"></span>Use free services
+                                <input type="checkbox" ng-model="newVehicle">
+                                <span class="checkmark"></span>New Vehicle
                             </label>                                
                         </div>
-                    </div>      
+                    </div>
+                    <div ng-if="newVehicle">
+                        <div class="form-group p-l-20" ng-class="{'has-error':newOrder.make.$touched && newOrder.make.$invalid}">
+                            <label  class="control-label col-sm-4"> Vehicle Manufacturer</label>    
+                            <div class="col-xs-8">
+                                <select class="form-control" name="make" ng-model="ticket.make" 
+                                ng-options="makes as makes for makes in makes" ng-change="getModel(ticket.make)" required>
+                                <option value=""><i class="fa fa-sort-desc">Vehicle Manufacturer</i></option>
+                                    
+                                </select>
+                                <span class="help-block" ng-show="newOrder.make.$error.required && newOrder.make.$touched">Choose a manufacturer</span>
+                            </div>
+                        </div>
+                        <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.model.$touched && newOrder.model.$invalid}">
+                             <label  class="control-label col-sm-4"> Model:</label>
+                            <div class="col-xs-8">
+                                    <select class="form-control" name="model" ng-model="ticket.model" ng-options="models as models for models in vehicleModelList" ng-change="getVehicleType(ticket.model)" required>
+                                        <option value=""><i class="fa fa-sort-desc">Model</i></option>
+                                        
+                                    </select>
+                                <span class="help-block" ng-show="newOrder.model.$error.required && newOrder.model.$touched">Choose a Model.</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

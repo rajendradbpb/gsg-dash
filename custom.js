@@ -33,10 +33,29 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('orders',{
+    templateUrl:'view/orders.html',
+    url:'/orders',
+    controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('tickets',{
     templateUrl:'view/tickets.html',
     url:'/tickets',
     controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('ticketList',{
+    templateUrl:'view/ticketList.html',
+    url:'/ticketList/:status',
+    controller:'TicketController',
+    params : {
+      status : null
+    },
     resolve: {
       logout: checkLoggedout
     }
@@ -263,7 +282,7 @@ app.filter('capitalize', function() {
 ;angular.module('WebService', [])
 .factory('API', function($http, $resource) {
   return {
-    createTicket: {
+    createOrder: {
       "url": "/gsg/api/order",
       "method": "POST",
       "headers": {
@@ -271,7 +290,7 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-    getTickets: {
+    getOrders: {
       "url": "/gsg/api/order",
       "method": "GET",
       "headers": {
@@ -361,13 +380,29 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    getTicketCount: {
+      "url": "/gsg/api/tickets",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getTickets: {
+      "url": "/gsg/api/tickets/status/:status",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
-
+   
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
   return $resource('/',null, {
-    createTicket: ApiGenerator.getApi('createTicket'),
+    createOrder: ApiGenerator.getApi('createOrder'),
     getSchemes: ApiGenerator.getApi('getSchemes'),
     createUser: ApiGenerator.getApi('createUser'),
     addVehicle: ApiGenerator.getApi('addVehicle'),
@@ -377,10 +412,10 @@ app.filter('capitalize', function() {
     getUserById: ApiGenerator.getApi('getUserById'),
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
     getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
-    getTickets: ApiGenerator.getApi('getTickets'),
+    getOrders: ApiGenerator.getApi('getOrders'),
     updateUserById: ApiGenerator.getApi('updateUserById'),
-   
-
+    getTicketCount: ApiGenerator.getApi('getTicketCount'),
+    getTickets  : ApiGenerator.getApi('getTickets'),
   })
 })
 
@@ -452,7 +487,7 @@ app.filter('capitalize', function() {
 ;/*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
-app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util){
+app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util,ApiCall){
 
     $scope.active_tab = 'lists';
     $scope.tabChange = function(tab) {
@@ -463,6 +498,19 @@ app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams
         $rootScope.isLoggedin=false;
         $state.go('login');
     }
+
+    // function to get ticket counts
+     $scope.getTicketCount = function(){
+         // service to get ticket count.
+        
+         ApiCall.getTicketCount(function(response){
+             console.log(response.data);
+             $scope.counts = response.data;
+         }, function(error){
+            console.log(error);
+         });
+     };
+    
     
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
@@ -547,26 +595,31 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
                 }) 
          console.log($scope.services);
      };
-});;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
+});;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
-
-    $scope.getTickets = function(){
+  $scope.ticket = {};
+  $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
+  $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta'];
+  // function to get orders
+    $scope.getOrders = function(){
       console.log("inside the method");
       $rootScope.showPreloader = true;
-      TicketService.getTickets().get(function(response){
+      //service to get all order list
+      ApiCall.getOrders(function(response){
         $rootScope.showPreloader= false;
         console.log(response);
-       $scope.ticketList = response.data;
-       $scope.ticketData = new NgTableParams;
-       $scope.ticketData.settings({
-         dataset : $scope.ticketList
-       })
-      },function(error){
+        $scope.orderList = response.data;
+         $scope.orderData = new NgTableParams;
+         $scope.orderData.settings({
+           dataset : $scope.orderList
+         })
+      }, function(error){
         console.log(error);
       });
+      
     };
     
-//function to get ticket details by orderid
+  //function to get order details by orderid
 
     $scope.ticketDetails =  function(){
       console.log("inside ticket details.");
@@ -584,7 +637,29 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
     };
 
+    // function to get ticket lists
+    $scope.getTickets = function(){
+      
+      $scope.obj={
+        status : $stateParams.status
+      };
+      console.log("inside the method");
+      $rootScope.showPreloader = true;
+      //service to get all tickets
+      ApiCall.getTickets($scope.obj,function(response){
+        $rootScope.showPreloader= false;
+        console.log(response);
+        $scope.ticketList = response.data;
+         $scope.ticketData = new NgTableParams;
+         $scope.ticketData.settings({
+           dataset : $scope.ticketList
+         })
 
+      }, function(error){
+        console.log(error);
+
+      });
+    };
 });
 ;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};
@@ -640,19 +715,33 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
         }
       })
     }
-    $scope.createTicket = function(userData) {
-        console.log(userData);
-        $scope.ticket ={};
-        $scope.ticket.userId = userData.userId;
-        $scope.ticket.location = [0,0];
-        $scope.ticket.serviceType = "EMERGENCY";
-        ApiCall.createTicket($scope.ticket ,function(response){
-            console.log(response);
-            Util.alertMessage('success','Ticket Created successfully...');
+    // $scope.createTicket = function(userData) {
+    //     console.log(userData);
+    //     $scope.ticket ={};
+    //     $scope.ticket.userId = userData.userId;
+    //     $scope.ticket.location = [0,0];
+    //     $scope.ticket.serviceType = "EMERGENCY";
+    //     ApiCall.createTicket($scope.ticket ,function(response){
+    //         console.log(response);
+    //         Util.alertMessage('success','Ticket Created successfully...');
 
-        },function(error){
-            console.log(error);
+    //     },function(error){
+    //         console.log(error);
+    //     });
+    // };
+    $scope.addOrderModal = function(userData){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'view/modals/new_ticket.html',
+            controller: 'orderModalController',
+            size: 'md',
+            resolve: {
+              userId : function(){
+                  return userData;
+              }
+            }
         });
+
     };
 
     $scope.getAllStates = function(){
@@ -871,6 +960,88 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
+});
+//new order modal
+app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId){
+    $scope.userdata = userId;
+
+    $scope.getVehicledata = function(){
+        
+        ApiCall.getVehicleMakeModal(function(response){
+            console.log(response);
+                $scope.vehicleDatas = response.data;
+                $scope.makes = [];
+                angular.forEach(response.data,function(item){
+                    $scope.makes.push(item.make);
+                })
+                console.log($scope.makes);
+        }, function(error){
+            console.log(error);
+        });
+        
+
+    };
+    $scope.getModel = function(selectedModel){
+        console.log("coming");
+        console.log(selectedModel);
+
+        console.log($scope.vehicleDatas);
+        angular.forEach($scope.vehicleDatas,function(item){
+            if(item.make == selectedModel){
+                $scope.vehiclesLists = item.vehicles;
+                $scope.vehicleModelList = [];
+                angular.forEach(item.vehicles,function(vehicle){
+                    $scope.vehicleModelList.push(vehicle.models);
+                })
+            }
+        });
+        console.log($scope.vehicleModelList);
+
+
+    };
+    $scope.getVehicleType = function(model){
+        console.log(model);
+        console.log($scope.vehiclesLists);
+        angular.forEach($scope.vehiclesLists,function(item){
+            if(item.models == model){
+                $scope.type = item.type;
+                $scope.subType = item.subType;
+                $scope.wheels = item.wheels;
+            }
+        });
+    };
+
+    $scope.ticket ={};
+    $scope.ok = function(){
+        
+        console.log($scope.userdata.userId);
+    
+        // $scope.ticket.vehicle ={};
+            $scope.ticket.userId = $scope.userdata.userId;
+            $scope.ticket.location = [0,0];
+            $scope.ticket.serviceType = "EMERGENCY";
+            $scope.ticket.vehicle = {
+                make :$scope.ticket.make,
+                models : $scope.ticket.model,
+                subType : $scope.subType,
+                type :  $scope.type,
+                wheels : $scope.wheels
+            };
+            console.log($scope.ticket);
+            ApiCall.createOrder($scope.ticket , function(response){
+                console.log(response);
+                Util.alertMessage("success","Order Created successfully..");
+                $uibModalInstance.close();
+            }, function(error){
+                console.log(error);
+                Util.alertMessage("warning","Error in order creation.");
+                $uibModalInstance.close();
+            });
+       
+    };
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
 });
 ;angular.module('serviceModule', ['ngResource'])
 .factory('loginService', function ($resource,CONFIG,$http) {

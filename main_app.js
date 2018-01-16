@@ -33,10 +33,29 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('orders',{
+    templateUrl:'view/orders.html',
+    url:'/orders',
+    controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('tickets',{
     templateUrl:'view/tickets.html',
     url:'/tickets',
     controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('ticketList',{
+    templateUrl:'view/ticketList.html',
+    url:'/ticketList/:status',
+    controller:'TicketController',
+    params : {
+      status : null
+    },
     resolve: {
       logout: checkLoggedout
     }

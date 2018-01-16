@@ -1,23 +1,28 @@
-app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams){
+app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
-
-    $scope.getTickets = function(){
+  $scope.ticket = {};
+  $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
+  $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta'];
+  // function to get orders
+    $scope.getOrders = function(){
       console.log("inside the method");
       $rootScope.showPreloader = true;
-      TicketService.getTickets().get(function(response){
+      //service to get all order list
+      ApiCall.getOrders(function(response){
         $rootScope.showPreloader= false;
         console.log(response);
-       $scope.ticketList = response.data;
-       $scope.ticketData = new NgTableParams;
-       $scope.ticketData.settings({
-         dataset : $scope.ticketList
-       })
-      },function(error){
+        $scope.orderList = response.data;
+         $scope.orderData = new NgTableParams;
+         $scope.orderData.settings({
+           dataset : $scope.orderList
+         })
+      }, function(error){
         console.log(error);
       });
+      
     };
     
-//function to get ticket details by orderid
+  //function to get order details by orderid
 
     $scope.ticketDetails =  function(){
       console.log("inside ticket details.");
@@ -35,5 +40,27 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
 
     };
 
+    // function to get ticket lists
+    $scope.getTickets = function(){
+      
+      $scope.obj={
+        status : $stateParams.status
+      };
+      console.log("inside the method");
+      $rootScope.showPreloader = true;
+      //service to get all tickets
+      ApiCall.getTickets($scope.obj,function(response){
+        $rootScope.showPreloader= false;
+        console.log(response);
+        $scope.ticketList = response.data;
+         $scope.ticketData = new NgTableParams;
+         $scope.ticketData.settings({
+           dataset : $scope.ticketList
+         })
 
+      }, function(error){
+        console.log(error);
+
+      });
+    };
 });
