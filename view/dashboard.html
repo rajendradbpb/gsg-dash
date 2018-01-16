@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-lg-3 col-xs-6" ng-repeat="count in counts">
           <!-- small box -->
-          <div class="small-box bg-orange">
+          <div class="small-box " ng-style="{'background-color': getBgColor($index)}">
             <div class="inner">
               <h3>{{count.count}}</h3>
 
@@ -26,35 +26,35 @@
           </div>
         </div>
         <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-aqua">
-                  <div class="inner">
-                    <h3>15</h3>
-      
-                    <p>Resolved Tickets</p>
-                  </div>
-                  <div class="icon">
-                    <i class="fa fa-edit"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-              
+
+
         <!-- ./col -->
       </div>
       <!-- /.row -->
       <!-- Main row -->
-     </section> 
+     </section>
      <section class="content">
       <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-aqua">
+              <div class="inner">
+                <h3>15</h3>
+                <p>Resolved Tickets (To DO)</p>
+              </div>
+              <div class="icon">
+                <i class="fa fa-edit"></i>
+              </div>
+              <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
           <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
                   <h3>35</h3>
-    
-                  <p>Closed Tickets</p>
+
+                  <p>Closed Tickets (To DO)</p>
                 </div>
                 <div class="icon">
                   <i class="fa fa-edit"></i>
@@ -68,7 +68,7 @@
         <div class="inner">
           <h3>20</h3>
 
-          <p>Service Engineers</p>
+          <p>Service Engineers (To DO)</p>
         </div>
         <div class="icon">
           <i class="fa fa-car"></i>
@@ -83,7 +83,7 @@
         <div class="inner">
           <h3>44</h3>
 
-          <p>User</p>
+          <p>User (To DO)</p>
         </div>
         <div class="icon">
           <i class="fa fa-users"></i>
@@ -95,4 +95,3 @@
 
       </div>
      </section>
-  

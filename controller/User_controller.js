@@ -28,11 +28,11 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         }, function(error){
 
         });
-        
+
     };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
-      
+
       console.log('user' , $scope.user);
       var status = FormService.validateForm(form,function(status,message){
         if(!status){
@@ -89,7 +89,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         }, function(error){
 
         });
-        
+
     };
     $scope.getDistrict = function(user){
         $scope.districtList = [];
@@ -114,7 +114,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             country :'',
             zip :''
         };
-        
+
         console.log($scope.obj);
         ApiCall.getUserById($scope.obj ,function(response){
             console.log(response);
@@ -134,7 +134,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         },function(error){
 
         });
-        
+
 
     };
 
@@ -188,7 +188,7 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
         }, function(error){
             console.log(error);
         });
-        
+
 
     };
     $scope.getModel = function(selectedModel){
@@ -303,7 +303,7 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
     $scope.userdata = userId;
 
     $scope.getVehicledata = function(){
-        
+
         ApiCall.getVehicleMakeModal(function(response){
             console.log(response);
                 $scope.vehicleDatas = response.data;
@@ -315,56 +315,57 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
         }, function(error){
             console.log(error);
         });
-        
-
-    };
-    $scope.getModel = function(selectedModel){
-        console.log("coming");
-        console.log(selectedModel);
-
-        console.log($scope.vehicleDatas);
-        angular.forEach($scope.vehicleDatas,function(item){
-            if(item.make == selectedModel){
-                $scope.vehiclesLists = item.vehicles;
-                $scope.vehicleModelList = [];
-                angular.forEach(item.vehicles,function(vehicle){
-                    $scope.vehicleModelList.push(vehicle.models);
-                })
-            }
-        });
-        console.log($scope.vehicleModelList);
 
 
     };
-    $scope.getVehicleType = function(model){
-        console.log(model);
-        console.log($scope.vehiclesLists);
-        angular.forEach($scope.vehiclesLists,function(item){
-            if(item.models == model){
-                $scope.type = item.type;
-                $scope.subType = item.subType;
-                $scope.wheels = item.wheels;
-            }
-        });
-    };
+    // $scope.getModel = function(selectedModel){
+    //     console.log("coming");
+    //     console.log(selectedModel);
+    //
+    //     console.log($scope.vehicleDatas);
+    //     angular.forEach($scope.vehicleDatas,function(item){
+    //         if(item.make == selectedModel){
+    //             $scope.vehiclesLists = item.vehicles;
+    //             $scope.vehicleModelList = [];
+    //             angular.forEach(item.vehicles,function(vehicle){
+    //                 $scope.vehicleModelList.push(vehicle.models);
+    //             })
+    //         }
+    //     });
+    //     console.log($scope.vehicleModelList);
+    //
+    //
+    // };
+    // $scope.getVehicleType = function(model){
+    //     console.log(model);
+    //     console.log($scope.vehiclesLists);
+    //     angular.forEach($scope.vehiclesLists,function(item){
+    //         if(item.models == model){
+    //             $scope.type = item.type;
+    //             $scope.subType = item.subType;
+    //             $scope.wheels = item.wheels;
+    //         }
+    //     });
+    // };
 
     $scope.ticket ={};
     $scope.ok = function(){
-        
+
         console.log($scope.userdata.userId);
-    
+
         // $scope.ticket.vehicle ={};
             $scope.ticket.userId = $scope.userdata.userId;
             $scope.ticket.location = [0,0];
             $scope.ticket.serviceType = "EMERGENCY";
-            $scope.ticket.vehicle = {
-                make :$scope.ticket.make,
-                models : $scope.ticket.model,
-                subType : $scope.subType,
-                type :  $scope.type,
-                wheels : $scope.wheels
-            };
+            // $scope.ticket.vehicle = {
+            //     make :$scope.ticket.make,
+            //     models : $scope.ticket.model,
+            //     subType : $scope.subType,
+            //     type :  $scope.type,
+            //     wheels : $scope.wheels
+            // };
             console.log($scope.ticket);
+            delete $scope.ticket['extVehicle']; // removing extra parameter
             ApiCall.createOrder($scope.ticket , function(response){
                 console.log(response);
                 Util.alertMessage("success","Order Created successfully..");
@@ -374,7 +375,7 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
                 Util.alertMessage("warning","Error in order creation.");
                 $uibModalInstance.close();
             });
-       
+
     };
     $scope.cancel = function(){
         $uibModalInstance.dismiss('cancel');

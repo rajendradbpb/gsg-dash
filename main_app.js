@@ -1,19 +1,22 @@
 var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap', 'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
-  // $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
-  //   return {
-  //     request: function (config) {
-  //       config.headers['Authorization'] = 'token '+Constants.rtToken;
-  //       return config;
-  //     },
-  //     response: function (response) {
-  //       if (response.status === 401) {
-  //         $location.path('/');
-  //       }
-  //       return response || $q.when(response);
-  //     }
-  //   };
-  //});
+  $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
+    return {
+      request: function (config) {
+        if(Constants.debug) {
+          console.log("calling web service ->>>>>>>>>>>" , config.url);
+          console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
+        }
+        return config;
+      },
+      response: function (response) {
+        // if (response.status === 401) {
+        //   $location.path('/');
+        // }
+        return response || $q.when(response);
+      }
+    };
+  });
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('dashboard', {
@@ -33,29 +36,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
-  .state('orders',{
-    templateUrl:'view/orders.html',
-    url:'/orders',
-    controller:'TicketController',
-    resolve: {
-      logout: checkLoggedout
-    }
-  })
   .state('tickets',{
     templateUrl:'view/tickets.html',
     url:'/tickets',
     controller:'TicketController',
-    resolve: {
-      logout: checkLoggedout
-    }
-  })
-  .state('ticketList',{
-    templateUrl:'view/ticketList.html',
-    url:'/ticketList/:status',
-    controller:'TicketController',
-    params : {
-      status : null
-    },
     resolve: {
       logout: checkLoggedout
     }

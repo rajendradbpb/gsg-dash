@@ -19,9 +19,12 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
       }, function(error){
         console.log(error);
       });
-      
+
     };
-    
+
+    $scope.updateTicket = function() {
+      alert("Service yet to be created !!! ");
+    }
   //function to get order details by orderid
 
     $scope.ticketDetails =  function(){
@@ -42,7 +45,7 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
 
     // function to get ticket lists
     $scope.getTickets = function(){
-      
+
       $scope.obj={
         status : $stateParams.status
       };

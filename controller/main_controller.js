@@ -4,6 +4,7 @@
 app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util,ApiCall){
 
     $scope.active_tab = 'lists';
+    var colors = ['#34dcd6','#7c12ca','#efe239','#34bb25','#34bb25','#34dcd6','#7c12ca','#efe239','#bb25a7','#34bb25'];
     $scope.tabChange = function(tab) {
       $scope.active_tab = tab;
     }
@@ -12,11 +13,13 @@ app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams
         $rootScope.isLoggedin=false;
         $state.go('login');
     }
-
+    $scope.getBgColor = function(index){
+      return (colors[index] ? colors[index] : colors[0]);
+    }
     // function to get ticket counts
      $scope.getTicketCount = function(){
          // service to get ticket count.
-        
+
          ApiCall.getTicketCount(function(response){
              console.log(response.data);
              $scope.counts = response.data;
@@ -24,8 +27,8 @@ app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams
             console.log(error);
          });
      };
-    
-    
+
+
 });
 app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
   // $scope.task = {};

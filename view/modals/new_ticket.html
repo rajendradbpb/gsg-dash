@@ -6,33 +6,33 @@
         <div class="modal-body " >
             <div class="row">
                 <div class="col-md-10">
-                   
-                                    
+
+
                      <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
                         <label for="uname" class="control-label col-sm-4"> Registered Vehicles:</label>
                         <div class="col-xs-8">
                             <select class="form-control" name="vehicle" ng-model="ticket.userVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>
-                               
+
                             </select>
                             <span class="help-block" ng-show="newOrder.vehicle.$error.required && newOrder.vehicle.$touched">Choose a vehicle.</span>
                         </div>
                     </div>
-                    <div  class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">                            
+                    <div  class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
                         <div class="col-xs-8 col-md-offset-2">
                             <label class="container label-text">
                                 <input type="checkbox" ng-model="newVehicle">
                                 <span class="checkmark"></span>New Vehicle
-                            </label>                                
+                            </label>
                         </div>
                     </div>
                     <div ng-if="newVehicle">
                         <div class="form-group p-l-20" ng-class="{'has-error':newOrder.make.$touched && newOrder.make.$invalid}">
-                            <label  class="control-label col-sm-4"> Vehicle Manufacturer</label>    
+                            <label  class="control-label col-sm-4"> Vehicle Manufacturer</label>
                             <div class="col-xs-8">
-                                <select class="form-control" name="make" ng-model="ticket.make" 
-                                ng-options="makes as makes for makes in makes" ng-change="getModel(ticket.make)" required>
+                                <select class="form-control" name="make" ng-model="ticket.extVehicle"
+                                ng-options="vehicleData as vehicleData.make for vehicleData in vehicleDatas"  required>
                                 <option value=""><i class="fa fa-sort-desc">Vehicle Manufacturer</i></option>
-                                    
+
                                 </select>
                                 <span class="help-block" ng-show="newOrder.make.$error.required && newOrder.make.$touched">Choose a manufacturer</span>
                             </div>
@@ -40,9 +40,9 @@
                         <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.model.$touched && newOrder.model.$invalid}">
                              <label  class="control-label col-sm-4"> Model:</label>
                             <div class="col-xs-8">
-                                    <select class="form-control" name="model" ng-model="ticket.model" ng-options="models as models for models in vehicleModelList" ng-change="getVehicleType(ticket.model)" required>
+                                    <select class="form-control" name="model" ng-model="ticket.userVehicle.vehicle" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
                                         <option value=""><i class="fa fa-sort-desc">Model</i></option>
-                                        
+
                                     </select>
                                 <span class="help-block" ng-show="newOrder.model.$error.required && newOrder.model.$touched">Choose a Model.</span>
                             </div>
@@ -54,7 +54,7 @@
         <div class="modal-footer">
                 <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
             <button class="btn btn-primary pull-right" type="button" ng-click="ok()">Submit</button>
-           
+
         </div>
     </form>
 </div>
