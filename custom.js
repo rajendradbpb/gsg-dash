@@ -117,6 +117,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('schemeDetails',{
+    templateUrl:'view/schemeDetails.html',
+    url:'/schemeDetails',
+    controller : 'scheme_controller',
+    params : {
+      schemeDetails : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){
@@ -569,9 +580,30 @@ app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
 
   }
 ]);
-;app.controller('scheme_controller' , function($scope){
-    
-});;app.controller('service_controller',function($scope,ApiCall,NgTableParams){
+;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams){
+    //function to get all schemes
+    $scope.getSchemes = function(){
+        //service to get all schemes..
+        ApiCall.getSchemes(function(response){
+            console.log(response.data);
+            $scope.schemeList = response.data;
+        }, function(error){
+            console.log(error);
+
+        });
+    };
+    // function to get scheme Details..
+    $scope.getSchemeDetails =  function(){
+        $scope.schemeDetails = $stateParams.schemeDetails;
+        console.log( $scope.schemeDetails);
+        $scope.schemeData = new NgTableParams;
+        $scope.schemeData.settings({
+            dataset : $scope.schemeDetails.schemeServiceDtls
+        })
+    };
+
+});
+;app.controller('service_controller',function($scope,ApiCall,NgTableParams){
     $scope.active_tab = "MAJOR";
     $scope.getAllServices = function(){
         $scope.services = {};

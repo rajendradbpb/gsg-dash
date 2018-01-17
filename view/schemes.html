@@ -3,76 +3,30 @@
         <strong>Schemes</strong>
     </h1> 
 </section>
-<section class="content">
+<section class="content" ng-init="getSchemes()">
     <div class="col-xs-12">
         <div class="box box-success">
             <div class="box-header with-border">
-                <h3 class="box-title">LMV Plans</h3>
+                <h3 class="box-title">ALL Plans</h3>
             </div>
             <div class="box-body ">
                     
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-lg-3 col-xs-6">
+                    <div class="col-lg-3 col-xs-6" ng-repeat="scheme in schemeList">
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                         <div class="inner">
-                        <p>GO SPECIAL</p>
+                        <p>{{scheme.description}}</p>
             
-                        <p><i class="fa fa-inr"></i> 550/Year</p>
+                        <p><i class="fa fa-inr"></i> {{scheme.price}}/Year</p>
                         </div>
                         <div class="icon">
                         <i class="fa fa-edit"></i>
                         </div>
-                        <a href=""  class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="" ui-sref="schemeDetails({schemeDetails : scheme})"  class="small-box-footer" >More info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                     </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                        <p>GO SILVER</p>
-            
-                        <p>Service Engineers</p>
-                        </div>
-                        <div class="icon">
-                        <i class="fa fa-car"></i>
-                        </div>
-                        <a href=""  class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-yellow">
-                        <div class="inner">
-                        <p>GO GOLD</p>
-            
-                        <p>User</p>
-                        </div>
-                        <div class="icon">
-                        <i class="fa fa-users"></i>
-                        </div>
-                        <a href=""  class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                        <p>GO PLATINUM</p>
-            
-                        <p>Unique Visitors</p>
-                        </div>
-                        <div class="icon">
-                        <i class="fa fa-user-secret"></i>
-                        </div>
-                        <a href="" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                    </div>
-                    <!-- ./col -->
                 </div>
                 <!-- /.row -->
                 <!-- Main row -->
@@ -81,51 +35,3 @@
         </div>
     </div>     
 </section>
-<section class="content">
-        <div class="col-xs-12">
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Other Plans</h3>
-                </div>
-                <div class="box-body ">
-                        
-                    <!-- Small boxes (Stat box) -->
-                    <div class="row">
-                        <div class="col-lg-3 col-xs-6">
-                        <!-- small box -->
-                        <div class="small-box bg-aqua">
-                            <div class="inner">
-                            <p>GO AUTO</p>
-                
-                            <p>Tickets</p>
-                            </div>
-                            <div class="icon">
-                            <i class="fa fa-edit"></i>
-                            </div>
-                            <a href="" ui-sref="" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                        </div>
-                        <!-- ./col -->
-                        <div class="col-lg-3 col-xs-6">
-                        <!-- small box -->
-                        <div class="small-box bg-green">
-                            <div class="inner">
-                            <p>GO HEAVY</p>
-                
-                            <p>Service Engineers</p>
-                            </div>
-                            <div class="icon">
-                            <i class="fa fa-car"></i>
-                            </div>
-                            <a href="" ui-sref="" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                        </div>
-                        
-                    </div>
-                    <!-- /.row -->
-                    <!-- Main row -->
-                               
-                </div>
-            </div>
-        </div>     
-    </section>

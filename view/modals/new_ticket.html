@@ -8,7 +8,7 @@
                 <div class="col-md-10">
 
 
-                     <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
+                    <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
                         <label for="uname" class="control-label col-sm-4"> Registered Vehicles:</label>
                         <div class="col-xs-8">
                             <select class="form-control" name="vehicle" ng-model="ticket.userVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>

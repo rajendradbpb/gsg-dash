@@ -1,0 +1,81 @@
+<section class="content-header m-b-40">
+    <h1>
+        Scheme Details
+  
+      </h1>
+  </section>
+  <section class="content" ng-init="getSchemeDetails()">
+    <div class="row">
+      <div class="col-sm-10 col-md-offset-1">
+        <!-- Order information -->
+        <div class="box box-info ">
+          <div class="box-header with-border">
+            <h3 class="box-title">Basic Details</h3>
+          </div>
+          <div class="box-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Scheme Id:</label>
+                <input type="text" class="form-control" placeholder="Scheme Id" ng-model="schemeDetails.schemeId" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Scheme Type:</label>
+                <input type="text" class="form-control" placeholder="Scheme Type" ng-model="schemeDetails.schemeType" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Description:</label>
+                <input type="text" class="form-control" placeholder="Description" ng-model="schemeDetails.description" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Price:</label>
+                <input type="text" class="form-control" placeholder="Price" ng-model="schemeDetails.price" readonly>
+              </div>
+  
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class=" text-left control-label">Duration (in days):</label>
+                    <input type="text" class="form-control" placeholder="Duration" ng-model="schemeDetails.durationInDays" readonly>
+                </div>
+                <div class="col-sm-3">
+                    <label class=" text-left control-label">Discount On Consumable:</label>
+                    <input type="text" class="form-control" placeholder="Discount On Consumable" ng-model="schemeDetails.discountOnConsumable" readonly>
+                </div>
+                <div class="col-sm-3">
+                    <label class=" text-left control-label">Discount On Labour:</label>
+                    <input type="text" class="form-control" placeholder="Discount On Labour" ng-model="schemeDetails.discountOnLabour" readonly>
+                </div>
+                <div class="col-sm-3">
+                    <label class=" text-left control-label">Discount On Spare Part:</label>
+                    <input type="text" class="form-control" placeholder="Discount On Spare part" ng-model="schemeDetails.discountOnSparePart" readonly>
+                </div>
+  
+            </div>
+          </div>
+        </div>
+        <div class="box box-success div-vehicle-details">
+            <div class="box-header with-border">
+                <h3 class="box-title">Scheme Service Details:</h3>
+                
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table ng-table="schemeData" class="table table-bordered table-hover table-t-a-c">
+                            <tr ng-repeat="row in $data" style="text-align:center">
+                                <td data-title="'Service Id'" >{{row.serviceId}}</td>
+                                <td data-title="'Service Description '">{{row.serviceDesc}}</td>
+                                <td data-title="' Free Usage'">{{row.freeUsage}}</td>
+                                <td data-title="'Used'">{{row.used}}</td>
+                                
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+  
