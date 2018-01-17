@@ -1,4 +1,4 @@
-var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap', 'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
+var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap','ngMap' ,'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
     return {
@@ -501,85 +501,107 @@ app.filter('capitalize', function() {
 ;/*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
-app.controller("Main_Controller",function($scope,$state,$rootScope,NgTableParams,$localStorage,Util,ApiCall){
+app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
 
-    $scope.active_tab = 'lists';
-    var colors = ['#34dcd6','#7c12ca','#efe239','#34bb25','#34bb25','#34dcd6','#7c12ca','#efe239','#bb25a7','#34bb25'];
-    $scope.tabChange = function(tab) {
-      $scope.active_tab = tab;
-    }
-    $scope.signOut = function(){
-        $localStorage.token =null;
-        $rootScope.isLoggedin=false;
-        $state.go('login');
-    }
-    $scope.getBgColor = function(index){
-      return (colors[index] ? colors[index] : colors[0]);
-    }
-    // function to get ticket counts
-     $scope.getTicketCount = function(){
-         // service to get ticket count.
+  $scope.active_tab = 'lists';
+  var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
+  $scope.tabChange = function(tab) {
+    $scope.active_tab = tab;
+  }
+  $scope.signOut = function() {
+    $localStorage.token = null;
+    $rootScope.isLoggedin = false;
+    $state.go('login');
+  }
+  $scope.openMap = function() {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'view/modals/locationModal.html',
+      controller: "locationModalController",
+      size: 'lg',
+      resolve: {
+        location: function() {
+          return "20.341528,85.804466";
+        }
+      }
+    });
+  }
+  $scope.getBgColor = function(index) {
+    return (colors[index] ? colors[index] : colors[0]);
+  }
+  // function to get ticket counts
+  $scope.getTicketCount = function() {
+    // service to get ticket count.
 
-         ApiCall.getTicketCount(function(response){
-             console.log(response.data);
-             $scope.counts = response.data;
-         }, function(error){
-            console.log(error);
-         });
-     };
+    ApiCall.getTicketCount(function(response) {
+      console.log(response.data);
+      $scope.counts = response.data;
+    }, function(error) {
+      console.log(error);
+    });
+  };
 
 
 });
-app.controller('DatePickerCtrl' , ['$scope', function ($scope) {
+app.controller('DatePickerCtrl', ['$scope', function($scope) {
   // $scope.task = {};
   // $scope.ClosingDateLimit  = function(){
   //   $scope.startDates = $scope.task.startDate;
   //   console.log($scope.startDates);
   // }
-      $scope.today = function() {
-          $scope.dt = new Date();
-      };
-      $scope.today();
+  $scope.today = function() {
+    $scope.dt = new Date();
+  };
+  $scope.today();
 
-      $scope.clear = function () {
-          $scope.dt = null;
-      };
+  $scope.clear = function() {
+    $scope.dt = null;
+  };
 
-      // Disable weekend selection
-      /*
-       $scope.disabled = function(date, mode) {
-       return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-       };*/
+  // Disable weekend selection
+  /*
+   $scope.disabled = function(date, mode) {
+   return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+   };*/
 
-      $scope.toggleMin = function() {
-          // $scope.minDate = $scope.task.startDate;
-          $scope.minDate = new Date();
-          $scope.maxDate = new Date();
-          $scope.dateMin = null || new Date();
-      };
-      $scope.toggleMin();
+  $scope.toggleMin = function() {
+    // $scope.minDate = $scope.task.startDate;
+    $scope.minDate = new Date();
+    $scope.maxDate = new Date();
+    $scope.dateMin = null || new Date();
+  };
+  $scope.toggleMin();
 
-      $scope.open1 = function($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
+  $scope.open1 = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
 
-          $scope.opened = true;
-      };
+    $scope.opened = true;
+  };
 
-      $scope.dateOptions = {
-          formatYear: 'yy',
-          startingDay: 1
-      };
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  };
 
-      $scope.mode = 'month';
+  $scope.mode = 'month';
 
-      $scope.initDate = new Date();
-      $scope.formats = ['MM-dd-yyyy', 'dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd/MM/yyyy', 'yyyy-MMM','shortDate'];
-      $scope.format = $scope.formats[4];
-      $scope.format1 = $scope.formats[5];
+  $scope.initDate = new Date();
+  $scope.formats = ['MM-dd-yyyy', 'dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd/MM/yyyy', 'yyyy-MMM', 'shortDate'];
+  $scope.format = $scope.formats[4];
+  $scope.format1 = $scope.formats[5];
 
-  }
-]);
+}]);
+
+app.controller('locationModalController', function($scope, $uibModalInstance, location) {
+  $scope.location = location;
+  $scope.ok = function(user) {
+
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
 ;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams){
     //function to get all schemes
     $scope.getSchemes = function(){

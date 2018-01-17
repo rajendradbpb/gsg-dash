@@ -1,4 +1,4 @@
-var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap', 'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
+var app = angular.module("gsg", ['ui.router','serviceModule', 'ui.bootstrap','ngMap' ,'ngStorage','ngTable','ngResource','ui.utils','WebService','Utility']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage,Constants) {
     return {
