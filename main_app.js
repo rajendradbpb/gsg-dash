@@ -36,6 +36,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('orders',{
+    templateUrl:'view/orders.html',
+    url:'/orders',
+    controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('tickets',{
     templateUrl:'view/tickets.html',
     url:'/tickets',
@@ -44,6 +52,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('ticketList',{
+    templateUrl:'view/ticketList.html',
+    url:'/ticketList/:status',
+    controller:'TicketController',
+      params : {
+        status : null
+      },
+    resolve: {
+        logout: checkLoggedout
+      }
+    })
   .state('ticketDetails',{
     templateUrl:'view/ticketDetails.html',
     url:'/ticketDetails/:orderId',

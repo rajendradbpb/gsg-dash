@@ -36,6 +36,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('orders',{
+    templateUrl:'view/orders.html',
+    url:'/orders',
+    controller:'TicketController',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('tickets',{
     templateUrl:'view/tickets.html',
     url:'/tickets',
@@ -44,6 +52,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('ticketList',{
+    templateUrl:'view/ticketList.html',
+    url:'/ticketList/:status',
+    controller:'TicketController',
+      params : {
+        status : null
+      },
+    resolve: {
+        logout: checkLoggedout
+      }
+    })
   .state('ticketDetails',{
     templateUrl:'view/ticketDetails.html',
     url:'/ticketDetails/:orderId',
@@ -900,15 +919,6 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
             console.log(error);
               Util.alertMessage('danger','Vehicle is not added try again');
         });
-        //  VehicleService.addVehicle( $scope.user_id).save($scope.vehicle,function(response){
-        //     console.log(response);
-        //     Util.alertMessage('danger','Vehicle added successfully...');
-
-        //  },function(error){
-
-        //      console.log(error);
-        //      Util.alertMessage('danger','Vehicle is not added try again');
-        //  });
          $uibModalInstance.close();
      };
 
@@ -971,35 +981,35 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
 
 
     };
-    $scope.getModel = function(selectedModel){
-        console.log("coming");
-        console.log(selectedModel);
-
-        console.log($scope.vehicleDatas);
-        angular.forEach($scope.vehicleDatas,function(item){
-            if(item.make == selectedModel){
-                $scope.vehiclesLists = item.vehicles;
-                $scope.vehicleModelList = [];
-                angular.forEach(item.vehicles,function(vehicle){
-                    $scope.vehicleModelList.push(vehicle.models);
-                })
-            }
-        });
-        console.log($scope.vehicleModelList);
-
-
-    };
-    $scope.getVehicleType = function(model){
-        console.log(model);
-        console.log($scope.vehiclesLists);
-        angular.forEach($scope.vehiclesLists,function(item){
-            if(item.models == model){
-                $scope.type = item.type;
-                $scope.subType = item.subType;
-                $scope.wheels = item.wheels;
-            }
-        });
-    };
+    // $scope.getModel = function(selectedModel){
+    //     console.log("coming");
+    //     console.log(selectedModel);
+    //
+    //     console.log($scope.vehicleDatas);
+    //     angular.forEach($scope.vehicleDatas,function(item){
+    //         if(item.make == selectedModel){
+    //             $scope.vehiclesLists = item.vehicles;
+    //             $scope.vehicleModelList = [];
+    //             angular.forEach(item.vehicles,function(vehicle){
+    //                 $scope.vehicleModelList.push(vehicle.models);
+    //             })
+    //         }
+    //     });
+    //     console.log($scope.vehicleModelList);
+    //
+    //
+    // };
+    // $scope.getVehicleType = function(model){
+    //     console.log(model);
+    //     console.log($scope.vehiclesLists);
+    //     angular.forEach($scope.vehiclesLists,function(item){
+    //         if(item.models == model){
+    //             $scope.type = item.type;
+    //             $scope.subType = item.subType;
+    //             $scope.wheels = item.wheels;
+    //         }
+    //     });
+    // };
 
     $scope.ticket ={};
     $scope.ok = function(){

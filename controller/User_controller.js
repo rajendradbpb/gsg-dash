@@ -247,15 +247,6 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
             console.log(error);
               Util.alertMessage('danger','Vehicle is not added try again');
         });
-        //  VehicleService.addVehicle( $scope.user_id).save($scope.vehicle,function(response){
-        //     console.log(response);
-        //     Util.alertMessage('danger','Vehicle added successfully...');
-
-        //  },function(error){
-
-        //      console.log(error);
-        //      Util.alertMessage('danger','Vehicle is not added try again');
-        //  });
          $uibModalInstance.close();
      };
 
