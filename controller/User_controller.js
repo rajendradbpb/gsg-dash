@@ -130,7 +130,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
             })
-           
+
             console.log($scope.user.address);
         },function(error){
 
@@ -258,12 +258,8 @@ app.controller('vehicleModalController',function($scope,$uibModalInstance,Vehicl
       };
 });
 
-app.controller('vehicleDetailsModalController',function($scope,vehicleData,$uibModalInstance){
-
-    $scope.getVehicleDetails = function(){
-         $scope.vehicle =vehicleData;
-      };
-
+app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance,vehicleData){
+      $scope.vehicleData = vehicleData;
       $scope.ok = function () {
         // service call to update vihicle details
          $uibModalInstance.close();
