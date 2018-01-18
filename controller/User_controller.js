@@ -130,6 +130,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
             })
+           
             console.log($scope.user.address);
         },function(error){
 
@@ -290,7 +291,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
       };
 });
 //new order modal
-app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId){
+app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId,$state){
     $scope.userdata = userId;
 
     $scope.getVehicledata = function(){
@@ -358,8 +359,9 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
             console.log($scope.ticket);
             delete $scope.ticket['extVehicle']; // removing extra parameter
             ApiCall.createOrder($scope.ticket , function(response){
-                console.log(response);
+                console.log(response.data.orderId);
                 Util.alertMessage("success","Order Created successfully..");
+                $state.go('ticketDetails',{orderId : response.data.orderId});
                 $uibModalInstance.close();
             }, function(error){
                 console.log(error);

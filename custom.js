@@ -38,8 +38,11 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   })
   .state('orders',{
     templateUrl:'view/orders.html',
-    url:'/orders',
+    url:'/orders/:status',
     controller:'TicketController',
+    params : {
+      status : null
+    },
     resolve: {
       logout: checkLoggedout
     }
@@ -189,7 +192,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090' // unit
+   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
    // 'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -297,7 +300,7 @@ app.filter('capitalize', function() {
 .factory('API', function($http, $resource) {
   return {
     createOrder: {
-      "url": "/gsg/api/order",
+      "url": "/gsg/api/dashboard/order/create",
       "method": "POST",
       "headers": {
           'Content-Type': 'application/json',
@@ -312,8 +315,8 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-    getTicketdetailsById:{
-      "url": "/gsg/api/order/:orderId",
+    getOrderdetailsById:{
+      "url": "/gsg/api/orders/:orderId",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -329,7 +332,7 @@ app.filter('capitalize', function() {
       },
     },
     createUser: {
-      "url": "/gsg/api/users/create",
+      "url": "/gsg/api/dashboard/user/create",
       "method": "POST",
       "headers": {
           'Content-Type': 'application/json',
@@ -394,16 +397,16 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-    getTicketCount: {
-      "url": "/gsg/api/tickets",
+    getOrdersCount: {
+      "url": "/gsg/api/orders/count",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
       },
     },
-    getTickets: {
-      "url": "/gsg/api/tickets/status/:status",
+    getOrderByStatus: {
+      "url": "/gsg/api/orders/status/:status",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -425,11 +428,11 @@ app.filter('capitalize', function() {
     getAllServices: ApiGenerator.getApi('getAllServices'),
     getUserById: ApiGenerator.getApi('getUserById'),
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
-    getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
+    getOrderdetailsById: ApiGenerator.getApi('getOrderdetailsById'),
     getOrders: ApiGenerator.getApi('getOrders'),
     updateUserById: ApiGenerator.getApi('updateUserById'),
-    getTicketCount: ApiGenerator.getApi('getTicketCount'),
-    getTickets  : ApiGenerator.getApi('getTickets'),
+    getOrdersCount: ApiGenerator.getApi('getOrdersCount'),
+    getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
   })
 })
 
@@ -530,10 +533,10 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
     return (colors[index] ? colors[index] : colors[0]);
   }
   // function to get ticket counts
-  $scope.getTicketCount = function() {
+  $scope.getOrdersCount = function() {
     // service to get ticket count.
 
-    ApiCall.getTicketCount(function(response) {
+    ApiCall.getOrdersCount(function(response) {
       console.log(response.data);
       $scope.counts = response.data;
     }, function(error) {
@@ -659,7 +662,7 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
-  $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta'];
+  $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta','CustomerSupport'];
   // function to get orders
     $scope.getOrders = function(){
       console.log("inside the method");
@@ -684,24 +687,34 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
     }
   //function to get order details by orderid
 
-    $scope.ticketDetails =  function(){
-      console.log("inside ticket details.");
-      $scope.orderId=$stateParams.orderId;
+    $scope.getOrderdetailsById =  function(){
+      console.log("inside order details.");
+      $scope.obj = {
+        orderId : $stateParams.orderId
+      }
       console.log($scope.orderId);
-      TicketService.getTicketdetailsById($scope.orderId).get(function(response){
-        console.log(response.data);
+      ApiCall.getOrderdetailsById($scope.obj , function(response){
+        console.log(response);
         $scope.orderDetails = response.data;
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
-        console.log($scope.vehicleData);
-
-      },function(error){
-
+          console.log($scope.vehicleData);
+      }, function(error){
+        console.log(error);
       });
+      // TicketService.getTicketdetailsById($scope.orderId).get(function(response){
+      //   console.log(response.data);
+      //   $scope.orderDetails = response.data;
+      //   $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
+      //   console.log($scope.vehicleData);
+
+      // },function(error){
+
+      // });
 
     };
 
     // function to get ticket lists
-    $scope.getTickets = function(){
+    $scope.getOrderByStatus = function(){
 
       $scope.obj={
         status : $stateParams.status
@@ -709,13 +722,13 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
       console.log("inside the method");
       $rootScope.showPreloader = true;
       //service to get all tickets
-      ApiCall.getTickets($scope.obj,function(response){
+      ApiCall.getOrderByStatus($scope.obj,function(response){
         $rootScope.showPreloader= false;
         console.log(response);
-        $scope.ticketList = response.data;
-         $scope.ticketData = new NgTableParams;
-         $scope.ticketData.settings({
-           dataset : $scope.ticketList
+        $scope.orderList = response.data;
+         $scope.orderData = new NgTableParams;
+         $scope.orderData.settings({
+           dataset : $scope.orderList
          })
 
       }, function(error){
@@ -856,6 +869,7 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
             $scope.vehicleData.settings({
                 dataset : $scope.user.userVehicles
             })
+           
             console.log($scope.user.address);
         },function(error){
 
@@ -1016,7 +1030,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
       };
 });
 //new order modal
-app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId){
+app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId,$state){
     $scope.userdata = userId;
 
     $scope.getVehicledata = function(){
@@ -1084,8 +1098,9 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
             console.log($scope.ticket);
             delete $scope.ticket['extVehicle']; // removing extra parameter
             ApiCall.createOrder($scope.ticket , function(response){
-                console.log(response);
+                console.log(response.data.orderId);
                 Util.alertMessage("success","Order Created successfully..");
+                $state.go('ticketDetails',{orderId : response.data.orderId});
                 $uibModalInstance.close();
             }, function(error){
                 console.log(error);

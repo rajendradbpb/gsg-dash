@@ -2,7 +2,7 @@ angular.module('WebService', [])
 .factory('API', function($http, $resource) {
   return {
     createOrder: {
-      "url": "/gsg/api/order",
+      "url": "/gsg/api/dashboard/order/create",
       "method": "POST",
       "headers": {
           'Content-Type': 'application/json',
@@ -17,8 +17,8 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-    getTicketdetailsById:{
-      "url": "/gsg/api/order/:orderId",
+    getOrderdetailsById:{
+      "url": "/gsg/api/orders/:orderId",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ angular.module('WebService', [])
       },
     },
     createUser: {
-      "url": "/gsg/api/users/create",
+      "url": "/gsg/api/dashboard/user/create",
       "method": "POST",
       "headers": {
           'Content-Type': 'application/json',
@@ -99,16 +99,16 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-    getTicketCount: {
-      "url": "/gsg/api/tickets",
+    getOrdersCount: {
+      "url": "/gsg/api/orders/count",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
       },
     },
-    getTickets: {
-      "url": "/gsg/api/tickets/status/:status",
+    getOrderByStatus: {
+      "url": "/gsg/api/orders/status/:status",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -130,11 +130,11 @@ angular.module('WebService', [])
     getAllServices: ApiGenerator.getApi('getAllServices'),
     getUserById: ApiGenerator.getApi('getUserById'),
     getAllUsers: ApiGenerator.getApi('getAllUsers'),
-    getTicketdetailsById: ApiGenerator.getApi('getTicketdetailsById'),
+    getOrderdetailsById: ApiGenerator.getApi('getOrderdetailsById'),
     getOrders: ApiGenerator.getApi('getOrders'),
     updateUserById: ApiGenerator.getApi('updateUserById'),
-    getTicketCount: ApiGenerator.getApi('getTicketCount'),
-    getTickets  : ApiGenerator.getApi('getTickets'),
+    getOrdersCount: ApiGenerator.getApi('getOrdersCount'),
+    getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
   })
 })
 

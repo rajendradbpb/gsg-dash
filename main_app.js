@@ -38,8 +38,11 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   })
   .state('orders',{
     templateUrl:'view/orders.html',
-    url:'/orders',
+    url:'/orders/:status',
     controller:'TicketController',
+    params : {
+      status : null
+    },
     resolve: {
       logout: checkLoggedout
     }
@@ -189,7 +192,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090' // unit
+   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
    // 'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });

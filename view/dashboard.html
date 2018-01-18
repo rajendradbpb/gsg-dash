@@ -8,7 +8,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content" ng-init="getTicketCount()">
+    <section class="content" ng-init="getOrdersCount()">
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6" ng-repeat="count in counts">
@@ -22,7 +22,7 @@
             <div class="icon">
               <i class="fa fa-edit"></i>
             </div>
-            <a href="" ui-sref="ticketList({status:count.category})" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="" ui-sref="orders({status:count.category})" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -48,20 +48,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3>35</h3>
-
-                  <p>Closed Tickets (To DO)</p>
-                </div>
-                <div class="icon">
-                  <i class="fa fa-edit"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
+          
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-green">

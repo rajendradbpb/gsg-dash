@@ -4,7 +4,7 @@
 
     </h1>
 </section>
-<section class="content" ng-init="ticketDetails()">
+<section class="content" ng-init="getOrderdetailsById()">
   <div class="row">
     <div class="col-sm-10 col-md-offset-1">
       <!-- Order information -->
@@ -15,8 +15,28 @@
         <div class="box-body">
           <div class="row">
             <div class="col-sm-3">
+                <label class=" text-left control-label">User Name:</label>
+                <input type="text" class="form-control" placeholder="User Name" ng-model="orderDetails.userName" readonly>
+            </div>
+            <div class="col-sm-3">
+                <label class=" text-left control-label">Contact No.:</label>
+                <input type="text" class="form-control" placeholder="contact no." ng-model="orderDetails.contactNbr" readonly>
+            </div>
+            <div class="col-sm-3">
+                <label class=" text-left control-label">User Id:</label>
+                <input type="text" class="form-control" placeholder="User Id" ng-model="orderDetails.userId" readonly>
+            </div>
+            <div class="col-sm-3">
               <label class=" text-left control-label">Order Id:</label>
               <input type="text" class="form-control" placeholder="Order Id" ng-model="orderDetails.orderId" readonly>
+            </div>
+            
+
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Requested Status:</label>
+              <input type="text" class="form-control" placeholder="Requested Status" ng-model="orderDetails.requestStatus" readonly>
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Product Type:</label>
@@ -29,13 +49,6 @@
             <div class="col-sm-3">
               <label class=" text-left control-label">Total Price:</label>
               <input type="text" class="form-control" placeholder="Total Price" ng-model="orderDetails.totalPrice" readonly>
-            </div>
-
-          </div>
-          <div class="row">
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Requested Status:</label>
-              <input type="text" class="form-control" placeholder="Requested Status" ng-model="orderDetails.requestStatus" readonly>
             </div>
 
           </div>
@@ -119,23 +132,23 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label class=" text-left control-label">Transaction Status</label>
-                    <input type="text" class="form-control" ng-model="service.transactionStatus" readonly>
+                    <input type="text" class="form-control" ng-model="orderDtls.transactionStatus" readonly>
                   </div>
                   <div class="col-md-3">
                     <label class=" text-left control-label">Transaction Mode</label>
-                    <input type="text" class="form-control" ng-model="service.transactionMode" readonly>
+                    <input type="text" class="form-control" ng-model="orderDtls.transactionMode" readonly>
                   </div>
                   <div class="col-md-3">
                     <label class=" text-left control-label">Transaction Date</label>
-                    <input type="text" class="form-control" ng-model="service.transactionDate" readonly>
+                    <input type="text" class="form-control" ng-model="orderDtls.transactionDate" readonly>
                   </div>
                   <div class="col-md-3">
                     <label class=" text-left control-label">Transaction Id</label>
-                    <input type="text" class="form-control" ng-model="service.transactionId" readonly>
+                    <input type="text" class="form-control" ng-model="orderDtls.transactionId" readonly>
                   </div>
                   <div class="col-md-3">
                     <label class=" text-left control-label">Calculated Price</label>
-                    <input type="text" class="form-control" ng-model="service.calculatedPrice" readonly>
+                    <input type="text" class="form-control" ng-model="orderDtls.calculatedPrice" readonly>
                   </div>
                 </div>
                 <hr/>
@@ -278,19 +291,26 @@
           <div class="row">
             <div class="col-sm-3">
               <label class=" text-left control-label">Ticket Status:</label>
-              <select class="form-control" name="ticket_status" ng-model="ticket.status">
+              <select class="form-control" name="ticket_status" ng-model="orderDetails.requestStatus">
                     <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option>
                     <option ng-value="statuses" ng-repeat="statuses in ticket.statuses" >{{statuses}}</option>
 
                 </select>
             </div>
             <div class="col-sm-3">
-              <label class=" text-left control-label">Assign To:</label>
-              <select class="form-control" name="insurance_status" ng-model="tickte.assignedTo">
+              <label class=" text-left control-label">Assigned Queue:</label>
+              <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedQueue">
                     <option value="" ng-selected><i class="fa fa-sort-desc">Service Engineer</i></option>
                     <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
                 </select>
             </div>
+            <div class="col-sm-3">
+                <label class=" text-left control-label">Assign To:</label>
+                <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId">
+                      <option value="" ng-selected><i class="fa fa-sort-desc">Service Engineer</i></option>
+                      <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
+                  </select>
+              </div>
           </div>
         </div>
 

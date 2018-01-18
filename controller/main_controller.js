@@ -30,10 +30,10 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
     return (colors[index] ? colors[index] : colors[0]);
   }
   // function to get ticket counts
-  $scope.getTicketCount = function() {
+  $scope.getOrdersCount = function() {
     // service to get ticket count.
 
-    ApiCall.getTicketCount(function(response) {
+    ApiCall.getOrdersCount(function(response) {
       console.log(response.data);
       $scope.counts = response.data;
     }, function(error) {

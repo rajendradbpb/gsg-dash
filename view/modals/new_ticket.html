@@ -11,7 +11,7 @@
                     <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
                         <label for="uname" class="control-label col-sm-4"> Registered Vehicles:</label>
                         <div class="col-xs-8">
-                            <select class="form-control" name="vehicle" ng-model="ticket.userVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>
+                            <select class="form-control" name="vehicle" ng-model="ticket.usrVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>
 
                             </select>
                             <span class="help-block" ng-show="newOrder.vehicle.$error.required && newOrder.vehicle.$touched">Choose a vehicle.</span>
@@ -40,7 +40,7 @@
                         <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.model.$touched && newOrder.model.$invalid}">
                              <label  class="control-label col-sm-4"> Model:</label>
                             <div class="col-xs-8">
-                                    <select class="form-control" name="model" ng-model="ticket.userVehicle.vehicle" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
+                                    <select class="form-control" name="model" ng-model="ticket.usrVehicle.vehicle" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
                                         <option value=""><i class="fa fa-sort-desc">Model</i></option>
 
                                     </select>

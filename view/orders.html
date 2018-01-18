@@ -7,7 +7,7 @@
         <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
       </div>
 </section>
-<section  ng-init="getOrders()">
+<section  ng-init="getOrderByStatus()">
   <div class="row">
     <div class="col-md-10 col-xs-12 col-md-offset-1">
       <div class="row">
@@ -17,10 +17,10 @@
               <div class="table-responsive">
                 <table ng-table="orderData" class="table table-bordered table-hover">
                   <tr ng-repeat="row in $data" >
-                    <td data-title="'UserId'" filter="{ 'UserId': 'text'}"  sortable="'UserId'">{{row.userId}}</td>
+                    <td data-title="'User Name'" filter="{ 'userName': 'text'}"  sortable="'userName'">{{row.userName}}</td>
                     <td data-title="'Order Id'" filter="{ 'orderId': 'text'}" sortable="'orderId'">{{row.orderId}}</td>
-                    <td data-title="'Status'" filter="{ 'requestStatus': 'text'}" sortable="'requestStatus'">{{row.requestStatus}}</td>
-                    <td data-title="'Vehicle'" filter="{ 'usrVehicle.vehicle.make': 'text'}" sortable="'usrVehicle.vehicle.make'">{{row.usrVehicle.vehicle.make + " " + row.usrVehicle.vehicle.models }}</td>
+                    <td data-title="'Contact No.'" filter="{ 'contactNbr': 'text'}" sortable="'contactNbr'">{{row.contactNbr}}</td>
+                    <td data-title="'Service Date'" filter="{ 'serviceDate': 'text'}" sortable="'serviceDate'">{{row.serviceDate }}</td>
                     <td data-title="'Total price'" sortable="'totalPrice'">{{row.totalPrice}}</td>
                     <td data-title="'Action'">
                        <div class="btn-group">
