@@ -516,19 +516,6 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
     $rootScope.isLoggedin = false;
     $state.go('login');
   }
-  $scope.openMap = function() {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: 'view/modals/locationModal.html',
-      controller: "locationModalController",
-      size: 'lg',
-      resolve: {
-        location: function() {
-          return "20.341528,85.804466";
-        }
-      }
-    });
-  }
   $scope.getBgColor = function(index) {
     return (colors[index] ? colors[index] : colors[0]);
   }
@@ -595,16 +582,6 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
   $scope.format1 = $scope.formats[5];
 
 }]);
-
-app.controller('locationModalController', function($scope, $uibModalInstance, location) {
-  $scope.location = location;
-  $scope.ok = function(user) {
-
-  };
-  $scope.cancel = function() {
-    $uibModalInstance.dismiss('cancel');
-  };
-});
 ;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams){
     //function to get all schemes
     $scope.getSchemes = function(){
@@ -681,7 +658,19 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
       });
 
     };
-
+    $scope.openMap = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/locationModal.html',
+        controller: "locationModalController",
+        size: 'lg',
+        resolve: {
+          location: function() {
+            return $scope.orderDetails.orderDtls[0].product.location;
+          }
+        }
+      });
+    }
     $scope.updateTicket = function() {
       alert("Service yet to be created !!! ");
     }
@@ -736,6 +725,15 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 
       });
     };
+});
+app.controller('locationModalController', function($scope, $uibModalInstance, location) {
+  $scope.location = location;
+  $scope.ok = function(user) {
+
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
 });
 ;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};

@@ -5293,3 +5293,9 @@ table.text-center th {
 .userData tr td button a{
   color:#fff;
 }
+.marker{
+position: absolute;
+top: 27px;
+left: 0px;
+cursor: pointer;
+}

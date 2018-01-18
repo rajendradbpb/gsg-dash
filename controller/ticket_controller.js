@@ -21,7 +21,19 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
       });
 
     };
-
+    $scope.openMap = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/locationModal.html',
+        controller: "locationModalController",
+        size: 'lg',
+        resolve: {
+          location: function() {
+            return $scope.orderDetails.orderDtls[0].product.location;
+          }
+        }
+      });
+    }
     $scope.updateTicket = function() {
       alert("Service yet to be created !!! ");
     }
@@ -76,4 +88,13 @@ app.controller("TicketController",function($scope,$state,$rootScope,NgTableParam
 
       });
     };
+});
+app.controller('locationModalController', function($scope, $uibModalInstance, location) {
+  $scope.location = location;
+  $scope.ok = function(user) {
+
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
 });
