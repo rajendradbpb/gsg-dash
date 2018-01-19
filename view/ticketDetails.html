@@ -294,7 +294,7 @@
               <label class=" text-left control-label">Ticket Status:</label>
               <select class="form-control" name="ticket_status" ng-model="orderDetails.requestStatus">
                     <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option>
-                    <option ng-value="statuses" ng-repeat="statuses in ticket.statuses" >{{statuses}}</option>
+                    <option ng-value="statuses.label" ng-repeat="statuses in ticket.statuses" ng-disabled="statuses.disable">{{statuses.label}}</option>
 
                 </select>
             </div>
@@ -305,18 +305,21 @@
                     <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
                 </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3" ng-init="getEngineerList()">
                 <label class=" text-left control-label">Assign To:</label>
-                <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId">
+                <!-- <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId">
                       <option value="" ng-selected><i class="fa fa-sort-desc">Service Engineer</i></option>
-                      <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
-                  </select>
+                      <option ng-value="serviceEngineer.userId" ng-repeat="serviceEngineer in engineersList" >{{serviceEngineer.firstName}} {{serviceEngineer.middleName}} {{serviceEngineer.lastName}}</option>
+                  </select> -->
+
+                  <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId" ng-options="engineer.userId as engineer.firstName+' '+engineer.middleName +' '+engineer.lastName for engineer in engineersList">
+                </select>
               </div>
           </div>
         </div>
 
         <div class="box-footer">
-          <button type="submit" ng-click="updateTicket()" ng-disabled="other.$invalid" class="btn btn-info pull-right">Submit</button>
+          <button type="submit" ng-click="updateOrder()"  class="btn btn-info pull-right">Submit</button>
           <button type="submit" class="btn btn-default" ui-sref="ticketList({ status :'ALL'})">Back</button>
 
         </div>

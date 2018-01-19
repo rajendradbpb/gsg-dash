@@ -1,6 +1,7 @@
 app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};
     $scope.active_tab = "BD";
+    var userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
     $scope.tabChange = function(tab){
         $scope.active_tab = tab;
     }
@@ -141,6 +142,51 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
 
         });
 
+
+    };
+    $scope.getOrderByUser = function(){
+        $scope.orderHistoryList = [
+            {
+                type:'LIVE',
+                data:[]
+            },
+            {
+                type:'FUTURE',
+                data:[]
+            },
+            {
+                type:'COMPLETED',
+                data:[]
+            },
+            {
+                type:'CANCELLED',
+                data:[]
+            }
+        ];
+        var obj = {
+            user_id :$stateParams.user_id
+        };
+        ApiCall.getOrderByUser( obj , function(response){
+            
+            angular.forEach(response.data,function(item){
+                if(item.requestStatus == "CLOSED"){
+                    $scope.orderHistoryList[2].data.push(item);
+                }
+                else if(item.requestStatus == "CANCELED"){
+                    $scope.orderHistoryList[3].data.push(item);
+                }else{
+                    if( moment(item.serviceDate) > moment() ){
+                        $scope.orderHistoryList[1].data.push(item);
+                    }
+                    else {
+                        $scope.orderHistoryList[0].data.push(item);
+                    }
+                }
+            });
+            console.log("list", $scope.orderHistoryList);
+        }, function(error){
+            console.log(error);
+        });
 
     };
 

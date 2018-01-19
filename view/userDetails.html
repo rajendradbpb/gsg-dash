@@ -256,6 +256,46 @@
                         </div>
                     </div>
                 </div>
+                <div clas="box box-info orderHist" ng-init="getOrderByUser()">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Order History:</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                         <uib-tabset>
+                            <uib-tab ng-repeat="orderlist in orderHistoryList" heading="{{orderlist.type}}">
+                                <div class="col-sm-10 col-md-offset-1">
+                                    <div class="table-responsive">
+                                        <div ng-if="!orderlist.data.length" class="noData"> No data available </div>
+                                        <table  class="table table-bordered table-hover table-t-a-c" ng-if="orderlist.data.length">
+                                            <tr >
+                                                <th>Order Id</th>
+                                                <th>Request Status</th>
+                                                <th>Service Date</th>
+                                                <th>Total Price</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            <tr ng-repeat="row in orderlist.data" style="text-align:left">
+                                                <td  >{{row.orderId}}</td>
+                                                <td >{{row.requestStatus}}</td>
+                                                <td >{{row.serviceDate}}</td>
+                                                <td >{{row.totalPrice}}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-success"><a href="" class="option-btn" ui-sref="ticketDetails(row)" >Details</a>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </uib-tab>
+                       
+                          </uib-tabset>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

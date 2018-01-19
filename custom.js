@@ -96,6 +96,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('userRequests',{
+    templateUrl:'view/userRequests.html',
+    url:'/userRequests/:user_id',
+    controller : 'User_controller',
+    params : {
+      user_id : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 
   .state('serviceEngineers',{
     templateUrl:'view/serviceEngineers.html',
@@ -133,7 +144,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
-  if($localStorage.token != null){
+  if($localStorage.token != null && $localStorage.loggedin_user){
     $timeout(function(){
       deferred.resolve();
       $rootScope.isLoggedin = true;
@@ -144,6 +155,7 @@ function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   else{
     $timeout(function(){
       $localStorage.token = null;
+      delete $localStorage['loggedin_user'];
       $rootScope.isLoggedin = false;
       deferred.resolve();
       // $state.go('app.mapView');
@@ -152,7 +164,7 @@ function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
 }
 function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
- if($localStorage.token) {
+ if($localStorage.token && $localStorage.loggedin_user) {
     $timeout(function(){
       $rootScope.isLoggedin = true;
         console.log("$state >>>>> ",$state.current.name)
@@ -164,6 +176,7 @@ function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
     $timeout(function(){
       $localStorage.token = null;
       $rootScope.isLoggedin = false;
+      delete $localStorage['loggedin_user'];
       deferred.resolve();
       $state.go('login');
     },200)
@@ -356,6 +369,14 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    getOrderByUser: {
+      "url": "/gsg/api/orders/user/:user_id",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     getUserByContact: {
       "url": "/gsg/api/users/contact/:contactNbr",
       "method": "GET",
@@ -422,10 +443,27 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    getEngineerList: {
+      "url": "/gsg/api/users/role/ROLE_ENGINEER",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     changePassword: {
       "url": "/gsg/api/users/id/:userId/changePassword",
       "method": "PUT",
       "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateOrder: {
+      "url": "/gsg/api/orders/:orderId",
+      "method": "PUT",
+      "params":{orderId:"@orderId"},
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -453,6 +491,9 @@ app.filter('capitalize', function() {
     getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
     getUserByContact : ApiGenerator.getApi('getUserByContact'),
     changePassword : ApiGenerator.getApi('changePassword'),
+    getOrderByUser : ApiGenerator.getApi('getOrderByUser'),
+    getEngineerList : ApiGenerator.getApi('getEngineerList'),
+    updateOrder : ApiGenerator.getApi('updateOrder'),
   })
 })
 
@@ -694,7 +735,14 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 });;app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
   $scope.ticket = {};
-  $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
+  $scope.ticket.statuses = [
+    {label:"CREATED",disable:false },
+    {label:"EMERGENCY",disable:false },
+    {label:"RESOLVED",disable:false },
+    {label:"CLOSED",disable:false },
+    {label:"WIP",disable:false },
+    {label:"CANCELLED",disable:false },
+    ];
   $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta','CustomerSupport'];
   // function to get orders
     $scope.getOrders = function(){
@@ -715,7 +763,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
     };
     $scope.getLocationDetails = function(){
-      var url = Constants.googleApi.replace(/{{latLng}}/g,"20.261876, 85.836220");
+      var url = Constants.googleApi.replace(/{{latLng}}/g,$scope.orderDetails.orderDtls[0].product.location);
       $http.get(url).then(function(response) {
         $scope.orderDetails.locationDetails = response.data.results[0] ? response.data.results[0].formatted_address : "No Address available";
       },function(err){
@@ -735,7 +783,32 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         }
       });
     }
-    $scope.updateTicket = function() {
+    //function to get engineer list
+    $scope.getEngineerList = function(){
+      ApiCall.getEngineerList(function(response){
+        console.log(response.data);
+        $scope.engineersList = response.data;
+        console.log( $scope.engineersList);
+      } , function(error){
+        console.log(error);
+      });
+    };
+    //funtion to update order status
+    $scope.updateOrder = function() {
+      $scope.orderUpdate ={};
+      $scope.orderUpdate ={
+        userId : $scope.orderDetails.userId,
+        assignedQueue : $scope.orderDetails.assignedQueue,
+        assignedToUserId : $scope.orderDetails.assignedToUserId,
+        requestStatus : $scope.orderDetails.requestStatus,
+        orderId : $scope.orderDetails.orderId
+      };
+      console.log($scope.orderUpdate);
+      ApiCall.updateOrder( $scope.orderUpdate , function(response){
+        console.log(response.data);
+      }, function(error){
+        console.log(error);
+      });
       alert("Service yet to be created !!! ");
     }
   //function to get order details by orderid
@@ -749,6 +822,15 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
+        // update status dropdown
+        angular.forEach($scope.ticket.statuses,function(v,k) {
+          if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
+            v.disable = false;
+          }
+          else{
+            v.disable = true;
+          }
+        })
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
           console.log($scope.vehicleData);
       }, function(error){
@@ -766,6 +848,17 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
     };
 
+    // returns true to disabe option , based on current request status
+    $scope.checkDisablity = function(statusValue,requestStatus){
+      if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
+        return false;
+      }
+      else{
+        return true;
+      }
+
+      
+    }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 
@@ -802,6 +895,7 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 ;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};
     $scope.active_tab = "BD";
+    var userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
     $scope.tabChange = function(tab){
         $scope.active_tab = tab;
     }
@@ -942,6 +1036,51 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 
         });
 
+
+    };
+    $scope.getOrderByUser = function(){
+        $scope.orderHistoryList = [
+            {
+                type:'LIVE',
+                data:[]
+            },
+            {
+                type:'FUTURE',
+                data:[]
+            },
+            {
+                type:'COMPLETED',
+                data:[]
+            },
+            {
+                type:'CANCELLED',
+                data:[]
+            }
+        ];
+        var obj = {
+            user_id :$stateParams.user_id
+        };
+        ApiCall.getOrderByUser( obj , function(response){
+            
+            angular.forEach(response.data,function(item){
+                if(item.requestStatus == "CLOSED"){
+                    $scope.orderHistoryList[2].data.push(item);
+                }
+                else if(item.requestStatus == "CANCELED"){
+                    $scope.orderHistoryList[3].data.push(item);
+                }else{
+                    if( moment(item.serviceDate) > moment() ){
+                        $scope.orderHistoryList[1].data.push(item);
+                    }
+                    else {
+                        $scope.orderHistoryList[0].data.push(item);
+                    }
+                }
+            });
+            console.log("list", $scope.orderHistoryList);
+        }, function(error){
+            console.log(error);
+        });
 
     };
 

@@ -57,6 +57,14 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getOrderByUser: {
+      "url": "/gsg/api/orders/user/:user_id",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     getUserByContact: {
       "url": "/gsg/api/users/contact/:contactNbr",
       "method": "GET",
@@ -123,10 +131,27 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getEngineerList: {
+      "url": "/gsg/api/users/role/ROLE_ENGINEER",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     changePassword: {
       "url": "/gsg/api/users/id/:userId/changePassword",
       "method": "PUT",
       "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateOrder: {
+      "url": "/gsg/api/orders/:orderId",
+      "method": "PUT",
+      "params":{orderId:"@orderId"},
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -154,6 +179,9 @@ angular.module('WebService', [])
     getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
     getUserByContact : ApiGenerator.getApi('getUserByContact'),
     changePassword : ApiGenerator.getApi('changePassword'),
+    getOrderByUser : ApiGenerator.getApi('getOrderByUser'),
+    getEngineerList : ApiGenerator.getApi('getEngineerList'),
+    updateOrder : ApiGenerator.getApi('updateOrder'),
   })
 })
 

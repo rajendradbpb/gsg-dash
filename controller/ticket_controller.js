@@ -1,7 +1,14 @@
 app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
   $scope.ticket = {};
-  $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
+  $scope.ticket.statuses = [
+    {label:"CREATED",disable:false },
+    {label:"EMERGENCY",disable:false },
+    {label:"RESOLVED",disable:false },
+    {label:"CLOSED",disable:false },
+    {label:"WIP",disable:false },
+    {label:"CANCELLED",disable:false },
+    ];
   $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta','CustomerSupport'];
   // function to get orders
     $scope.getOrders = function(){
@@ -42,7 +49,32 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         }
       });
     }
-    $scope.updateTicket = function() {
+    //function to get engineer list
+    $scope.getEngineerList = function(){
+      ApiCall.getEngineerList(function(response){
+        console.log(response.data);
+        $scope.engineersList = response.data;
+        console.log( $scope.engineersList);
+      } , function(error){
+        console.log(error);
+      });
+    };
+    //funtion to update order status
+    $scope.updateOrder = function() {
+      $scope.orderUpdate ={};
+      $scope.orderUpdate ={
+        userId : $scope.orderDetails.userId,
+        assignedQueue : $scope.orderDetails.assignedQueue,
+        assignedToUserId : $scope.orderDetails.assignedToUserId,
+        requestStatus : $scope.orderDetails.requestStatus,
+        orderId : $scope.orderDetails.orderId
+      };
+      console.log($scope.orderUpdate);
+      ApiCall.updateOrder( $scope.orderUpdate , function(response){
+        console.log(response.data);
+      }, function(error){
+        console.log(error);
+      });
       alert("Service yet to be created !!! ");
     }
   //function to get order details by orderid
@@ -56,6 +88,15 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
+        // update status dropdown
+        angular.forEach($scope.ticket.statuses,function(v,k) {
+          if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
+            v.disable = false;
+          }
+          else{
+            v.disable = true;
+          }
+        })
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
           console.log($scope.vehicleData);
       }, function(error){
@@ -73,6 +114,17 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
     };
 
+    // returns true to disabe option , based on current request status
+    $scope.checkDisablity = function(statusValue,requestStatus){
+      if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
+        return false;
+      }
+      else{
+        return true;
+      }
+
+      
+    }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 

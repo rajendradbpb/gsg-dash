@@ -96,6 +96,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('userRequests',{
+    templateUrl:'view/userRequests.html',
+    url:'/userRequests/:user_id',
+    controller : 'User_controller',
+    params : {
+      user_id : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 
   .state('serviceEngineers',{
     templateUrl:'view/serviceEngineers.html',
@@ -133,7 +144,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
-  if($localStorage.token != null){
+  if($localStorage.token != null && $localStorage.loggedin_user){
     $timeout(function(){
       deferred.resolve();
       $rootScope.isLoggedin = true;
@@ -144,6 +155,7 @@ function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   else{
     $timeout(function(){
       $localStorage.token = null;
+      delete $localStorage['loggedin_user'];
       $rootScope.isLoggedin = false;
       deferred.resolve();
       // $state.go('app.mapView');
@@ -152,7 +164,7 @@ function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
 }
 function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
- if($localStorage.token) {
+ if($localStorage.token && $localStorage.loggedin_user) {
     $timeout(function(){
       $rootScope.isLoggedin = true;
         console.log("$state >>>>> ",$state.current.name)
@@ -164,6 +176,7 @@ function checkLoggedout($q, $timeout, $rootScope,$http, $state, $localStorage) {
     $timeout(function(){
       $localStorage.token = null;
       $rootScope.isLoggedin = false;
+      delete $localStorage['loggedin_user'];
       deferred.resolve();
       $state.go('login');
     },200)
