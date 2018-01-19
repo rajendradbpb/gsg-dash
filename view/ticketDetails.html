@@ -74,10 +74,11 @@
           </div>
 
           <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
-            <div class="col-sm-3">
+            <div class="col-sm-3" ng-init="getLocationDetails()">
               <label class=" text-left control-label">Location:</label>
-              <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.orderDtls[0].product.location" readonly>
+              <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
             </div>
+            <div class="col-md-1 col-sm-1"><i class="fa fa-fw fa-map-marker fa-2x marker" ng-click="openMap()"></i></div>
             <div class="col-sm-3">
               <label class=" text-left control-label">UserId:</label>
               <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.orderDtls[0].product.userId" readonly>

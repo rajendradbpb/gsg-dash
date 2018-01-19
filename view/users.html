@@ -14,7 +14,7 @@
         <div class="box box-info">
           <div class="box-body over-x-sc">
             <div class="table-responsive">
-                <table ng-table="userData" class="table table-bordered table-hover table-t-a-c">
+                <table ng-table="userData" class="table table-bordered table-hover userData table-t-a-c">
                     <tr ng-repeat="row in $data">
                         <td data-title="'Sl No'" ng-class="{'not-covered':!row.isCover}">{{ $index + 1}}</td>
                         <td data-title="' Name '" filter="{ 'firstName': 'text'}" sortable="'Name'">{{row.firstName +" "+ row.middleName +" "+ row.lastName}}</td>
