@@ -57,6 +57,14 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getUserByContact: {
+      "url": "/gsg/api/users/contact/:contactNbr",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     getAllServices: {
       "url": "/gsg/api/master/services",
       "method": "GET",
@@ -115,6 +123,15 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    changePassword: {
+      "url": "/gsg/api/users/id/:userId/changePassword",
+      "method": "PUT",
+      "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
    
   }
@@ -135,6 +152,8 @@ angular.module('WebService', [])
     updateUserById: ApiGenerator.getApi('updateUserById'),
     getOrdersCount: ApiGenerator.getApi('getOrdersCount'),
     getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
+    getUserByContact : ApiGenerator.getApi('getUserByContact'),
+    changePassword : ApiGenerator.getApi('changePassword'),
   })
 })
 

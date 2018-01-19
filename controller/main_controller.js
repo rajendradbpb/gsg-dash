@@ -28,6 +28,49 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
     });
   };
 
+  // function to open chnage password modal
+  $scope.changePasswordModal = function(){
+    var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/changePassword.html',
+        controller: 'changePasswordController',
+        size: 'md',
+        resolve: {
+          
+        }
+    });
+
+  };
+
+});
+  // controllerfor change password modal
+app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
+  $scope.password ={};
+  $scope.checkPassword = function(before,after){
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
+    $scope.showPasswordMisMatch = false;
+    if(before !== after){
+    $scope.showPasswordMisMatch = true;
+    }
+    return $scope.showPasswordMisMatch;
+};
+
+  $scope.change = function(){
+    $scope.password.userId = $localStorage.loggedin_user.userId;
+    ApiCall.changePassword($scope.password , function(response){
+      $localStorage.loggedin_user = response.data;
+      $uibModalInstance.close();
+      Util.alertMessage('success','Password Changed successfully..');
+    }, function(error){
+
+      Util.alertMessage('danger','Error in password change');
+      $uibModalInstance.close();
+    });
+   
+  };
+  $scope.cancel = function(){
+    $uibModalInstance.dismiss('cancel');
+  };
 
 });
 app.controller('DatePickerCtrl', ['$scope', function($scope) {

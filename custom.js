@@ -355,6 +355,14 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    getUserByContact: {
+      "url": "/gsg/api/users/contact/:contactNbr",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     getAllServices: {
       "url": "/gsg/api/master/services",
       "method": "GET",
@@ -413,6 +421,15 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    changePassword: {
+      "url": "/gsg/api/users/id/:userId/changePassword",
+      "method": "PUT",
+      "params":{userId:"@userId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
    
   }
@@ -433,6 +450,8 @@ app.filter('capitalize', function() {
     updateUserById: ApiGenerator.getApi('updateUserById'),
     getOrdersCount: ApiGenerator.getApi('getOrdersCount'),
     getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
+    getUserByContact : ApiGenerator.getApi('getUserByContact'),
+    changePassword : ApiGenerator.getApi('changePassword'),
   })
 })
 
@@ -446,34 +465,14 @@ app.filter('capitalize', function() {
       }
     }
 })
-;app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http){
-    // $scope.data = {
-    //     mobile : "admin",
-    //     password : "admin"
-
-
-
-    // };
-    // $scope.login = function(){
-    //     console.log($scope.user);
-    //     if($scope.user.mobile == $scope.data.mobile && $scope.user.password == $scope.data.password){
-    //         console.log("success");
-    //         $rootScope.isLoggedin = true;
-    //         $localStorage.token = true;
-    //         $state.go('dashboard');
-    //     }
-    //     else {
-    //         console.log("error");
-    //     }
-    // };
-
-
-    $scope.user={mobile:'',password:''};
+;app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http,ApiCall,$uibModal){
+    
+    $scope.user={contactNbr:'',password:''};
     $scope.login = function() {
 
         $scope.data = {
             grant_type:"password",
-            username: $scope.user.mobile,
+            username: $scope.user.contactNbr,
             password: $scope.user.password
         };
          $scope.encoded = btoa("android-client:anrdroid-XY7kmzoNzl100");
@@ -491,16 +490,29 @@ app.filter('capitalize', function() {
             console.log(data);
             $localStorage.token = data.data.access_token;
             $rootScope.isLoggedin = true;
-            $state.go('dashboard');
-            console.log($localStorage.token);
+            
+            
+            ApiCall.getUserByContact($scope.user , function(response){
+                $localStorage.loggedin_user = response.data;
+                console.log($localStorage.loggedin_user);
+                $state.go('dashboard');
+                console.log($localStorage.token);
+            }, function(error){
+
+
+            });
+           
 
         },function(error){
-
+            Util.alertMessage('danger','Invalid UserId or Password');
             console.log(error);
         });
-  }
+     };
+    
 
 });
+
+
 ;/*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
@@ -531,6 +543,49 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
     });
   };
 
+  // function to open chnage password modal
+  $scope.changePasswordModal = function(){
+    var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/changePassword.html',
+        controller: 'changePasswordController',
+        size: 'md',
+        resolve: {
+          
+        }
+    });
+
+  };
+
+});
+  // controllerfor change password modal
+app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
+  $scope.password ={};
+  $scope.checkPassword = function(before,after){
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
+    $scope.showPasswordMisMatch = false;
+    if(before !== after){
+    $scope.showPasswordMisMatch = true;
+    }
+    return $scope.showPasswordMisMatch;
+};
+
+  $scope.change = function(){
+    $scope.password.userId = $localStorage.loggedin_user.userId;
+    ApiCall.changePassword($scope.password , function(response){
+      $localStorage.loggedin_user = response.data;
+      $uibModalInstance.close();
+      Util.alertMessage('success','Password Changed successfully..');
+    }, function(error){
+
+      Util.alertMessage('danger','Error in password change');
+      $uibModalInstance.close();
+    });
+   
+  };
+  $scope.cancel = function(){
+    $uibModalInstance.dismiss('cancel');
+  };
 
 });
 app.controller('DatePickerCtrl', ['$scope', function($scope) {

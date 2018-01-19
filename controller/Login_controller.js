@@ -1,31 +1,11 @@
-app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http){
-    // $scope.data = {
-    //     mobile : "admin",
-    //     password : "admin"
-
-
-
-    // };
-    // $scope.login = function(){
-    //     console.log($scope.user);
-    //     if($scope.user.mobile == $scope.data.mobile && $scope.user.password == $scope.data.password){
-    //         console.log("success");
-    //         $rootScope.isLoggedin = true;
-    //         $localStorage.token = true;
-    //         $state.go('dashboard');
-    //     }
-    //     else {
-    //         console.log("error");
-    //     }
-    // };
-
-
-    $scope.user={mobile:'',password:''};
+app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http,ApiCall,$uibModal){
+    
+    $scope.user={contactNbr:'',password:''};
     $scope.login = function() {
 
         $scope.data = {
             grant_type:"password",
-            username: $scope.user.mobile,
+            username: $scope.user.contactNbr,
             password: $scope.user.password
         };
          $scope.encoded = btoa("android-client:anrdroid-XY7kmzoNzl100");
@@ -43,13 +23,26 @@ app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParam
             console.log(data);
             $localStorage.token = data.data.access_token;
             $rootScope.isLoggedin = true;
-            $state.go('dashboard');
-            console.log($localStorage.token);
+            
+            
+            ApiCall.getUserByContact($scope.user , function(response){
+                $localStorage.loggedin_user = response.data;
+                console.log($localStorage.loggedin_user);
+                $state.go('dashboard');
+                console.log($localStorage.token);
+            }, function(error){
+
+
+            });
+           
 
         },function(error){
-
+            Util.alertMessage('danger','Invalid UserId or Password');
             console.log(error);
         });
-  }
+     };
+    
 
 });
+
+
