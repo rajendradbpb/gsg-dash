@@ -124,17 +124,18 @@
                                 <input type="text" class="form-control" placeholder="City" name="city" ng-model="address.city" >
                                 <span class="help-block" ng-show="userUpdateForm.city.$error.required && userUpdateForm.city.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="state" ng-model="address.state" ng-options="state.stateName as state.stateCd for state in stateList" ng-change="getDistrict(user)" required>
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates(address)">
+                                <select class="form-control" name="state" ng-model="address.stateObj" ng-options="state as state.stateCd for state in stateList"  required>
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                 </select>
+
                                 <span class="help-block" ng-show="userUpdateForm.state.$error.required && userUpdateForm.state.$touched"> cannot be empty</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}" ng-init="getAllStates()">
-                                <select class="form-control" name="district" ng-model="address.district"  ng-options="district as district for district in districtList" >
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}">
+                                <select class="form-control" name="district" ng-model="address.district"  ng-options="district as district for district in address.stateObj.districts" >
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
                                 </select>
@@ -173,7 +174,7 @@
                             <label class=" text-left control-label">Price:</label>
                             <input type="text" class="form-control" placeholder="Price" ng-model="scheme.price" readonly>
                         </div>
-            
+
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
@@ -192,13 +193,13 @@
                                 <label class=" text-left control-label">Discount On Spare Part:</label>
                                 <input type="text" class="form-control" placeholder="Discount On Spare part" ng-model="scheme.discountOnSparePart" readonly>
                             </div>
-            
+
                         </div>
                         <div class="col-sm-10 col-md-offset-1" style="padding-top :30px">
                         <div class="box box-success div-vehicle-details">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Scheme Service Details:</h3>
-                                
+
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -215,7 +216,7 @@
                                                 <td data-title="'Service Description '">{{row.serviceDesc}}</td>
                                                 <td data-title="' Free Usage'">{{row.freeUsage}}</td>
                                                 <td data-title="'Used'">{{row.used}}</td>
-                                                
+
                                             </tr>
                                         </table>
                                     </div>
@@ -225,7 +226,7 @@
                         </div>
                     </div>
                     </div>
-                    
+
                 <div class="box box-success div-vehicle-details">
                     <div class="box-header with-border">
                         <h3 class="box-title">Vechile Details:</h3>
