@@ -192,7 +192,7 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+   'HTTP_HOST_APP':'http://101.53.136.166:8090' // unit
    // 'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -234,6 +234,7 @@ app.filter('capitalize', function() {
         "getUsername" : function() {return this.storagePrefix + "username";},
         "getPassword" : function() {return this.storagePrefix + "password";},
         "getIsRemember" : function() {return this.storagePrefix + "isRemember";},
+        "googleApi":"https://maps.googleapis.com/maps/api/geocode/json?latlng={{latLng}}&key=AIzaSyBKH-ESKu39LGz3Q9Uc4GIZTUdhAlhl0gE",
         "hashKey" : "goAppAccount",
         "envData" : {
           "env":"dev",
@@ -690,7 +691,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
                 }) 
          console.log($scope.services);
      };
-});;app.controller("TicketController",function($scope,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
+});;app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.ticket.statuses = ['CREATED','EMERGENCY','RESOLVED','CLOSED'];
@@ -713,6 +714,14 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       });
 
     };
+    $scope.getLocationDetails = function(){
+      var url = Constants.googleApi.replace(/{{latLng}}/g,"20.261876, 85.836220");
+      $http.get(url).then(function(response) {
+        $scope.orderDetails.locationDetails = response.data.results[0] ? response.data.results[0].formatted_address : "No Address available";
+      },function(err){
+        console.error(err);
+      })
+    }
     $scope.openMap = function() {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -879,11 +888,8 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 
             $scope.stateList = response.data;
             for(var i in $scope.stateList){
-              console.log(address);
               if($scope.stateList[i].stateCd.toLocaleLowerCase() == address.state.toLocaleLowerCase()){
                 address.stateObj = $scope.stateList[i];
-                console.log('userState ',address.stateObj );
-                //$scope.getDistrict(user);
               }
             }
         }, function(error){

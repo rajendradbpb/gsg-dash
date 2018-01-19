@@ -5299,3 +5299,9 @@ top: 27px;
 left: 0px;
 cursor: pointer;
 }
+.modal-info.mapview i {
+    float: right;
+    bottom: 27px;
+    position: relative;
+    cursor: pointer;
+}

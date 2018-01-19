@@ -87,11 +87,8 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
 
             $scope.stateList = response.data;
             for(var i in $scope.stateList){
-              console.log(address);
               if($scope.stateList[i].stateCd.toLocaleLowerCase() == address.state.toLocaleLowerCase()){
                 address.stateObj = $scope.stateList[i];
-                console.log('userState ',address.stateObj );
-                //$scope.getDistrict(user);
               }
             }
         }, function(error){
