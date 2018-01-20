@@ -17,11 +17,17 @@
                             <span class="help-block" ng-show="newOrder.vehicle.$error.required && newOrder.vehicle.$touched">Choose a vehicle.</span>
                         </div>
                     </div>
-                    <div  class="form-group p-l-40" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
-                        <div class="col-xs-8 col-md-offset-2">
+                    <div  class="form-group p-l-40 row" ng-class="{'has-error':createTicket.service_type.$touched && createTicket.service_type.$invalid}">
+                        <div class="col-xs-4 col-md-offset-1">
                             <label class="container label-text">
                                 <input type="checkbox" ng-model="newVehicle">
                                 <span class="checkmark"></span>New Vehicle
+                            </label>
+                        </div>
+                        <div class="col-xs-4 col-md-offset-1">
+                            <label class="container label-text">
+                                <input type="checkbox" ng-model="ticket.useUserScheme">
+                                <span class="checkmark"></span>Use Scheme
                             </label>
                         </div>
                     </div>
@@ -40,7 +46,7 @@
                         <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.model.$touched && newOrder.model.$invalid}">
                              <label  class="control-label col-sm-4"> Model:</label>
                             <div class="col-xs-8">
-                                    <select class="form-control" name="model" ng-model="ticket.usrVehicle.vehicle" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
+                                    <select class="form-control" name="model" ng-model="ticket.extVehicle.selectedModel" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
                                         <option value=""><i class="fa fa-sort-desc">Model</i></option>
 
                                     </select>

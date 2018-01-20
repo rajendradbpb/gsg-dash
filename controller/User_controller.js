@@ -74,7 +74,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             controller: 'orderModalController',
             size: 'md',
             resolve: {
-              userId : function(){
+              userData : function(){
                   return userData;
               }
             }
@@ -167,7 +167,7 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             user_id :$stateParams.user_id
         };
         ApiCall.getOrderByUser( obj , function(response){
-            
+
             angular.forEach(response.data,function(item){
                 if(item.requestStatus == "CLOSED"){
                     $scope.orderHistoryList[2].data.push(item);
@@ -338,9 +338,9 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
       };
 });
 //new order modal
-app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userId,$state){
-    $scope.userdata = userId;
-
+app.controller('orderModalController', function($scope,$uibModalInstance,Util,ApiCall,userData,$state){
+    $scope.userdata = userData;
+    $scope.extVehicle = {};
     $scope.getVehicledata = function(){
 
         ApiCall.getVehicleMakeModal(function(response){
@@ -391,21 +391,26 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
     $scope.ok = function(){
 
         console.log($scope.userdata.userId);
-
         // $scope.ticket.vehicle ={};
             $scope.ticket.userId = $scope.userdata.userId;
             $scope.ticket.location = [0,0];
             $scope.ticket.serviceType = "EMERGENCY";
-            // $scope.ticket.vehicle = {
-            //     make :$scope.ticket.make,
-            //     models : $scope.ticket.model,
-            //     subType : $scope.subType,
-            //     type :  $scope.type,
-            //     wheels : $scope.wheels
-            // };
-            console.log($scope.ticket);
-            delete $scope.ticket['extVehicle']; // removing extra parameter
-            ApiCall.createOrder($scope.ticket , function(response){
+            var req = {};
+            if($scope.newVehicle) {
+              req.usrVehicle = {
+                vehicle : $scope.ticket.extVehicle.selectedModel
+              };
+              req.userId = $scope.ticket.userId;
+              req.location = $scope.ticket.location;
+              req.serviceType = $scope.ticket.serviceType;
+              req.useUserScheme = $scope.ticket.useUserScheme;
+            }
+            else{
+              req = $scope.ticket;
+            }
+            console.log(JSON.stringify(req));
+            delete req['extVehicle']; // removing extra parameter
+            ApiCall.createOrder(req , function(response){
                 console.log(response.data.orderId);
                 Util.alertMessage("success","Order Created successfully..");
                 $state.go('ticketDetails',{orderId : response.data.orderId});
