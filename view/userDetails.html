@@ -125,7 +125,7 @@
                                 <span class="help-block" ng-show="userUpdateForm.city.$error.required && userUpdateForm.city.$touched"> cannot be empty</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates(address)">
-                                <select class="form-control" name="state" ng-model="address.stateObj" ng-options="state as state.stateCd for state in stateList"  required>
+                                <select class="form-control" name="state" ng-model="address.stateObj" ng-options="state as state.stateCd for state in stateList"  >
                                     <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
                                     <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                 </select>

@@ -1,14 +1,14 @@
 app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
   $scope.active_tab = "new";
   $scope.ticket = {};
-  $scope.ticket.statuses = [
-    {label:"CREATED",disable:false },
-    {label:"EMERGENCY",disable:false },
-    {label:"RESOLVED",disable:false },
-    {label:"CLOSED",disable:false },
-    {label:"WIP",disable:false },
-    {label:"CANCELLED",disable:false },
-    ];
+  // $scope.ticket.statuses = [
+  //   {label:"CREATED",disable:false },
+  //   {label:"EMERGENCY",disable:false },
+  //   {label:"RESOLVED",disable:false },
+  //   {label:"CLOSED",disable:false },
+  //   {label:"WIP",disable:false },
+  //   {label:"CANCELLED",disable:false },
+  //   ];
   $scope.ticket.serviceEngineer = ['Ricky','Subhra','Rajendra','Srikanta','CustomerSupport'];
   // function to get orders
     $scope.getOrders = function(){
@@ -66,7 +66,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         userId : $scope.orderDetails.userId,
         assignedQueue : $scope.orderDetails.assignedQueue,
         assignedToUserId : $scope.orderDetails.assignedToUserId,
-        requestStatus : $scope.orderDetails.requestStatus,
+        requestStatus : $scope.orderDetails.status,
         orderId : $scope.orderDetails.orderId
       };
       console.log($scope.orderUpdate);
@@ -75,7 +75,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       }, function(error){
         console.log(error);
       });
-      alert("Service yet to be created !!! ");
+      
     }
   //function to get order details by orderid
 
@@ -89,14 +89,14 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log(response);
         $scope.orderDetails = response.data;
         // update status dropdown
-        angular.forEach($scope.ticket.statuses,function(v,k) {
-          if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
-            v.disable = false;
-          }
-          else{
-            v.disable = true;
-          }
-        })
+        // angular.forEach($scope.ticket.statuses,function(v,k) {
+        //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
+        //     v.disable = false;
+        //   }
+        //   else{
+        //     v.disable = true;
+        //   }
+        // })
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
           console.log($scope.vehicleData);
       }, function(error){

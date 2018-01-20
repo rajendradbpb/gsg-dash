@@ -15,12 +15,13 @@
           <div class="box-body over-x-sc">
             <div class="table-responsive">
                 <table ng-table="userData" class="table table-bordered table-hover userData table-t-a-c">
-                    <tr ng-repeat="row in $data">
+                    <tr ng-repeat="row in $data" style="text-align:left">
                         <td data-title="'Sl No'" ng-class="{'not-covered':!row.isCover}">{{ $index + 1}}</td>
+                        <td data-title="' Email'" filter="{ 'email': 'text'}" sortable="'Email'">{{row.email}}</td>
                         <td data-title="' Name '" filter="{ 'firstName': 'text'}" sortable="'Name'">{{row.firstName +" "+ row.middleName +" "+ row.lastName}}</td>
                         <td data-title="' Mobile'" filter="{ 'contactNbr': 'text'}" sortable="'Mobile'">{{row.contactNbr}}</td>
-                        <td data-title="' Email'" filter="{ 'email': 'text'}" sortable="'Email'">{{row.email}}</td>
-                        <td data-title="' No of vehicles'" sortable="'Email'">{{row.userVehicles.length}}</td>
+                        
+                        <!-- <td data-title="' No of vehicles'" sortable="'Email'">{{row.userVehicles.length}}</td> -->
                         <td data-title="'Action'">
                             <div class="btn-group">
                                  <button type="button" class="btn btn-primary"><a href="" class="option-btn" ui-sref="user-details({user_id : row.userId})" >View/Edit</a>

@@ -41,8 +41,16 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-    getAllUsers: {
+  getAllUsers: {
       "url": "/gsg/api/users",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getUserCount: {
+      "url": "/gsg/api/users/count",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -139,6 +147,14 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getUserByRole: {
+      "url": "/gsg/api/users/role/:role",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     changePassword: {
       "url": "/gsg/api/users/id/:userId/changePassword",
       "method": "PUT",
@@ -182,6 +198,8 @@ angular.module('WebService', [])
     getOrderByUser : ApiGenerator.getApi('getOrderByUser'),
     getEngineerList : ApiGenerator.getApi('getEngineerList'),
     updateOrder : ApiGenerator.getApi('updateOrder'),
+    getUserCount :  ApiGenerator.getApi('getUserCount'),
+    getUserByRole :  ApiGenerator.getApi('getUserByRole')
   })
 })
 

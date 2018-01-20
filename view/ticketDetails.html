@@ -293,19 +293,28 @@
           <div class="row">
             <div class="col-sm-3">
               <label class=" text-left control-label">Ticket Status:</label>
-              <select class="form-control" name="ticket_status" ng-model="orderDetails.requestStatus">
-                    <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option>
-                    <option ng-value="statuses.label" ng-repeat="statuses in ticket.statuses" ng-disabled="statuses.disable">{{statuses.label}}</option>
-
+              <select class="form-control" name="ticket_status" ng-model="orderDetails.status">
+                    <!-- <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option> -->
+                    <!-- <option ng-value="statuses.label" ng-repeat="statuses in ticket.statuses" ng-disabled="statuses.disable">{{statuses.label}}</option> -->
+                    <option value="CREATED" ng-if="orderDetails.requestStatus=='REJECTED'">CREATED</option>
+                    <option value="EMERGENCY" ng-if="false">EMERGENCY</option>
+                    <option value="WIP" ng-if="false">WIP</option>
+                    <option value="REJECTED" ng-if="orderDetails.requestStatus=='WIP'">REJECTED</option>
+                    <option value="RESOLVED" ng-if="false">RESOLVED</option>
+                    <option value="CLOSED" ng-if="orderDetails.requestStatus=='RESOLVED'">CLOSED</option>
+                    <option value="CANCELED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
+                     orderDetails.requestStatus=='REJECTED'">CANCELED</option>
+                    
+                    
                 </select>
             </div>
-            <div class="col-sm-3">
+            <!-- <div class="col-sm-3">
               <label class=" text-left control-label">Assigned Queue:</label>
               <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedQueue">
                     <option value="" ng-selected><i class="fa fa-sort-desc">Service Engineer</i></option>
                     <option ng-value="serviceEngineer" ng-repeat="serviceEngineer in ticket.serviceEngineer" >{{serviceEngineer}}</option>
                 </select>
-            </div>
+            </div> -->
             <div class="col-sm-3" ng-init="getEngineerList()">
                 <label class=" text-left control-label">Assign To:</label>
                 <!-- <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId">
@@ -313,7 +322,9 @@
                       <option ng-value="serviceEngineer.userId" ng-repeat="serviceEngineer in engineersList" >{{serviceEngineer.firstName}} {{serviceEngineer.middleName}} {{serviceEngineer.lastName}}</option>
                   </select> -->
 
-                  <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId" ng-options="engineer.userId as engineer.firstName+' '+engineer.middleName +' '+engineer.lastName for engineer in engineersList">
+                  <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedToUserId"
+                   ng-disabled="orderDetails.requestStatus !='CREATED'&& orderDetails.requestStatus!='EMERGENCY'&&orderDetails.requestStatus!='REJECTED' " 
+                  ng-options="engineer.userId as engineer.firstName+' '+engineer.middleName +' '+engineer.lastName for engineer in engineersList">
                 </select>
               </div>
           </div>

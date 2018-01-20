@@ -29,6 +29,28 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
         });
 
     };
+    //function to get user list by role
+    $scope.getUserByRole= function(){
+        var obj ={
+            role: $stateParams.role
+        };
+        //service to get user by role
+        console.log("obj",obj);
+        ApiCall.getUserByRole(obj, function(response){
+            console.log(response.data);
+
+            $scope.userLists =response.data;
+            $scope.userDatas = new NgTableParams;
+            $scope.userDatas.settings({
+                dataset:$scope.userLists
+            })
+        }, function(error){
+
+            console.log(error);
+
+        });
+
+    };
     $scope.profileUpdate = function(form) {
       console.log('form' , form);
 

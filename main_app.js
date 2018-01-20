@@ -96,6 +96,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('userListByRole',{
+    templateUrl:'view/userListByRole.html',
+    url:'/userListByRole/:role',
+    controller : 'User_controller',
+    params : {
+      role : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
 
   .state('serviceEngineers',{
     templateUrl:'view/serviceEngineers.html',

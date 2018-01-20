@@ -27,6 +27,17 @@ app.controller("Main_Controller", function($scope, $state, $rootScope, $uibModal
       console.log(error);
     });
   };
+  // function to get user count
+  $scope.getUserCount = function(){
+    // service to get user count
+    ApiCall.getUserCount(function(response){
+      console.log(response.data);
+      $scope.userCount = response.data;
+    }, function(error){
+      console.log(error);
+    });
+
+  };
 
   // function to open chnage password modal
   $scope.changePasswordModal = function(){

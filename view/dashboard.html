@@ -25,32 +25,23 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>15</h3>
-          <p>Resolved Tickets (To DO)</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-edit"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
     </div>
+    </section>
 
-
-    <div class="col-lg-3 col-xs-6">
+<section class="content" ng-init="getUserCount()">
+  <div class="row">
+    <div class="col-lg-3 col-xs-6" ng-repeat="count in userCount">
       <!-- small box -->
-      <div class="small-box bg-green">
+      <div class="small-box " ng-style="{'background-color': getBgColor($index)}">
         <div class="inner">
-          <h3>20</h3>
+          <h3>{{count.count}}</h3>
 
-          <p>Service Engineers (To DO)</p>
+          <p>{{count.category}}</p>
         </div>
         <div class="icon">
           <i class="fa fa-car"></i>
         </div>
-        <a href="" ui-sref="serviceEngineers" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="" ui-sref="userListByRole({role:count.category})" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
