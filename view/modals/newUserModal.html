@@ -5,10 +5,11 @@
     </div>
     <div class="modal-body ">
       <div class="row">
-        <div class="form-group" ng-class="{'has-error':createUserform.mobileNbr.$touched && createUserform.mobileNbr.$invalid}">
+        <div class="form-group" ng-class="{'has-error':createUserform.mobile.$touched && createUserform.mobile.$invalid}">
           <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
-            <input type="text" class="form-control" ng-model="user.contactNbr" name="mobileNbr" placeholder="Mobile" required/>
-            <span class="help-block" ng-show="createUserform.mobileNbr.$error.required && createUserform.mobileNbr.$touched">Please Enter Mobile No</span>
+            <label>Mobile No:</label>
+              <input type="text" class="form-control" name="mobile" ui-mask="999-999-9999" placeholder="xxx-xxx-xxxx" ng-model="newUser.contactNbr" required>
+            <span class="help-block" ng-show="createUserform.mobile.$error.required && createUserform.mobile.$touched">Please Enter Mobile No</span>
           </div>
         </div>
       </div>
@@ -16,24 +17,36 @@
       <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.email.$touched && createUserform.email.$invalid}">
           <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
-            <input type="text" class="form-control" ng-model="user.email" name="email" placeholder="Email" required/>
+            <input type="text" class="form-control" ng-model="newUser.email" name="email" placeholder="Email" required/>
             <span class="help-block" ng-show="createUserform.email.$error.required && createUserform.email.$touched">Please Enter email</span>
           </div>
         </div>
       </div>
 
       <div class="row">
+        <div classs="form-group" ng-class="{'has-error':createUserform.role.$touched && createUserform.role.$invalid}">
+          <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
+              <select class="form-control" name="role" ng-model="newUser.roles"  required>
+              <option value=""><i class="fa fa-sort-desc">Select Role</i></option>
+              <option value="{{role}}" ng-repeat="role in userRole">{{role}}</option>
+                  
+              </select>
+              <span class="help-block" ng-show="createUserform.role.$error.required && createUserform.role.$touched">Choose a roler</span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.password.$touched && createUserform.password.$invalid}">
           <div class="col-xs-10 col-md-10 col-lg-10 col-sm-10 col-md-offset-1">
             <input type="text" class="form-control" ng-model="user.password" name="password" placeholder="password" required/>
             <span class="help-block" ng-show="createUserform.password.$error.required && createUserform.password.$touched">Please Enter Password</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="modal-footer">
       <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
-      <button class="btn btn-primary pull-right" type="button" ng-click="ok(user)">Submit</button>
+      <button class="btn btn-primary pull-right" type="button" ng-disabled="createUserform.$invalid" ng-click="ok(user)">Submit</button>
 
     </div>
   </form>

@@ -1,4 +1,4 @@
-app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams){
+app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
     //function to get all schemes
     $scope.getSchemes = function(){
         //service to get all schemes..
@@ -14,6 +14,10 @@ app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTab
     $scope.getSchemeDetails =  function(){
         $scope.schemeDetails = $stateParams.schemeDetails;
         console.log( $scope.schemeDetails);
+        if(!$scope.schemeDetails)
+        {
+            $state.go('schemes');
+        }
         $scope.schemeData = new NgTableParams;
         $scope.schemeData.settings({
             dataset : $scope.schemeDetails.schemeServiceDtls

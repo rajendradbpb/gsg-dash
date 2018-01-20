@@ -666,7 +666,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
   $scope.format1 = $scope.formats[5];
 
 }]);
-;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams){
+;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
     //function to get all schemes
     $scope.getSchemes = function(){
         //service to get all schemes..
@@ -682,6 +682,10 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     $scope.getSchemeDetails =  function(){
         $scope.schemeDetails = $stateParams.schemeDetails;
         console.log( $scope.schemeDetails);
+        if(!$scope.schemeDetails)
+        {
+            $state.go('schemes');
+        }
         $scope.schemeData = new NgTableParams;
         $scope.schemeData.settings({
             dataset : $scope.schemeDetails.schemeServiceDtls
@@ -882,7 +886,7 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 ;app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,NgTableParams,FormService,$stateParams,Util,$localStorage,UserService,$uibModal,MasterService,ApiCall){
     $scope.userList = {};
     $scope.active_tab = "BD";
-    var userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
+   
     $scope.tabChange = function(tab){
         $scope.active_tab = tab;
     }
@@ -893,9 +897,7 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
           controller: "createUserModalCtrl",
           size: 'md',
           resolve: {
-            getUsers : function(){
-              return $scope.getAllUsers;
-            }
+           
           }
       });
     }
@@ -1201,12 +1203,21 @@ app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance
       };
 });
 // create user modal , used to create new user by ccare
-app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall,getUsers){
-      $scope.ok = function (user) {
+app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall){
+    $scope.userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
+    $scope.newUser={};
+    
+      $scope.ok = function () {
+          
+        
+          console.log($scope.newUser);
+        //   $scope.newUser.roles = $scope.newUser.roles
+        var req = angular.copy($scope.newUser);
+        req.roles = [req.roles];
         // service call to update vihicle details
-        ApiCall.createUser(user,function(response) {
+        ApiCall.createUser(req,function(response) {
           Util.alertMessage("success","User created");
-          getUsers();// calls parent function to update user listing
+          
           $uibModalInstance.close();
         },function(error){
           Util.alertMessage("warning","Error in user creation");
