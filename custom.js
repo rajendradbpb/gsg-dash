@@ -891,6 +891,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       ApiCall.getEngineerList(function(response){
         console.log(response.data);
         $scope.engineersList = response.data;
+        $scope.engineersListMaster = angular.copy($scope.engineersList);
         console.log( $scope.engineersList);
         // calling states
         MasterModel.getStates(function(states) {
@@ -902,33 +903,35 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     };
     // used to filter service engineer based on selected state and district
     $scope.filterEngineer = function(state,district){
+      if(!state)
+        return;
       console.log(state,district);
       
       var enggState = [];
       var enggDistrict = [];
-      for(var i in $scope.engineersList){
+      for(var i in $scope.engineersListMaster){
         
         // if($scope.engineersList[i].seerviceArea.state)
         //   {
         //     console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
         //   }
-        if(state && $scope.engineersList[i].seerviceArea.state && $scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
-          enggState.push($scope.engineersList[i]);
+        if(state && $scope.engineersListMaster[i].seerviceArea.state && $scope.engineersListMaster[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
+          enggState.push($scope.engineersListMaster[i]);
         }
-        if(district && $scope.engineersList[i].seerviceArea.district && $scope.engineersList[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
-          enggDistrict.push($scope.engineersList[i]);
+        if(district && $scope.engineersListMaster[i].seerviceArea.district && $scope.engineersListMaster[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
+          enggDistrict.push($scope.engineersListMaster[i]);
         }
       }
       console.log($scope.engineersList);
       enggState = enggState.filter((v, i, a) => a.indexOf(v) === i);
       enggDistrict = enggDistrict.filter((v, i, a) => a.indexOf(v) === i);
-      $scope.engineersList = intersection_destructive(enggState,enggDistrict);
+      $scope.engineersList = intersection_destructive(enggState,enggDistrict,district);
       console.log($scope.engineersList);
     }
-    function intersection_destructive(a, b)
+    function intersection_destructive(a, b,district)
     {
       var result = [];
-      if(!b.length)
+      if(!b.length && !district)
         return a;
       while( a.length > 0 && b.length > 0 )
       {  
