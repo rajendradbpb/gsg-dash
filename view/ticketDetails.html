@@ -1,6 +1,6 @@
 <section class="content-header m-b-40">
   <h1>
-      Ticket Details
+    Request ''{{orderDetails.orderId}}'' Details
 
     </h1>
 </section>
@@ -22,29 +22,13 @@
                 <label class=" text-left control-label">Contact No.:</label>
                 <input type="text" class="form-control" placeholder="contact no." ng-model="orderDetails.contactNbr" readonly>
             </div>
-            <div class="col-sm-3">
+            <!-- <div class="col-sm-3">
                 <label class=" text-left control-label">User Id:</label>
                 <input type="text" class="form-control" placeholder="User Id" ng-model="orderDetails.userId" readonly>
-            </div>
+            </div> -->
             <div class="col-sm-3">
               <label class=" text-left control-label">Order Id:</label>
               <input type="text" class="form-control" placeholder="Order Id" ng-model="orderDetails.orderId" readonly>
-            </div>
-
-
-          </div>
-          <div class="row">
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Requested Status:</label>
-              <input type="text" class="form-control" placeholder="Requested Status" ng-model="orderDetails.requestStatus" readonly>
-            </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Product Type:</label>
-              <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.produtType" readonly>
-            </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Service Date:</label>
-              <input type="text" class="form-control" placeholder="Service Date" ng-model="orderDetails.serviceDate" readonly>
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Total Price:</label>
@@ -52,6 +36,7 @@
             </div>
 
           </div>
+         
         </div>
       </div>
 
@@ -61,7 +46,7 @@
           <h3 class="box-title">Product Details</h3>
         </div>
         <div class="box-body">
-          <div class="row" ng-if="orderDetails.produtType == 'EMERGENCY' ">
+          <!-- <div class="row" ng-if="orderDetails.produtType == 'EMERGENCY' ">
             <div class="col-sm-3" ng-init="getLocationDetails()">
               <label class=" text-left control-label">Location:</label>
               <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
@@ -71,19 +56,26 @@
               <label class=" text-left control-label">UserId:</label>
               <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.orderDtls[0].product.userId" readonly>
             </div>
+          </div> -->
+          <div class="row">
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Product Type:</label>
+                <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.produtType" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Service Date:</label>
+                <input type="text" class="form-control" placeholder="Service Date" ng-model="orderDetails.serviceDate" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Requested Status:</label>
+                <input type="text" class="form-control" placeholder="Requested Status" ng-model="orderDetails.requestStatus" readonly>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Use User Scheme:</label>
+                <input type="text" class="form-control" placeholder="Use User Scheme" ng-model="orderDetails.orderDtls[0].product.useUserScheme" readonly>
+              </div>
           </div>
-
-          <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
-            <div class="col-sm-3" ng-init="getLocationDetails()">
-              <label class=" text-left control-label">Location:</label>
-              <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
-            </div>
-            <div class="col-md-1 col-sm-1"><i class="fa fa-fw fa-map-marker fa-2x marker" ng-click="openMap()"></i></div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">UserId:</label>
-              <input type="text" class="form-control" placeholder="Product Type" ng-model="orderDetails.orderDtls[0].product.userId" readonly>
-            </div>
-          </div>
+         
 
           <div class="row" ng-if="orderDetails.produtType == 'SCHEME' ">
             <div class="col-sm-3">
@@ -156,17 +148,21 @@
                 <hr/>
                 <!-- services loop in order details -->
                 <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
-                  <div class="col-md-3" ng-repeat="service in orderDtls.product.services">
-                    <label class=" text-left control-label">category</label>
-                    <input type="text" class="form-control" ng-model="service.category" readonly>
-
-                    <label class=" text-left control-label">subCategory</label>
-                    <input type="text" class="form-control" ng-model="service.subCategory" readonly>
-
+                  <div ng-repeat="service in orderDtls.product.services">
+                   <div class="col-md-4" >
+                      <label class=" text-left control-label">category</label>
+                      <input type="text" class="form-control" ng-model="service.category" readonly>
+                    </div>
+                    <div class="col-md-4">
+                      <label class=" text-left control-label">subCategory</label>
+                      <input type="text" class="form-control" ng-model="service.subCategory" readonly>
+                    </div>
+                    <div class="col-md-4">
                     <label class=" text-left control-label">price</label>
-                    <label class=" text-left control-label">{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}</label>
+                    <input type="text" class="form-control"ng-value="{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}">
                     <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
                   </div>
+                </div> 
                 </div>
                 <!-- services loop in order details -->
                 <div class="row" ng-if="orderDetails.produtType == 'EMERGENCY' ">
@@ -268,20 +264,17 @@
               <input type="text" class="form-control" placeholder="Expiry Date" ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" readonly>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-sm-3">
               <label class=" text-left control-label">Service Type:</label>
               <input type="text" class="form-control" placeholder="Service Type" ng-model="orderDetails.orderDtls[0].product.serviceType" readonly>
             </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Use User Scheme:</label>
-              <input type="text" class="form-control" placeholder="Use User Scheme" ng-model="orderDetails.orderDtls[0].product.useUserScheme" readonly>
-            </div>
+           
             <div class="col-sm-3">
               <label class=" text-left control-label">Service Date:</label>
               <input type="text" class="form-control" placeholder="Use User Scheme" ng-model="orderDetails.orderDtls[0].product.serviceDate" readonly>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- ticket status and assigned to service engineer -->
@@ -291,23 +284,44 @@
         </div>
         <div class="box-body">
           <div class="row">
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Ticket Status:</label>
-              <select class="form-control" name="ticket_status" ng-model="orderDetails.status">
-                    <!-- <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option> -->
-                    <!-- <option ng-value="statuses.label" ng-repeat="statuses in ticket.statuses" ng-disabled="statuses.disable">{{statuses.label}}</option> -->
-                    <option value="CREATED" ng-if="orderDetails.requestStatus=='REJECTED'">CREATED</option>
-                    <option value="EMERGENCY" ng-if="false">EMERGENCY</option>
-                    <option value="WIP" ng-if="false">WIP</option>
-                    <option value="REJECTED" ng-if="orderDetails.requestStatus=='WIP'">REJECTED</option>
-                    <option value="RESOLVED" ng-if="false">RESOLVED</option>
-                    <option value="CLOSED" ng-if="orderDetails.requestStatus=='RESOLVED'">CLOSED</option>
-                    <option value="CANCELED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
-                     orderDetails.requestStatus=='REJECTED'">CANCELED</option>
-                    
-                    
+              <div class="col-sm-3">   
+                <label class=" text-left control-label"> Order Location:</label>
+                <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
+              </div>
+               <div class="col-md-1 col-sm-1"><i class="fa fa-fw fa-map-marker fa-2x marker" ng-click="openMap()"></i></div>
+             
+              <div class="col-sm-3">
+                <label class=" text-left control-label">Request Status:</label>
+                <select class="form-control" name="ticket_status" ng-model="orderDetails.status">
+                      <!-- <option value="" ng-selected><i class="fa fa-sort-desc">Status</i></option> -->
+                      <!-- <option ng-value="statuses.label" ng-repeat="statuses in ticket.statuses" ng-disabled="statuses.disable">{{statuses.label}}</option> -->
+                      <option value="">Give Status</option>
+                      <option value="CREATED" ng-if="orderDetails.requestStatus=='REJECTED'">CREATED</option>
+                      <option value="EMERGENCY" ng-if="false">EMERGENCY</option>
+                      <option value="WIP" ng-if="false">WIP</option>
+                      <option value="REJECTED" ng-if="orderDetails.requestStatus=='WIP'">REJECTED</option>
+                      <option value="RESOLVED" ng-if="false">RESOLVED</option>
+                      <option value="CLOSED" ng-if="orderDetails.requestStatus=='RESOLVED'">CLOSED</option>
+                      <option value="CANCELED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
+                        orderDetails.requestStatus=='REJECTED'">CANCELED</option>
+                      
+                      
+                  </select>
+              </div>
+          </div>
+          <div class="row">  
+              <div class="col-sm-3">
+                <label class=" text-left control-label">State of Engineer:</label>
+                <select class="form-control" name="state">
+                  <option value="">Choose State</option>
                 </select>
-            </div>
+              </div>
+              <div class="col-sm-3">
+                <label class=" text-left control-label">District of Engineer:</label>
+                <select class="form-control" name="district">
+                  <option value="">Choose District</option>
+                </select>
+              </div>
             <!-- <div class="col-sm-3">
               <label class=" text-left control-label">Assigned Queue:</label>
               <select class="form-control" name="insurance_status" ng-model="orderDetails.assignedQueue">
@@ -327,6 +341,7 @@
                   ng-options="engineer.userId as engineer.firstName+' '+engineer.middleName +' '+engineer.lastName for engineer in engineersList">
                 </select>
               </div>
+             
           </div>
         </div>
 

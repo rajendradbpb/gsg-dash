@@ -901,7 +901,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         userId : $scope.orderDetails.userId,
         assignedQueue : $scope.orderDetails.assignedQueue,
         assignedToUserId : $scope.orderDetails.assignedToUserId,
-        requestStatus : $scope.orderDetails.status,
+        requestStatus : $scope.orderDetails.status==null ? $scope.orderDetails.requestStatus:$scope.orderDetails.status,
         orderId : $scope.orderDetails.orderId
       };
       console.log($scope.orderUpdate);
@@ -923,6 +923,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
+        $scope.getLocationDetails();
         // update status dropdown
         // angular.forEach($scope.ticket.statuses,function(v,k) {
         //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
@@ -950,16 +951,16 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     };
 
     // returns true to disabe option , based on current request status
-    $scope.checkDisablity = function(statusValue,requestStatus){
-      if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
-        return false;
-      }
-      else{
-        return true;
-      }
+    // $scope.checkDisablity = function(statusValue,requestStatus){
+    //   if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
+    //     return false;
+    //   }
+    //   else{
+    //     return true;
+    //   }
 
       
-    }
+    // }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 
@@ -1336,7 +1337,26 @@ app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance
 });
 // create user modal , used to create new user by ccare
 app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall){
-    $scope.userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
+    $scope.userRole = ['ROLE_USER','ROLE_ENGINEER','ROLE_OPERATION'];
+    $scope.getAllStates = function(){
+        $scope.stateList = [];
+        ApiCall.getAllStates(function(response){
+            console.log(response);
+            $scope.stateList = response.data;
+        },function(error){
+            console.log(error);
+        });
+    };
+    $scope.getDistrict = function(state){
+        $scope.districtList = [];
+        angular.forEach( $scope.stateList,function(item){
+            if(item.stateCd == state){
+                $scope.districtList = item.districts;
+                // vm.type = item.type;
+            }
+        });
+    };
+     ApiCall.getAllStates
     $scope.newUser={};
     
       $scope.ok = function () {
@@ -1349,7 +1369,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
         // service call to update vihicle details
         ApiCall.createUser(req,function(response) {
           Util.alertMessage("success","User created");
-          
+          console.log(response.data);
           $uibModalInstance.close();
         },function(error){
           Util.alertMessage("warning","Error in user creation");

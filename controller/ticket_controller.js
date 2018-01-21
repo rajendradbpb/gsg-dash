@@ -66,7 +66,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         userId : $scope.orderDetails.userId,
         assignedQueue : $scope.orderDetails.assignedQueue,
         assignedToUserId : $scope.orderDetails.assignedToUserId,
-        requestStatus : $scope.orderDetails.status,
+        requestStatus : $scope.orderDetails.status==null ? $scope.orderDetails.requestStatus:$scope.orderDetails.status,
         orderId : $scope.orderDetails.orderId
       };
       console.log($scope.orderUpdate);
@@ -88,6 +88,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
+        $scope.getLocationDetails();
         // update status dropdown
         // angular.forEach($scope.ticket.statuses,function(v,k) {
         //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {
@@ -115,16 +116,16 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     };
 
     // returns true to disabe option , based on current request status
-    $scope.checkDisablity = function(statusValue,requestStatus){
-      if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
-        return false;
-      }
-      else{
-        return true;
-      }
+    // $scope.checkDisablity = function(statusValue,requestStatus){
+    //   if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
+    //     return false;
+    //   }
+    //   else{
+    //     return true;
+    //   }
 
       
-    }
+    // }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 

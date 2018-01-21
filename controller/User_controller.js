@@ -341,7 +341,26 @@ app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance
 });
 // create user modal , used to create new user by ccare
 app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall){
-    $scope.userRole = ['ROLE_USER','ROLE_ADMIN','ROLE_ENGINEER','ROLE_OPERATION'];
+    $scope.userRole = ['ROLE_USER','ROLE_ENGINEER','ROLE_OPERATION'];
+    $scope.getAllStates = function(){
+        $scope.stateList = [];
+        ApiCall.getAllStates(function(response){
+            console.log(response);
+            $scope.stateList = response.data;
+        },function(error){
+            console.log(error);
+        });
+    };
+    $scope.getDistrict = function(state){
+        $scope.districtList = [];
+        angular.forEach( $scope.stateList,function(item){
+            if(item.stateCd == state){
+                $scope.districtList = item.districts;
+                // vm.type = item.type;
+            }
+        });
+    };
+     ApiCall.getAllStates
     $scope.newUser={};
     
       $scope.ok = function () {
@@ -354,7 +373,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
         // service call to update vihicle details
         ApiCall.createUser(req,function(response) {
           Util.alertMessage("success","User created");
-          
+          console.log(response.data);
           $uibModalInstance.close();
         },function(error){
           Util.alertMessage("warning","Error in user creation");
