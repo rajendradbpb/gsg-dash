@@ -165,9 +165,11 @@ angular.module('WebService', [])
       },
     },
     updateOrder: {
-      "url": "/gsg/api/orders/:orderId",
+      "url": "/gsg/api/orders/:loginUserId/:orderId",
       "method": "PUT",
-      "params":{orderId:"@orderId"},
+      "params":{orderId:"@orderId",
+        loginUserId:"@loginUserId"
+      },
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'

@@ -104,18 +104,14 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
 
     $scope.getAllStates = function(address){
         $scope.stateList = [];
-        ApiCall.getAllStates(function(response){
-
-            $scope.stateList = response.data;
+        MasterModel.getStates(function(states) {
+            $scope.stateList = states;
             for(var i in $scope.stateList){
               if($scope.stateList[i].stateCd.toLocaleLowerCase() == address.state.toLocaleLowerCase()){
                 address.stateObj = $scope.stateList[i];
               }
             }
-        }, function(error){
-
-        });
-
+          })
     };
     $scope.getDistrict = function(user){
         $scope.districtList = [];
@@ -340,17 +336,12 @@ app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance
       };
 });
 // create user modal , used to create new user by ccare
-app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall){
+app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall,MasterModel){
     $scope.userRole = ['ROLE_USER','ROLE_ENGINEER','ROLE_OPERATION'];
-    $scope.getAllStates = function(){
-        $scope.stateList = [];
-        ApiCall.getAllStates(function(response){
-            console.log(response);
-            $scope.stateList = response.data;
-        },function(error){
-            console.log(error);
-        });
-    };
+    $scope.stateList = [];
+    MasterModel.getStates(function(states) {
+        $scope.stateList = states;
+      })
     $scope.getDistrict = function(state){
         $scope.districtList = [];
         angular.forEach( $scope.stateList,function(item){
@@ -360,7 +351,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
             }
         });
     };
-     ApiCall.getAllStates
+     
     $scope.newUser={};
     
       $scope.ok = function () {

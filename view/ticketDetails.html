@@ -116,7 +116,7 @@
       <!-- order details array -->
       <div class="box box-success ">
         <div class="box-header with-border">
-          <h3 class="box-title">Service details</h3>
+          <h3 class="box-title">Requset details</h3>
         </div>
         <div class="box-body">
           <div class="row">
@@ -149,19 +149,23 @@
                 <!-- services loop in order details -->
                 <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
                   <div ng-repeat="service in orderDtls.product.services">
-                   <div class="col-md-4" >
+                   <div class="col-md-3" >
                       <label class=" text-left control-label">category</label>
                       <input type="text" class="form-control" ng-model="service.category" readonly>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <label class=" text-left control-label">subCategory</label>
                       <input type="text" class="form-control" ng-model="service.subCategory" readonly>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                     <label class=" text-left control-label">price</label>
                     <input type="text" class="form-control"ng-value="{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}">
                     <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
                   </div>
+                  <div class="col-md-3">
+                      <label class=" text-left control-label">Free Applied</label>
+                      <input type="text" class="form-control" ng-model="service.freeApplied" readonly>
+                    </div>
                 </div> 
                 </div>
                 <!-- services loop in order details -->
@@ -312,13 +316,13 @@
           <div class="row">  
               <div class="col-sm-3">
                 <label class=" text-left control-label">State of Engineer:</label>
-                <select class="form-control" name="state">
+                <select class="form-control" name="state" ng-model="orderDetails.state" ng-change="filterEngineer(orderDetails.state,orderDetails.district)" ng-options="state as state.stateCd for state in stateList">
                   <option value="">Choose State</option>
                 </select>
               </div>
               <div class="col-sm-3">
                 <label class=" text-left control-label">District of Engineer:</label>
-                <select class="form-control" name="district">
+                <select class="form-control" name="district" ng-model="orderDetails.district" ng-change="filterEngineer(orderDetails.state,orderDetails.district)" ng-options="district as district for district in orderDetails.state.districts">
                   <option value="">Choose District</option>
                 </select>
               </div>

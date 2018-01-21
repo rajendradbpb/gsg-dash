@@ -223,7 +223,7 @@ app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
    'HTTP_HOST_APP':'http://101.53.136.166:8090' // unit
-   // 'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
+  //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
 ;app.filter('dateformat', function(){
@@ -494,9 +494,11 @@ app.filter('capitalize', function() {
       },
     },
     updateOrder: {
-      "url": "/gsg/api/orders/:orderId",
+      "url": "/gsg/api/orders/:loginUserId/:orderId",
       "method": "PUT",
-      "params":{orderId:"@orderId"},
+      "params":{orderId:"@orderId",
+        loginUserId:"@loginUserId"
+      },
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -833,7 +835,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
                 }) 
          console.log($scope.services);
      };
-});;app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
+});;app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,MasterModel,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall,$localStorage){
   $scope.active_tab = "new";
   $scope.ticket = {};
   // $scope.ticket.statuses = [
@@ -890,14 +892,38 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         console.log(response.data);
         $scope.engineersList = response.data;
         console.log( $scope.engineersList);
+        // calling states
+        MasterModel.getStates(function(states) {
+          $scope.stateList = states;
+        })
       } , function(error){
         console.log(error);
       });
     };
+    // used to filter service engineer based on selected state and district
+    $scope.filterEngineer = function(state,district){
+      console.log(state,district);
+      var tempList = [];
+      for(var i in $scope.engineersList){
+        if($scope.engineersList[i].seerviceArea.state)
+          {
+            console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
+          }
+        if(state && $scope.engineersList[i].seerviceArea.state && $scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
+          tempList.push($scope.engineersList[i]);
+        }
+        if(district && $scope.engineersList[i].seerviceArea.district && $scope.engineersList[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
+          tempList.push($scope.engineersList[i]);
+        }
+      }
+      tempList = tempList.filter((v, i, a) => a.indexOf(v) === i)
+      $scope.engineersList = tempList;
+    }
     //funtion to update order status
     $scope.updateOrder = function() {
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
+        loginUserId :$localStorage.loggedin_user.userId,
         userId : $scope.orderDetails.userId,
         assignedQueue : $scope.orderDetails.assignedQueue,
         assignedToUserId : $scope.orderDetails.assignedToUserId,
@@ -907,8 +933,11 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       console.log($scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
+        Util.alertMessage('success', 'Order assigned successfully...');
+        $state.go("dashboard");
       }, function(error){
         console.log(error);
+        Util.alertMessage('danger', 'Error in order assign...');
       });
       
     }
@@ -1100,18 +1129,14 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
 
     $scope.getAllStates = function(address){
         $scope.stateList = [];
-        ApiCall.getAllStates(function(response){
-
-            $scope.stateList = response.data;
+        MasterModel.getStates(function(states) {
+            $scope.stateList = states;
             for(var i in $scope.stateList){
               if($scope.stateList[i].stateCd.toLocaleLowerCase() == address.state.toLocaleLowerCase()){
                 address.stateObj = $scope.stateList[i];
               }
             }
-        }, function(error){
-
-        });
-
+          })
     };
     $scope.getDistrict = function(user){
         $scope.districtList = [];
@@ -1336,17 +1361,12 @@ app.controller('vehicleDetailsModalController',function($scope,$uibModalInstance
       };
 });
 // create user modal , used to create new user by ccare
-app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall){
+app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiCall,MasterModel){
     $scope.userRole = ['ROLE_USER','ROLE_ENGINEER','ROLE_OPERATION'];
-    $scope.getAllStates = function(){
-        $scope.stateList = [];
-        ApiCall.getAllStates(function(response){
-            console.log(response);
-            $scope.stateList = response.data;
-        },function(error){
-            console.log(error);
-        });
-    };
+    $scope.stateList = [];
+    MasterModel.getStates(function(states) {
+        $scope.stateList = states;
+      })
     $scope.getDistrict = function(state){
         $scope.districtList = [];
         angular.forEach( $scope.stateList,function(item){
@@ -1356,7 +1376,7 @@ app.controller('createUserModalCtrl',function($scope,$uibModalInstance,Util,ApiC
             }
         });
     };
-     ApiCall.getAllStates
+     
     $scope.newUser={};
     
       $scope.ok = function () {
@@ -1574,7 +1594,8 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
 
 ;app.factory("MasterModel",function(ApiCall) {
   var masterModel = {
-    schemes : null
+    schemes : [],
+    states:[]
   };
   masterModel.getSchemes = function() {
     if(this.schemes) {
@@ -1588,6 +1609,21 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
       },function(err){
         console.error("error in getting schemes ",err);
         return null;
+      })
+    }
+  }
+  masterModel.getStates = function(callback) {
+    if(masterModel.states.length) {
+      callback(masterModel.states);
+    }
+    else{
+      // api call to get server data and keep in schemes
+      ApiCall.getAllStates(function(data){
+        masterModel.states = data.data;
+        callback(masterModel.states) ;
+      },function(err){
+        console.log("Error in getting states");
+        callback(masterModel.states) ;
       })
     }
   }

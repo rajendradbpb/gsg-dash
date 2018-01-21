@@ -1,4 +1,4 @@
-app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall){
+app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,MasterModel,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall,$localStorage){
   $scope.active_tab = "new";
   $scope.ticket = {};
   // $scope.ticket.statuses = [
@@ -55,14 +55,38 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log(response.data);
         $scope.engineersList = response.data;
         console.log( $scope.engineersList);
+        // calling states
+        MasterModel.getStates(function(states) {
+          $scope.stateList = states;
+        })
       } , function(error){
         console.log(error);
       });
     };
+    // used to filter service engineer based on selected state and district
+    $scope.filterEngineer = function(state,district){
+      console.log(state,district);
+      var tempList = [];
+      for(var i in $scope.engineersList){
+        if($scope.engineersList[i].seerviceArea.state)
+          {
+            console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
+          }
+        if(state && $scope.engineersList[i].seerviceArea.state && $scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
+          tempList.push($scope.engineersList[i]);
+        }
+        if(district && $scope.engineersList[i].seerviceArea.district && $scope.engineersList[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
+          tempList.push($scope.engineersList[i]);
+        }
+      }
+      tempList = tempList.filter((v, i, a) => a.indexOf(v) === i)
+      $scope.engineersList = tempList;
+    }
     //funtion to update order status
     $scope.updateOrder = function() {
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
+        loginUserId :$localStorage.loggedin_user.userId,
         userId : $scope.orderDetails.userId,
         assignedQueue : $scope.orderDetails.assignedQueue,
         assignedToUserId : $scope.orderDetails.assignedToUserId,
@@ -72,8 +96,11 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       console.log($scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
+        Util.alertMessage('success', 'Order assigned successfully...');
+        $state.go("dashboard");
       }, function(error){
         console.log(error);
+        Util.alertMessage('danger', 'Error in order assign...');
       });
       
     }
