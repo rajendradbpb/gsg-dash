@@ -147,7 +147,7 @@
                 </div>
                 <hr/>
                 <!-- services loop in order details -->
-                <div class="row" ng-if="orderDetails.produtType == 'SERVICE' ">
+                <div class="row p-15" ng-if="orderDetails.produtType == 'SERVICE' ">
                   <div ng-repeat="service in orderDtls.product.services">
                    <div class="col-md-3" >
                       <label class=" text-left control-label">category</label>
@@ -162,9 +162,9 @@
                     <input type="text" class="form-control"ng-value="{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}">
                     <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" ng-class="{'has-success':service.freeApplied}">
                       <label class=" text-left control-label">Free Applied</label>
-                      <input type="text" class="form-control" ng-model="service.freeApplied" readonly>
+                      <input type="text" class="form-control" ng-model="service.freeApplied ? 'Yes' : 'No'" readonly >
                     </div>
                 </div> 
                 </div>
@@ -185,15 +185,21 @@
 
                 <!-- scheme loop in order details -->
                 <div class="row" ng-if="orderDetails.produtType == 'SCHEME' ">
-                  <div class="col-md-3" ng-repeat="scheme in orderDtls.product.schemeServiceDtls">
+                  <div class="row  p-15" ng-repeat="scheme in orderDtls.product.schemeServiceDtls">
+                      <div class="col-md-3" >
                     <label class=" text-left control-label">Service Desc</label>
                     <input type="text" class="form-control" ng-model="scheme.serviceDesc" readonly>
+                  </div>
 
+                  <div class="col-md-3" >
                     <label class=" text-left control-label">Free Usage</label>
                     <input type="text" class="form-control" ng-model="scheme.freeUsage" readonly>
+                  </div>
+
+                  <div class="col-md-3" >                
                     <label class=" text-left control-label">Used</label>
                     <input type="text" class="form-control" ng-model="scheme.used" readonly>
-
+                  </div>  
 
                   </div>
                 </div>
