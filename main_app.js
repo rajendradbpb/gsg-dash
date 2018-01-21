@@ -36,6 +36,25 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('forgotPassword',{
+    templateUrl:'view/common/forgotPassword.html',
+    controller:'Login_controller',
+    url:'/forgotPassword',
+    resolve: {
+      logout: checkLoggedin
+    }
+  })
+  .state('reset-pwd',{
+    templateUrl:'view/common/reset-pwd.html',
+    controller:'Login_controller',
+    url:'/reset-pwd',
+    params : {
+      contactNbr : null
+    },
+    resolve: {
+      logout: checkLoggedin
+    }
+  })
   .state('orders',{
     templateUrl:'view/orders.html',
     url:'/orders/:status',

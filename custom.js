@@ -36,6 +36,25 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedin
     }
   })
+  .state('forgotPassword',{
+    templateUrl:'view/common/forgotPassword.html',
+    controller:'Login_controller',
+    url:'/forgotPassword',
+    resolve: {
+      logout: checkLoggedin
+    }
+  })
+  .state('reset-pwd',{
+    templateUrl:'view/common/reset-pwd.html',
+    controller:'Login_controller',
+    url:'/reset-pwd',
+    params : {
+      contactNbr : null
+    },
+    resolve: {
+      logout: checkLoggedin
+    }
+  })
   .state('orders',{
     templateUrl:'view/orders.html',
     url:'/orders/:status',
@@ -483,8 +502,25 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    preresetpwd: {
+      "url": "/gsg/preresetpwd/:contactNbr",
+      "params":{contactNbr:"@contactNbr"},
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    resetpwd: {
+      "url": "/gsg/resetpwd/",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
-   
+
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -509,7 +545,9 @@ app.filter('capitalize', function() {
     getEngineerList : ApiGenerator.getApi('getEngineerList'),
     updateOrder : ApiGenerator.getApi('updateOrder'),
     getUserCount :  ApiGenerator.getApi('getUserCount'),
-    getUserByRole :  ApiGenerator.getApi('getUserByRole')
+    getUserByRole :  ApiGenerator.getApi('getUserByRole'),
+    preresetpwd :  ApiGenerator.getApi('preresetpwd'),
+    resetpwd :  ApiGenerator.getApi('resetpwd'),
   })
 })
 
@@ -523,8 +561,8 @@ app.filter('capitalize', function() {
       }
     }
 })
-;app.controller("Login_controller",function($scope,$state,$rootScope,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http,ApiCall,$uibModal){
-    
+;app.controller("Login_controller",function($scope,$state,$rootScope,$stateParams,NgTableParams,CONFIG,Util,$localStorage,$httpParamSerializer,$http,ApiCall,$uibModal){
+
     $scope.user={contactNbr:'',password:''};
     $scope.login = function() {
 
@@ -548,8 +586,8 @@ app.filter('capitalize', function() {
             console.log(data);
             $localStorage.token = data.data.access_token;
             $rootScope.isLoggedin = true;
-            
-            
+
+
             ApiCall.getUserByContact($scope.user , function(response){
                 $localStorage.loggedin_user = response.data;
                 console.log($localStorage.loggedin_user);
@@ -559,18 +597,50 @@ app.filter('capitalize', function() {
 
 
             });
-           
+
 
         },function(error){
             Util.alertMessage('danger','Invalid UserId or Password');
             console.log(error);
         });
      };
-    
+     $scope.resetInit = function() {
+       $scope.reset = {
+         contactNbr: $stateParams.contactNbr
+       };
+     }
+     $scope.preresetpwd = function(contactNbr){
+        var obj = {};
+        obj.contactNbr = contactNbr;
+        ApiCall.preresetpwd(obj,function(response){
+            if(response.status == "OK"){
+                $state.go('reset-pwd',{"contactNbr": obj.contactNbr});
+            }
+            console.log(response);
+        },function(error){
+            if(error.status == 404){
+                $scope.alertPop('Error' , error.data.message);
+            }
+            console.log(error);
+        });
+    }
+     $scope.resetpwd = function(resetObj){
+        ApiCall.resetpwd(resetObj, function(response){
+            if(response.status == "OK"){
+                Util.alertMessage("success","Password Reset Successfully");
+                $state.go("login");
+            }
+            console.log(response);
+        },function(error){
+            if(error.status == 404){
+                $scope.alertPop('Error' , error.data.message);
+            }
+            console.log(error);
+        });
+    }
+
 
 });
-
-
 ;/*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/

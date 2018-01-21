@@ -173,8 +173,25 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    preresetpwd: {
+      "url": "/gsg/preresetpwd/:contactNbr",
+      "params":{contactNbr:"@contactNbr"},
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    resetpwd: {
+      "url": "/gsg/resetpwd/",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
-   
+
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -199,7 +216,9 @@ angular.module('WebService', [])
     getEngineerList : ApiGenerator.getApi('getEngineerList'),
     updateOrder : ApiGenerator.getApi('updateOrder'),
     getUserCount :  ApiGenerator.getApi('getUserCount'),
-    getUserByRole :  ApiGenerator.getApi('getUserByRole')
+    getUserByRole :  ApiGenerator.getApi('getUserByRole'),
+    preresetpwd :  ApiGenerator.getApi('preresetpwd'),
+    resetpwd :  ApiGenerator.getApi('resetpwd'),
   })
 })
 

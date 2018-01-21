@@ -95,7 +95,7 @@ margin-top: 11px;
  }
   .active{
     border-left-color: #00a65a;
-  } 
+  }
 /*
  * Content Wrapper - contains the main content
  * ```.right-side has been deprecated as of v2.0.0 in favor of .content-wrapper  ```
@@ -5278,6 +5278,10 @@ table.text-center th {
 /*overdding modal styling starts*/
 .modal-content input[type=text] {
   color:#000 !important;
+}
+.a-bold{
+  color: #204d74;
+  font-weight: bold;
 }
 
 /*overdding modal styling ends*/
