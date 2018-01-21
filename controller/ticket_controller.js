@@ -66,21 +66,45 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     // used to filter service engineer based on selected state and district
     $scope.filterEngineer = function(state,district){
       console.log(state,district);
-      var tempList = [];
+      
+      var enggState = [];
+      var enggDistrict = [];
       for(var i in $scope.engineersList){
-        if($scope.engineersList[i].seerviceArea.state)
-          {
-            console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
-          }
+        
+        // if($scope.engineersList[i].seerviceArea.state)
+        //   {
+        //     console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
+        //   }
         if(state && $scope.engineersList[i].seerviceArea.state && $scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
-          tempList.push($scope.engineersList[i]);
+          enggState.push($scope.engineersList[i]);
         }
         if(district && $scope.engineersList[i].seerviceArea.district && $scope.engineersList[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
-          tempList.push($scope.engineersList[i]);
+          enggDistrict.push($scope.engineersList[i]);
         }
       }
-      tempList = tempList.filter((v, i, a) => a.indexOf(v) === i)
-      $scope.engineersList = tempList;
+      console.log($scope.engineersList);
+      enggState = enggState.filter((v, i, a) => a.indexOf(v) === i);
+      enggDistrict = enggDistrict.filter((v, i, a) => a.indexOf(v) === i);
+      $scope.engineersList = intersection_destructive(enggState,enggDistrict);
+      console.log($scope.engineersList);
+    }
+    function intersection_destructive(a, b)
+    {
+      var result = [];
+      if(!b.length)
+        return a;
+      while( a.length > 0 && b.length > 0 )
+      {  
+         if      (a[0] < b[0] ){ a.shift(); }
+         else if (a[0] > b[0] ){ b.shift(); }
+         else /* they're equal */
+         {
+           result.push(a.shift());
+           b.shift();
+         }
+      }
+    
+      return result;
     }
     //funtion to update order status
     $scope.updateOrder = function() {
