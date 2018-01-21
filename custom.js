@@ -960,7 +960,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       console.log($scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
-        Util.alertMessage('success', 'Order assigned successfully...');
+        Util.alertMessage('success', ' Order status changed updated..');
         $state.go("dashboard");
       }, function(error){
         console.log(error);
