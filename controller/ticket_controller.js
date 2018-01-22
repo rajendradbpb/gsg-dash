@@ -123,7 +123,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       console.log($scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
-        Util.alertMessage('success', ' Order status changed updated..');
+        Util.alertMessage('success', ' Order status changed successfully..');
         $state.go("dashboard");
       }, function(error){
         console.log(error);

@@ -178,10 +178,14 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <label class=" text-left control-label">Duration (in days):</label>
+                                <label class=" text-left control-label">Duration Left (in days):</label>
                                 <input type="text" class="form-control" placeholder="Duration" ng-model="scheme.durationInDays" readonly>
                             </div>
                             <div class="col-sm-3">
+                                    <label class=" text-left control-label">Subscription Date</label>
+                                    <input type="text" class="form-control" placeholder="Subscription Date" ng-model="scheme.subscriptionDt" readonly>
+                                </div>
+                            <!-- <div class="col-sm-3">
                                 <label class=" text-left control-label">Discount On Consumable:</label>
                                 <input type="text" class="form-control" placeholder="Discount On Consumable" ng-model="scheme.discountOnConsumable" readonly>
                             </div>
@@ -192,7 +196,7 @@
                             <div class="col-sm-3">
                                 <label class=" text-left control-label">Discount On Spare Part:</label>
                                 <input type="text" class="form-control" placeholder="Discount On Spare part" ng-model="scheme.discountOnSparePart" readonly>
-                            </div>
+                            </div> -->
 
                         </div>
                         <div class="col-sm-10 col-md-offset-1" style="padding-top :30px">
@@ -214,8 +218,9 @@
                                             <tr ng-repeat="row in scheme.schemeServiceDtls" style="text-align:left">
                                                 <td data-title="'Service Id'" >{{row.serviceId}}</td>
                                                 <td data-title="'Service Description '">{{row.serviceDesc}}</td>
-                                                <td data-title="' Free Usage'">{{row.freeUsage}}</td>
-                                                <td data-title="'Used'">{{row.used}}</td>
+                                                <td data-title="' Free Usage'">{{row.freeUsage==99 ? "Unlimited":row.freeUsage}}</td>
+                                                <td data-title="' Used'">{{row.used}}</td>
+                                                
 
                                             </tr>
                                         </table>

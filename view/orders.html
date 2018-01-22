@@ -16,7 +16,7 @@
             <div class="box-body over-x-sc">
               <div class="table-responsive">
                 <table ng-table="orderData" class="table table-bordered table-hover">
-                  <tr ng-repeat="row in $data" >
+                  <tr ng-repeat="row in $data" class="{{row.assignedToUserId !==''?'info':''}}">
                     <td data-title="'Order Id'" filter="{ 'orderId': 'text'}" sortable="'orderId'">{{row.orderId}}</td>
                     <td data-title="'Contact No.'" filter="{ 'contactNbr': 'text'}" sortable="'contactNbr'">{{row.contactNbr}}</td>
                     <td data-title="'User Name'" filter="{ 'userName': 'text'}"  sortable="'userName'">{{row.userName}}</td>

@@ -22,10 +22,11 @@ app.controller("Login_controller",function($scope,$state,$rootScope,$stateParams
         $http(req).then(function(data){
             console.log(data);
             $localStorage.token = data.data.access_token;
-            $rootScope.isLoggedin = true;
+            
 
 
             ApiCall.getUserByContact($scope.user , function(response){
+                $rootScope.isLoggedin = true;
                 $localStorage.loggedin_user = response.data;
                 console.log($localStorage.loggedin_user);
                 $state.go('dashboard');

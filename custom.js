@@ -7,6 +7,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
           console.log("calling web service ->>>>>>>>>>>" , config.url);
           console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
         }
+        if($localStorage.token ){
+          config.headers = config.headers || {};
+          config.headers['Authorization'] = 'Bearer '+$localStorage.token;
+        }
         return config;
       },
       response: function (response) {
@@ -403,7 +407,7 @@ app.filter('capitalize', function() {
       },
     },
     getUserByContact: {
-      "url": "/gsg/api/users/contact/:contactNbr",
+      "url": "/gsg/api/dashboard/user/contact/:contactNbr",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
@@ -587,10 +591,11 @@ app.filter('capitalize', function() {
         $http(req).then(function(data){
             console.log(data);
             $localStorage.token = data.data.access_token;
-            $rootScope.isLoggedin = true;
+            
 
 
             ApiCall.getUserByContact($scope.user , function(response){
+                $rootScope.isLoggedin = true;
                 $localStorage.loggedin_user = response.data;
                 console.log($localStorage.loggedin_user);
                 $state.go('dashboard');
@@ -960,7 +965,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       console.log($scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
-        Util.alertMessage('success', ' Order status changed updated..');
+        Util.alertMessage('success', ' Order status changed successfully..');
         $state.go("dashboard");
       }, function(error){
         console.log(error);

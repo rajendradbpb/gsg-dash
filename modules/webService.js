@@ -74,7 +74,7 @@ angular.module('WebService', [])
       },
     },
     getUserByContact: {
-      "url": "/gsg/api/users/contact/:contactNbr",
+      "url": "/gsg/api/dashboard/user/contact/:contactNbr",
       "method": "GET",
       "headers": {
           'Content-Type': 'application/json',
