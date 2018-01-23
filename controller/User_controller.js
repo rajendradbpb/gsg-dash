@@ -154,6 +154,9 @@ app.controller("User_controller",function($scope,$state,$rootScope,MasterModel,N
             })
 
             console.log($scope.user.address);
+            angular.forEach($scope.user.schemes , function(item){
+                item.validityLeft = item.durationInDays-(moment().diff(moment(item.subscriptionDt),'days'));
+            });
         },function(error){
 
         });

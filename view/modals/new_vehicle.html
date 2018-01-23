@@ -29,10 +29,11 @@
                                         <option value=""><i class="fa fa-sort-desc">Model</i></option>
                                     
                                 </select>
-                            <span class="help-block" ng-show="newVehicle.varient.$error.required && newVehicle.varient.$touched">Choose a Model.</span>
+                            <span class="help-block" ng-show="newVehicle.model.$error.required && newVehicle.model.$touched">Choose a Model.</span>
                         </div>
-                        <div class="col-xs-5" >
-                            <input type="text" class="form-control" name="varient" placeholder="Variant" ng-model="vehicle.variant"/>
+                        <div class="col-xs-5" ng-class="{'has-error':newVehicle.varient.$error.pattern && !newVehicle.varient.$pristine}" >
+                            <input type="text" class="form-control" name="varient" placeholder="Variant" ng-model="vehicle.variant" ng-pattern="/^[a-zA-Z ]*$/"/>
+                            <span class="help-block" ng-show="newVehicle.varient.$error.pattern && !newVehicle.varient.$pristine">Please Enter  Valid Variant(Only Alphabets Allowed)</span>
                             <!-- <span class="help-block" ng-show="newVehicle.varient.$error.required && newVehicle.varient.$touched">Enter a variant.</span> -->
                         </div>
                     </div>
@@ -43,9 +44,9 @@
                             <input type="text" class="form-control" name="version" placeholder="Model Version" ng-model="vehicle.modelVersion"/>
                             <!-- <span class="help-block" ng-show="newVehicle.version.$error.required && newVehicle.version.$touched">Enter model version.</span> -->
                         </div>
-                        <div class="col-xs-5" ng-class="{'has-error':newVehicle.cc.$error.pattern && newVehicle.cc.$invalid}">
+                        <div class="col-xs-5" ng-class="{'has-error':newVehicle.cc.$error.pattern && !newVehicle.cc.$pristine}">
                             <input type="text" class="form-control" name="cc" placeholder="Cubic capacity" ng-model="vehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/"/>
-                            <span class="help-block" ng-show="newVehicle.cc.$error.pattern && newVehicle.cc.$touched">Cubic Capacity must be numeric.</span>
+                            <span class="help-block" ng-show="newVehicle.cc.$error.pattern && !newVehicle.cc.$pristine">Cubic Capacity must be numeric.</span>
                         </div>
                     </div>
                 </div>

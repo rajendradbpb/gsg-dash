@@ -1211,6 +1211,9 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
             })
 
             console.log($scope.user.address);
+            angular.forEach($scope.user.schemes , function(item){
+                item.validityLeft = item.durationInDays-(moment().diff(moment(item.subscriptionDt),'days'));
+            });
         },function(error){
 
         });
@@ -1649,7 +1652,7 @@ app.controller('orderModalController', function($scope,$uibModalInstance,Util,Ap
       callback(masterModel.states);
     }
     else{
-      // api call to get server data and keep in schemes
+      // api call to get server data and keep in states
       ApiCall.getAllStates(function(data){
         masterModel.states = data.data;
         callback(masterModel.states) ;

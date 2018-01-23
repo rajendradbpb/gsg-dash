@@ -23,7 +23,7 @@ app.factory("MasterModel",function(ApiCall) {
       callback(masterModel.states);
     }
     else{
-      // api call to get server data and keep in schemes
+      // api call to get server data and keep in states
       ApiCall.getAllStates(function(data){
         masterModel.states = data.data;
         callback(masterModel.states) ;

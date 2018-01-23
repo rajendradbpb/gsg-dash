@@ -1,4 +1,4 @@
-<div class="modal" ng-init="getVehicledata()">
+<div class="modal-primary" ng-init="getVehicledata()">
     <form class="form-horizontal" name="newOrder">
         <div class="modal-header">
             <h3 class="modal-title">Add a new Order</h3>
@@ -59,7 +59,7 @@
         </div>
         <div class="modal-footer">
                 <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary pull-right" type="button" ng-click="ok()">Submit</button>
+            <button class="btn btn-primary pull-right" type="button" ng-disabled="newOrder.$invalid" ng-click="ok()">Submit</button>
 
         </div>
     </form>

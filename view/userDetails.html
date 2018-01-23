@@ -51,7 +51,7 @@
                                 <div class="form-group" ng-class="{'has-error':userUpdateForm.gender.$error.required && userUpdateForm.gender.$touched }">
                                     <label for="gender" class="col-sm-3 control-label">Gender:</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" name="gender" ng-model="user.gender" required>
+                                        <select class="form-control" name="gender" ng-model="user.gender" >
                                             <option value=""><i class="fa fa-sort-desc">Gender</i></option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
@@ -116,13 +116,15 @@
                                 <input type="text" class="form-control" placeholder="House No " name="houseNo" ng-model="address.houseNbr" >
                                 <span class="help-block" ng-show="userUpdateForm.houseNo.$error.required && userUpdateForm.houseNo.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.locality.$touched && userUpdateForm.locality.$invalid}">
-                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="address.locality" >
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.locality.$error.pattern && !userUpdateForm.locality.$pristine}">
+                                <input type="text" class="form-control" placeholder="Locality/Street " name="locality" ng-model="address.locality" ng-pattern="/^[a-zA-Z ]*$/" >
                                 <span class="help-block" ng-show="userUpdateForm.locality.$error.required && userUpdateForm.locality.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.locality.$error.pattern && !userUpdateForm.locality.$pristine">Please Enter a Valid Locality(Only Alphabets Allowed)</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.city.$touched && userUpdateForm.city.$invalid}">
-                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="address.city" >
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.city.$error.pattern && !userUpdateForm.city.$pristine}">
+                                <input type="text" class="form-control" placeholder="City" name="city" ng-model="address.city" ng-pattern="/^[a-zA-Z ]*$/" >
                                 <span class="help-block" ng-show="userUpdateForm.city.$error.required && userUpdateForm.city.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="userUpdateForm.city.$error.pattern && !userUpdateForm.city.$pristine">Please Enter a Valid City(Only Alphabets Allowed)</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}" ng-init="getAllStates(address)">
                                 <select class="form-control" name="state" ng-model="address.stateObj" ng-options="state as state.stateCd for state in stateList"  >
@@ -179,7 +181,7 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <label class=" text-left control-label">Duration Left (in days):</label>
-                                <input type="text" class="form-control" placeholder="Duration" ng-model="scheme.durationInDays" readonly>
+                                <input type="text" class="form-control" placeholder="Duration" ng-model="scheme.validityLeft" readonly>
                             </div>
                             <div class="col-sm-3">
                                     <label class=" text-left control-label">Subscription Date</label>
