@@ -911,15 +911,10 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       if(!state)
         return;
       console.log(state,district);
-      
+
       var enggState = [];
       var enggDistrict = [];
       for(var i in $scope.engineersListMaster){
-        
-        // if($scope.engineersList[i].seerviceArea.state)
-        //   {
-        //     console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
-        //   }
         if(state && $scope.engineersListMaster[i].seerviceArea.state && $scope.engineersListMaster[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
           enggState.push($scope.engineersListMaster[i]);
         }
@@ -927,28 +922,44 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
           enggDistrict.push($scope.engineersListMaster[i]);
         }
       }
-      console.log($scope.engineersList);
       enggState = enggState.filter((v, i, a) => a.indexOf(v) === i);
       enggDistrict = enggDistrict.filter((v, i, a) => a.indexOf(v) === i);
+
+      console.log("Before filter *********** \n");
+      console.log("total service engg list "+$scope.engineersListMaster.length);
+      console.log("before filter available engg list "+$scope.engineersList.length);
+      console.log("before filter enggState list "+enggState.length);
+      console.log("before filter enggDistrict list "+enggDistrict.length);
+      //if(!b.length && !district)
       $scope.engineersList = intersection_destructive(enggState,enggDistrict,district);
-      console.log($scope.engineersList);
+      console.log("\n\n After filter *********** \n");
+      console.log("After filter total service engg list "+$scope.engineersListMaster.length);
+      console.log("After filter available engg list "+$scope.engineersList.length);
+      console.log("After filter enggState list "+enggState.length);
+      console.log("After filter enggDistrict list "+enggDistrict.length);
     }
     function intersection_destructive(a, b,district)
     {
       var result = [];
-      if(!b.length && !district)
+      if(!district)
         return a;
-      while( a.length > 0 && b.length > 0 )
-      {  
-         if      (a[0] < b[0] ){ a.shift(); }
-         else if (a[0] > b[0] ){ b.shift(); }
-         else /* they're equal */
-         {
-           result.push(a.shift());
-           b.shift();
-         }
+      for(var i in b){
+        if(a.indexOf(b[i])!= -1){
+          result.push(b[i]);
+        }
       }
-    
+      // while( a.length > 0 && b.length > 0 )
+      // {
+      //    if      (a[0] < b[0] ){ a.shift(); }
+      //    else if (a[0] > b[0] ){ b.shift(); }
+      //    else /* they're equal */
+      //    {
+      //      result.push(a.shift());
+      //      b.shift();
+      //    }
+      // }
+
+
       return result;
     }
     //funtion to update order status
@@ -971,7 +982,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         console.log(error);
         Util.alertMessage('danger', 'Error in order assign...');
       });
-      
+
     }
   //function to get order details by orderid
 
@@ -1020,7 +1031,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     //     return true;
     //   }
 
-      
+
     // }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){

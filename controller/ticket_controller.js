@@ -69,15 +69,10 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       if(!state)
         return;
       console.log(state,district);
-      
+
       var enggState = [];
       var enggDistrict = [];
       for(var i in $scope.engineersListMaster){
-        
-        // if($scope.engineersList[i].seerviceArea.state)
-        //   {
-        //     console.log("compare ",$scope.engineersList[i].seerviceArea.state.toLocaleLowerCase() , state.stateCd.toLocaleLowerCase());
-        //   }
         if(state && $scope.engineersListMaster[i].seerviceArea.state && $scope.engineersListMaster[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
           enggState.push($scope.engineersListMaster[i]);
         }
@@ -85,28 +80,20 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
           enggDistrict.push($scope.engineersListMaster[i]);
         }
       }
-      console.log($scope.engineersList);
       enggState = enggState.filter((v, i, a) => a.indexOf(v) === i);
       enggDistrict = enggDistrict.filter((v, i, a) => a.indexOf(v) === i);
       $scope.engineersList = intersection_destructive(enggState,enggDistrict,district);
-      console.log($scope.engineersList);
     }
     function intersection_destructive(a, b,district)
     {
       var result = [];
-      if(!b.length && !district)
+      if(!district)
         return a;
-      while( a.length > 0 && b.length > 0 )
-      {  
-         if      (a[0] < b[0] ){ a.shift(); }
-         else if (a[0] > b[0] ){ b.shift(); }
-         else /* they're equal */
-         {
-           result.push(a.shift());
-           b.shift();
-         }
+      for(var i in b){
+        if(a.indexOf(b[i])!= -1){
+          result.push(b[i]);
+        }
       }
-    
       return result;
     }
     //funtion to update order status
@@ -129,7 +116,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log(error);
         Util.alertMessage('danger', 'Error in order assign...');
       });
-      
+
     }
   //function to get order details by orderid
 
@@ -178,7 +165,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     //     return true;
     //   }
 
-      
+
     // }
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
