@@ -36,6 +36,9 @@ body {
 .t-25{
   top:25px;
 }
+.m-t-50{
+  margin-top: 50px;
+}
 /* Global Ends */
 #preloader {
     position: fixed;

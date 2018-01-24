@@ -2,6 +2,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.orderDetails = {};
+  
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -38,7 +39,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       })
     }
     $scope.checkVehicleData = function(vehicleMake){
-      $scope.hasVehicleData = vehicleMake ? true : false;
+      $scope.orderDetails.hasVehicleData = vehicleMake ? true : false;
     }
     $scope.getAllVehicles = function(){
       MasterModel.getAllVehicles(function(err,result){
@@ -151,6 +152,8 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     //used to update total order
     $scope.updateOrderDetails = function(orderDetails){
       console.log(orderDetails);
+      orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
+      orderDetails.orderDtlId = orderDetails.orderDtls[0].id;
       ApiCall.updateOrderDetails( orderDetails , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order  update successfully..');
@@ -173,7 +176,8 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         $scope.orderDetails = response.data;
         $scope.getLocationDetails();
         $scope.checkVehicleData($scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make);
-
+        $scope.getAllVehicles();
+        $scope.orderDetails.insuranceTypeArr = ["Comprehensive", "Zero Depreciation", "Third party only"];
         // update status dropdown
         // angular.forEach($scope.ticket.statuses,function(v,k) {
         //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {

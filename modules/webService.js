@@ -184,9 +184,9 @@ angular.module('WebService', [])
       },
     },
     updateOrderDetails: {
-      "url": "/api/orders/orderDtl/:orderDtlId",
+      "url": "/gsg/api/orders/orderDtl/:orderDtlId",
       "method": "PUT",
-      "params":{orderDtlId:"@orderId",
+      "params":{orderDtlId:"@orderDtlId",
       },
       "headers": {
           'Content-Type': 'application/json',
