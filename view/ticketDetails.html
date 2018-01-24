@@ -264,8 +264,8 @@
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Insurane Valid:</label>
-              <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly>
-              <select ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
+              <!-- <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly> -->
+              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
                   <option ng-value="true">Yes</option>
                   <option ng-value="false">No</option>
               </select>
@@ -273,7 +273,7 @@
             <div class="col-sm-3">
               <label class=" text-left control-label">Insurance Type:</label>
               <!-- <input type="text" class="form-control" placeholder="Insurance Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" readonly> -->
-              <select ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" ng-options="insurance as insurance for insurance in orderDetails.insuranceTypeArr" />
+              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" ng-options="insurance as insurance for insurance in orderDetails.insuranceTypeArr" />
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Expiry Date:</label>

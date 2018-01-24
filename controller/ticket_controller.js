@@ -153,8 +153,8 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     $scope.updateOrderDetails = function(orderDetails){
       console.log(orderDetails);
       orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
-      orderDetails.orderDtlId = orderDetails.orderDtls[0].id;
-      ApiCall.updateOrderDetails( orderDetails , function(response){
+      orderDetails.orderDtls[0].product.orderDtlId = orderDetails.orderDtls[0].id;
+      ApiCall.updateOrderDetails(  orderDetails.orderDtls[0].product , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order  update successfully..');
         //$state.go("dashboard");
