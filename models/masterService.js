@@ -1,7 +1,8 @@
 app.factory("MasterModel",function(ApiCall) {
   var masterModel = {
     schemes : [],
-    states:[]
+    states:[],
+    vehicles:[]
   };
   masterModel.getSchemes = function() {
     if(this.schemes) {
@@ -20,16 +21,31 @@ app.factory("MasterModel",function(ApiCall) {
   }
   masterModel.getStates = function(callback) {
     if(masterModel.states.length) {
-      callback(masterModel.states);
+      callback(null,masterModel.states);
     }
     else{
       // api call to get server data and keep in states
       ApiCall.getAllStates(function(data){
         masterModel.states = data.data;
-        callback(masterModel.states) ;
+        callback(null,masterModel.states) ;
       },function(err){
         console.log("Error in getting states");
-        callback(masterModel.states) ;
+        callback(err,null) ;
+      })
+    }
+  }
+  masterModel.getAllVehicles = function(callback) {
+    if(masterModel.vehicles.length) {
+      callback(null,masterModel.vehicles);
+    }
+    else{
+      // api call to get server data and keep in vehicles
+      ApiCall.getAllVehicles(function(data){
+        masterModel.vehicles = data.data;
+        callback(null,masterModel.vehicles) ;
+      },function(err){
+        console.log("Error in getting vehicles");
+        callback(err,null) ;
       })
     }
   }

@@ -1,6 +1,7 @@
 app.controller("TicketController",function($scope,$http,Constants,$state,$rootScope,MasterModel,NgTableParams,Util,$uibModal,TicketService,$stateParams,ApiCall,$localStorage){
   $scope.active_tab = "new";
   $scope.ticket = {};
+  $scope.orderDetails = {};
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -36,6 +37,20 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.error(err);
       })
     }
+    $scope.checkVehicleData = function(vehicleMake){
+      $scope.hasVehicleData = vehicleMake ? true : false;
+    }
+    $scope.getAllVehicles = function(){
+      MasterModel.getAllVehicles(function(err,result){
+        if(err){
+          $scope.orderDetails.vehicles = [];
+          Util.alertMessage('danger','Error in Getting vehicle list');
+          console.error(err);
+          return;
+        }
+        $scope.orderDetails.vehicles = result;
+      })
+    }
     $scope.openMap = function() {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -57,7 +72,12 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         $scope.engineersListMaster = angular.copy($scope.engineersList);
         console.log( $scope.engineersList);
         // calling states
-        MasterModel.getStates(function(states) {
+        MasterModel.getStates(function(err,states) {
+          if(err){
+            Util.alertMessage('danger','Error in getting states');
+            $scope.stateList = [];
+            return;
+          }
           $scope.stateList = states;
         })
       } , function(error){
@@ -97,7 +117,17 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       return result;
     }
     //funtion to update order status
-    $scope.updateOrder = function() {
+    $scope.updateStatus = function(updateStatus) {
+      console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
+      if(
+        !$scope.orderDetails.status || $scope.orderDetails.status == '' ||
+        !$scope.orderDetails.state || $scope.orderDetails.state == '' ||
+        !$scope.orderDetails.district || $scope.orderDetails.district == '' ||
+        !$scope.orderDetails.assignedToUserId || $scope.orderDetails.assignedToUserId == ''
+      ){
+        Util.alertMessage("warning","Please check values for status ,state,district,Assign Engineer ");
+        return;
+      }
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
         loginUserId :$localStorage.loggedin_user.userId,
@@ -118,6 +148,18 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       });
 
     }
+    //used to update total order
+    $scope.updateOrderDetails = function(orderDetails){
+      console.log(orderDetails);
+      ApiCall.updateOrderDetails( orderDetails , function(response){
+        console.log(response.data);
+        Util.alertMessage('success', ' Order  update successfully..');
+        //$state.go("dashboard");
+      }, function(error){
+        console.log(error);
+        Util.alertMessage('danger', 'Error in Order  update');
+      });
+    }
   //function to get order details by orderid
 
     $scope.getOrderdetailsById =  function(){
@@ -130,6 +172,8 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log(response);
         $scope.orderDetails = response.data;
         $scope.getLocationDetails();
+        $scope.checkVehicleData($scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make);
+
         // update status dropdown
         // angular.forEach($scope.ticket.statuses,function(v,k) {
         //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {

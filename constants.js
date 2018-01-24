@@ -1,5 +1,5 @@
 app.constant("Constants", {
-        "debug":true,
+        "debug":false,
         "storagePrefix": "goAppAccount$",
         "rtToken"      :"1-14-e17a4afd91c6d3c47594e0d0d7ae3258",
         "getTokenKey" : function() {return this.storagePrefix + "token";},

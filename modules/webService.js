@@ -105,6 +105,14 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    getAllVehicles: {
+      "url": "/gsg/api/master/vehicles",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     addVehicle: {
       "url": "/gsg/api/users/:user_id/vehicle",
       "method": "POST",
@@ -175,6 +183,16 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    updateOrderDetails: {
+      "url": "/api/orders/orderDtl/:orderDtlId",
+      "method": "PUT",
+      "params":{orderDtlId:"@orderId",
+      },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     preresetpwd: {
       "url": "/gsg/preresetpwd/:contactNbr",
       "params":{contactNbr:"@contactNbr"},
@@ -221,6 +239,8 @@ angular.module('WebService', [])
     getUserByRole :  ApiGenerator.getApi('getUserByRole'),
     preresetpwd :  ApiGenerator.getApi('preresetpwd'),
     resetpwd :  ApiGenerator.getApi('resetpwd'),
+    getAllVehicles :  ApiGenerator.getApi('getAllVehicles'),
+    updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
   })
 })
 
