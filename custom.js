@@ -7,10 +7,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
           console.log("calling web service ->>>>>>>>>>>" , config.url);
           console.log("Data web service ->>>>>>>>>>>" , JSON.stringify(config.data));
         }
-        if($localStorage.token ){
-          config.headers = config.headers || {};
-          config.headers['Authorization'] = 'Bearer '+$localStorage.token;
-        }
+        // if($localStorage.token ){
+        //   config.headers = config.headers || {};
+        //   config.headers['Authorization'] = 'Bearer '+$localStorage.token;
+        // }
         return config;
       },
       response: function (response) {
@@ -864,7 +864,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.orderDetails = {};
-  
+
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -982,15 +982,6 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     //funtion to update order status
     $scope.updateStatus = function(updateStatus) {
       console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
-      if(
-        !$scope.orderDetails.status || $scope.orderDetails.status == '' ||
-        !$scope.orderDetails.state || $scope.orderDetails.state == '' ||
-        !$scope.orderDetails.district || $scope.orderDetails.district == '' ||
-        !$scope.orderDetails.assignedToUserId || $scope.orderDetails.assignedToUserId == ''
-      ){
-        Util.alertMessage("warning","Please check values for status ,state,district,Assign Engineer ");
-        return;
-      }
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
         loginUserId :$localStorage.loggedin_user.userId,

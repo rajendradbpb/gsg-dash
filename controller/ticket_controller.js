@@ -2,7 +2,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.orderDetails = {};
-  
+
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -120,15 +120,6 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     //funtion to update order status
     $scope.updateStatus = function(updateStatus) {
       console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
-      if(
-        !$scope.orderDetails.status || $scope.orderDetails.status == '' ||
-        !$scope.orderDetails.state || $scope.orderDetails.state == '' ||
-        !$scope.orderDetails.district || $scope.orderDetails.district == '' ||
-        !$scope.orderDetails.assignedToUserId || $scope.orderDetails.assignedToUserId == ''
-      ){
-        Util.alertMessage("warning","Please check values for status ,state,district,Assign Engineer ");
-        return;
-      }
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
         loginUserId :$localStorage.loggedin_user.userId,
