@@ -1031,6 +1031,10 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         $scope.checkVehicleData($scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make);
         $scope.getAllVehicles();
         $scope.orderDetails.insuranceTypeArr = ["Comprehensive", "Zero Depreciation", "Third party only"];
+        $scope.orderDetails.insuranceValidArr = [
+          {key:true,value:"Yes"},
+          {key:false,value:"No"}
+        ];
         // update status dropdown
         // angular.forEach($scope.ticket.statuses,function(v,k) {
         //   if($scope.orderDetails.requestStatus == "RESOLVED" && v.label == "CLOSED") {

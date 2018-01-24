@@ -263,17 +263,18 @@
               <input type="text" class="form-control" placeholder="Cubic Capacity" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" readonly>
             </div>
             <div class="col-sm-3">
-              <label class=" text-left control-label">Insurane Valid:</label>
+              <label class=" text-left control-label">Insurane Valid:{{orderDetails.orderDtls[0].product.usrVehicle.insuranceValid}}</label>
               <!-- <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly> -->
-              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
-                  <option ng-value="true">Yes</option>
-                  <option ng-value="false">No</option>
-              </select>
+              <!-- <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
+                  <option >true</option>
+                  <option >false</option>
+              </select> -->
+              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" ng-options="insuranceValid.key as insuranceValid.value for insuranceValid in orderDetails.insuranceValidArr" readonly ng-disabled="true"/>
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Insurance Type:</label>
               <!-- <input type="text" class="form-control" placeholder="Insurance Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" readonly> -->
-              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" ng-options="insurance as insurance for insurance in orderDetails.insuranceTypeArr" />
+              <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" ng-options="insurance as insurance for insurance in orderDetails.insuranceTypeArr" readonly ng-disabled="true"/>
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Expiry Date:</label>
