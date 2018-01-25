@@ -2,7 +2,7 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller", function($scope, $state, $rootScope,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
-<<<<<<< HEAD
+
   var setInterval;
   // $scope.refresh = function(){
   //   $interval.cancel(setInterval);
@@ -12,7 +12,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,$interval,
   //     }
   //   },20000);
   // };
-=======
+
 //   $scope.refresh = function(){
 //   var setInterval;
 //     if(angular.isDefined(setInterval)){
@@ -29,7 +29,6 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,$interval,
 //       },120000);
 //     }
 //   };
->>>>>>> d41ce20dc2ef223efdbf7f5a5652709db1eb16a7
   
  
 //   $scope.closeInterval = function(){

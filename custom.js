@@ -672,6 +672,7 @@ app.filter('capitalize', function() {
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller", function($scope, $state, $rootScope,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
+
   var setInterval;
   // $scope.refresh = function(){
   //   $interval.cancel(setInterval);
@@ -681,6 +682,23 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,$interval,
   //     }
   //   },20000);
   // };
+
+//   $scope.refresh = function(){
+//   var setInterval;
+//     if(angular.isDefined(setInterval)){
+//      return;
+//     }
+//     else {
+//       setInterval = $interval(function(){
+//         if($state.current.name == "dashboard"){
+//           $window.location.reload();
+//         }
+// //         else {
+// //           $scope.closeInterval();
+// //         }
+//       },120000);
+//     }
+//   };
   
  
 //   $scope.closeInterval = function(){
