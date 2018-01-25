@@ -2,15 +2,31 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller", function($scope, $state, $rootScope,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
-  $interval(function(){
-    if($state.current.name == "dashboard"){
-      $window.location.reload();
+  $scope.refresh = function(){
+  var setInterval;
+    if(angular.isDefined(setInterval)){
+     return;
     }
-    // else {
-    //   $state.go('dashboard');
-    // }
-  },180000);
-
+    else {
+      setInterval = $interval(function(){
+        if($state.current.name == "dashboard"){
+          $window.location.reload();
+        }
+//         else {
+//           $scope.closeInterval();
+//         }
+      },120000);
+    }
+  };
+  
+ 
+//   $scope.closeInterval = function(){
+//   if (angular.isDefined(setInterval)) {
+//             $interval.cancel(setInterval);
+//             setInterval = undefined;
+//           }
+//   };
+    
   $scope.active_tab = 'lists';
   var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
   $scope.tabChange = function(tab) {
