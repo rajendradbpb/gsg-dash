@@ -51,7 +51,8 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         }
         $scope.orderDetails.vehicles = result;
       })
-    }
+    };
+  
     $scope.openMap = function() {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -139,7 +140,16 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         Util.alertMessage('danger', 'Error in order assign...');
       });
 
-    }
+    };
+    //function to get mfgArr
+    $scope.getMfgYear = function() {
+      $scope.currentYear = 2018;
+      $scope.mfgYearArr = [];
+      for (i = 0; i < 30; i++) {
+        $scope.mfgYearArr.push($scope.currentYear--);
+      }
+      console.log($scope.mfgYearArr);
+    };
     //used to update total order
     $scope.updateOrderDetails = function(orderDetails){
       console.log(orderDetails);
@@ -199,17 +209,9 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
     };
 
-    // returns true to disabe option , based on current request status
-    // $scope.checkDisablity = function(statusValue,requestStatus){
-    //   if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
-    //     return false;
-    //   }
-    //   else{
-    //     return true;
-    //   }
+    
 
-
-    // }
+  
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 
@@ -233,11 +235,37 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
       });
     };
+    //function to open feedback modal
+    $scope.feedbackModal = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/feedbackModal.html',
+        controller: "feedbackModalCtrl",
+        size: 'md',
+        resolve: {
+  
+        }
+      });
+    }
 });
 app.controller('locationModalController', function($scope, $uibModalInstance, location) {
   $scope.location = location;
   $scope.ok = function(user) {
 
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+
+app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
+  $scope.rating1=0;
+  $scope.rateFunction = function(rating) {
+    console.log('Rating selected: ' + rating);
+  };
+ 
+  $scope.ok = function() {
+    $uibModalInstance.close();
   };
   $scope.cancel = function() {
     $uibModalInstance.dismiss('cancel');

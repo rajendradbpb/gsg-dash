@@ -285,6 +285,7 @@
         </div>
         <!-- Input type to add vehicle details  , shows for emergency ticket-->
         <div class="box-body" ng-if="!orderDetails.hasVehicleData">
+          <form name="addVehicle">
           <div class="row">
             <div class="col-sm-3">
               <label class=" text-left control-label">Make:</label>
@@ -304,15 +305,15 @@
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Type:</label>
-              <input type="text" class="form-control" placeholder="Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.type" >
+              <input type="text" class="form-control" placeholder="Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.type" readonly >
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Subtype:</label>
-              <input type="text" class="form-control" placeholder="Subtype" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.subType" >
+              <input type="text" class="form-control" placeholder="Subtype" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.subType"readonly >
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Wheels:</label>
-              <input type="text" class="form-control" placeholder="Wheels" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.wheels" >
+              <input type="text" class="form-control" placeholder="Wheels" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.wheels" readonly>
             </div>
           </div>
           <div class="row">
@@ -324,19 +325,24 @@
               <label class=" text-left control-label">Regd. No.:</label>
               <input type="text" class="form-control" placeholder="Regd. No" ng-model="orderDetails.orderDtls[0].product.usrVehicle.registrationNumber" >
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.variant.$error.pattern && !addVehicle.variant.$pristine}">
               <label class=" text-left control-label">Variant:</label>
-              <input type="text" class="form-control" placeholder="Variant" ng-model="orderDetails.orderDtls[0].product.usrVehicle.variant" >
+              <input type="text" class="form-control" placeholder="Variant" name="variant" ng-model="orderDetails.orderDtls[0].product.usrVehicle.variant" ng-pattern="/^[a-zA-Z ]*$/" >
+              <span class="help-block" ng-show="addVehicle.variant.$error.pattern && !addVehicle.variant.$pristine">Please Enter  Valid Variant(Only Alphabets Allowed)</span>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3" ng-init="getMfgYear()">
               <label class=" text-left control-label">Manufacturing Year:</label>
-              <input type="text" class="form-control" placeholder="Manufacturing Year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" >
+              <!-- <input type="text" class="form-control" placeholder="Manufacturing Year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" > -->
+              <select class="form-control" name="manufacturing_year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" ng-options="years as years for years in mfgYearArr">
+                  <option value="">Manufacturing year</option>
+              </select>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine}"> 
               <label class=" text-left control-label">Cubic Capacity:</label>
-              <input type="text" class="form-control" placeholder="Cubic Capacity" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" >
+              <input type="text" class="form-control" placeholder="Cubic Capacity" name="cc" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/">
+              <span class="help-block" ng-show="addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine">Invalid Cubic capacity(Only numeric Allowed)</span>
             </div>
             <div class="col-sm-3">
                 <label class=" text-left control-label">Insurane Valid:</label>
@@ -346,24 +352,28 @@
                     <option ng-value="false">No</option>
                 </select>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-3" ng-if="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid=='true'">
                 <label class=" text-left control-label">Insurance Type:</label>
                 <!-- <input type="text" class="form-control" placeholder="Insurance Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" readonly> -->
                 <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" ng-options="insurance as insurance for insurance in orderDetails.insuranceTypeArr" />
               </div>
-            <div class="col-sm-3" ng-controller="DatePickerCtrl">
+            <div class="col-sm-3" ng-controller="DatePickerCtrl" ng-if="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid=='true'">
               <label class=" text-left control-label">Expiry Date:</label>
               <!-- <input type="text" class="form-control" placeholder="Expiry Date" ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate"> -->
               <input type="text" class="form-control" name="expDate" placeholder="01 Jan, 2017"  ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
             </div>
           </div>
-
+        </form>
         </div>
       </div>
       <!-- ticket status and assigned to service engineer -->
       <div class="box box-success">
         <div class="box-header with-border">
           <h3 class="box-title">Assign Part:</h3>
+          <button type="button"  class="btn btn-primary pull-right" ng-click="feedbackModal()">
+            <i class="fa fa-plus"></i> Take Feedback
+          </button>
+    
         </div>
         <div class="box-body">
           <div class="row">

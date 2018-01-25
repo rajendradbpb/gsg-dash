@@ -672,15 +672,24 @@ app.filter('capitalize', function() {
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller", function($scope, $state, $rootScope,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
-  $interval(function(){
-    if($state.current.name == "dashboard"){
-      $window.location.reload();
-    }
-    // else {
-    //   $state.go('dashboard');
-    // }
-  },10000);
-
+  var setInterval;
+  // $scope.refresh = function(){
+  //   $interval.cancel(setInterval);
+  //   setInterval = $interval(function(){
+  //     if($state.current.name == "dashboard"){
+  //       $state.reload();
+  //     }
+  //   },20000);
+  // };
+  
+ 
+//   $scope.closeInterval = function(){
+//   if (angular.isDefined(setInterval)) {
+//             $interval.cancel(setInterval);
+//             setInterval = undefined;
+//           }
+//   };
+    
   $scope.active_tab = 'lists';
   var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
   $scope.tabChange = function(tab) {
@@ -921,7 +930,8 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         }
         $scope.orderDetails.vehicles = result;
       })
-    }
+    };
+  
     $scope.openMap = function() {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -1009,7 +1019,16 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         Util.alertMessage('danger', 'Error in order assign...');
       });
 
-    }
+    };
+    //function to get mfgArr
+    $scope.getMfgYear = function() {
+      $scope.currentYear = 2018;
+      $scope.mfgYearArr = [];
+      for (i = 0; i < 30; i++) {
+        $scope.mfgYearArr.push($scope.currentYear--);
+      }
+      console.log($scope.mfgYearArr);
+    };
     //used to update total order
     $scope.updateOrderDetails = function(orderDetails){
       console.log(orderDetails);
@@ -1069,17 +1088,9 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
     };
 
-    // returns true to disabe option , based on current request status
-    // $scope.checkDisablity = function(statusValue,requestStatus){
-    //   if(requestStatus == 'RESOLVED' && statusValue == "CLOSED"){
-    //     return false;
-    //   }
-    //   else{
-    //     return true;
-    //   }
+    
 
-
-    // }
+  
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 
@@ -1103,11 +1114,37 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
       });
     };
+    //function to open feedback modal
+    $scope.feedbackModal = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'view/modals/feedbackModal.html',
+        controller: "feedbackModalCtrl",
+        size: 'md',
+        resolve: {
+  
+        }
+      });
+    }
 });
 app.controller('locationModalController', function($scope, $uibModalInstance, location) {
   $scope.location = location;
   $scope.ok = function(user) {
 
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+
+app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
+  $scope.rating1=0;
+  $scope.rateFunction = function(rating) {
+    console.log('Rating selected: ' + rating);
+  };
+ 
+  $scope.ok = function() {
+    $uibModalInstance.close();
   };
   $scope.cancel = function() {
     $uibModalInstance.dismiss('cancel');
@@ -1805,6 +1842,49 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
 //         }
 //     };
 // });
+app.directive('starRating', function(){
+    return {
+        restrict: 'EA',
+        template:
+          '<ul class="star-rating" ng-class="{readonly: readonly}">' +
+          '  <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled}" ng-click="toggle($index)">' +
+          '    <i class="fa fa-star"></i>' + // or &#9733
+          '  </li>' +
+          '</ul>',
+        scope: {
+          ratingValue: '=ngModel',
+          max: '=?', // optional (default is 5)
+          onRatingSelect: '&?',
+          readonly: '=?'
+        },
+        link: function(scope, element, attributes) {
+            if (scope.max == undefined) {
+              scope.max = 5;
+            }
+            function updateStars() {
+              scope.stars = [];
+              for (var i = 0; i < scope.max; i++) {
+                scope.stars.push({
+                  filled: i < scope.ratingValue
+                });
+              }
+            };
+            scope.toggle = function(index) {
+              if (scope.readonly == undefined || scope.readonly === false){
+                scope.ratingValue = index + 1;
+                scope.onRatingSelect({
+                  rating: index + 1
+                });
+              }
+            };
+            scope.$watch('ratingValue', function(oldValue, newValue) {
+              if (newValue || newValue === 0) {
+                updateStars();
+              }
+            });
+          }
+    };
+});
 app.directive('fileModel', ['$parse', function ($parse) {
    return {
       restrict: 'A',

@@ -104,6 +104,31 @@ margin-top: 11px;
   .active{
     border-left-color: #00a65a;
   }
+  .star-rating {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+  }
+    .star {
+      padding: 1px;
+      color: #ddd;
+      font-size: 25px;
+      letter-spacing: 5px;
+      text-shadow: .05em .05em #aaa;
+      list-style-type: none;
+      display: inline-block;
+      cursor: pointer;
+    }
+      .filled {
+        color: #fd0;
+      }
+    
+  
+    .readonly .star.filled {
+      color: #666;
+    }
+  
+  
 /*
  * Content Wrapper - contains the main content
  * ```.right-side has been deprecated as of v2.0.0 in favor of .content-wrapper  ```
@@ -5054,6 +5079,7 @@ table.text-center th {
 }
 .option-btn{
   padding:0 5px;
+  color:#f0f0f0;
 }
 .buildplantxtbox
 {
