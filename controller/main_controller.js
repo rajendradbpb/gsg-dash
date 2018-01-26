@@ -1,43 +1,26 @@
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
-app.controller("Main_Controller", function($scope, $state, $rootScope,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
+app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
 
-  var setInterval;
-  // $scope.refresh = function(){
-  //   $interval.cancel(setInterval);
-  //   setInterval = $interval(function(){
-  //     if($state.current.name == "dashboard"){
-  //       $state.reload();
-  //     }
-  //   },20000);
-  // };
+  $rootScope.setInterval = null;
+  $rootScope.$on('$stateChangeSuccess',function(){
+    if(!$rootScope.setInterval) {
+      // alert("refresh");
+      $rootScope.setInterval = $interval(function(){
+        if($state.current.name == "dashboard"){
+          // $state.reload();
+          // console.log("reload >>>>>");
+          window.location.reload()
+        }
+      },Constants.refreshTime);
 
-//   $scope.refresh = function(){
-//   var setInterval;
-//     if(angular.isDefined(setInterval)){
-//      return;
-//     }
-//     else {
-//       setInterval = $interval(function(){
-//         if($state.current.name == "dashboard"){
-//           $window.location.reload();
-//         }
-// //         else {
-// //           $scope.closeInterval();
-// //         }
-//       },120000);
-//     }
-//   };
-  
- 
-//   $scope.closeInterval = function(){
-//   if (angular.isDefined(setInterval)) {
-//             $interval.cancel(setInterval);
-//             setInterval = undefined;
-//           }
-//   };
-    
+    }
+    else{
+      $interval.cancel($rootScope.setInterval);
+      $rootScope.setInterval = null;
+    }
+  })
   $scope.active_tab = 'lists';
   var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
   $scope.tabChange = function(tab) {
@@ -82,7 +65,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,$interval,
         controller: 'changePasswordController',
         size: 'md',
         resolve: {
-          
+
         }
     });
 
@@ -112,7 +95,7 @@ app.controller('changePasswordController', function($scope,$localStorage,$uibMod
       Util.alertMessage('danger','Error in password change');
       $uibModalInstance.close();
     });
-   
+
   };
   $scope.cancel = function(){
     $uibModalInstance.dismiss('cancel');
