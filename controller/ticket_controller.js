@@ -152,7 +152,9 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     };
     //used to update total order
     $scope.updateOrderDetails = function(orderDetails){
-      console.log(orderDetails);
+      if(!orderDetails.orderDtls[0].product.usrVehicle.expiryDate || orderDetails.orderDtls[0].product.usrVehicle.expiryDate == "Invalid Date"){
+        delete orderDetails.orderDtls[0].product.usrVehicle['expiryDate'];
+      }
       orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
       orderDetails.orderDtls[0].product.orderDtlId = orderDetails.orderDtls[0].id;
       ApiCall.updateOrderDetails(  orderDetails.orderDtls[0].product , function(response){

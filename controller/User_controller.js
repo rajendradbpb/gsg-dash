@@ -128,7 +128,10 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
     });
   };
   $scope.user = {};
-  $scope.getUserDetails = function(user_id) {
+  $rootScope.$on("vehicleData",function(events,data){
+    $scope.getUserDetails();
+  });
+  $scope.getUserDetails = function() {
     $scope.obj = {
       user_id: $stateParams.user_id
     };
@@ -220,6 +223,9 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       resolve: {
         userId: function() {
           return userData;
+        },
+        getUserDetails : function(){
+          return $scope.getUserDetails;
         }
       }
     });
@@ -245,7 +251,7 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
 });
 
 
-app.controller('vehicleModalController', function($scope, $uibModalInstance, VehicleService, MasterModel, $stateParams, Util, ApiCall) {
+app.controller('vehicleModalController', function($scope, $uibModalInstance, VehicleService, MasterModel, $stateParams, Util, ApiCall,getUserDetails) {
 
   $scope.insuranceArr = [true, false];
   $scope.insuranceTypeArr = ["Comprehensive", "Zero Depreciation", "Third party only"];
@@ -325,6 +331,8 @@ app.controller('vehicleModalController', function($scope, $uibModalInstance, Veh
     ApiCall.addVehicle($scope.vehicle, function(response) {
       console.log(response);
       Util.alertMessage('success', 'Vehicle added successfully...');
+      // $scope.$emit("vehicleData",response.data);
+      getUserDetails();
     }, function(error) {
       console.log(error);
       Util.alertMessage('danger', 'Vehicle is not added try again');

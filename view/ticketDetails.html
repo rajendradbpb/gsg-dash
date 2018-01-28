@@ -360,7 +360,7 @@
             <div class="col-sm-3" ng-controller="DatePickerCtrl" ng-if="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid=='true'">
               <label class=" text-left control-label">Expiry Date:</label>
               <!-- <input type="text" class="form-control" placeholder="Expiry Date" ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate"> -->
-              <input type="text" class="form-control" name="expDate" placeholder="01 Jan, 2017"  ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
+              <input type="text" class="form-control" name="expDate" placeholder="01 Jan, 2017"  ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="maxDate2" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
             </div>
           </div>
         </form>

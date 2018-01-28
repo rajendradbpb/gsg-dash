@@ -127,6 +127,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     // $scope.minDate = $scope.task.startDate;
     $scope.minDate = new Date();
     $scope.maxDate = new Date();
+    $scope.maxDate2 = new Date("2050-01-01");
     $scope.dateMin = null || new Date();
   };
   $scope.toggleMin();

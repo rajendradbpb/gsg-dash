@@ -798,6 +798,7 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     // $scope.minDate = $scope.task.startDate;
     $scope.minDate = new Date();
     $scope.maxDate = new Date();
+    $scope.maxDate2 = new Date("2050-01-01");
     $scope.dateMin = null || new Date();
   };
   $scope.toggleMin();
@@ -1033,7 +1034,9 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     };
     //used to update total order
     $scope.updateOrderDetails = function(orderDetails){
-      console.log(orderDetails);
+      if(!orderDetails.orderDtls[0].product.usrVehicle.expiryDate || orderDetails.orderDtls[0].product.usrVehicle.expiryDate == "Invalid Date"){
+        delete orderDetails.orderDtls[0].product.usrVehicle['expiryDate'];
+      }
       orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
       orderDetails.orderDtls[0].product.orderDtlId = orderDetails.orderDtls[0].id;
       ApiCall.updateOrderDetails(  orderDetails.orderDtls[0].product , function(response){
@@ -1282,7 +1285,10 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
     });
   };
   $scope.user = {};
-  $scope.getUserDetails = function(user_id) {
+  $rootScope.$on("vehicleData",function(events,data){
+    $scope.getUserDetails();
+  });
+  $scope.getUserDetails = function() {
     $scope.obj = {
       user_id: $stateParams.user_id
     };
@@ -1374,6 +1380,9 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
       resolve: {
         userId: function() {
           return userData;
+        },
+        getUserDetails : function(){
+          return $scope.getUserDetails;
         }
       }
     });
@@ -1399,7 +1408,7 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
 });
 
 
-app.controller('vehicleModalController', function($scope, $uibModalInstance, VehicleService, MasterModel, $stateParams, Util, ApiCall) {
+app.controller('vehicleModalController', function($scope, $uibModalInstance, VehicleService, MasterModel, $stateParams, Util, ApiCall,getUserDetails) {
 
   $scope.insuranceArr = [true, false];
   $scope.insuranceTypeArr = ["Comprehensive", "Zero Depreciation", "Third party only"];
@@ -1479,6 +1488,8 @@ app.controller('vehicleModalController', function($scope, $uibModalInstance, Veh
     ApiCall.addVehicle($scope.vehicle, function(response) {
       console.log(response);
       Util.alertMessage('success', 'Vehicle added successfully...');
+      // $scope.$emit("vehicleData",response.data);
+      getUserDetails();
     }, function(error) {
       console.log(error);
       Util.alertMessage('danger', 'Vehicle is not added try again');
