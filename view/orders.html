@@ -9,9 +9,9 @@
 </section>
 <section  ng-init="getOrderByStatus()">
   <div class="row">
-    <div class="col-md-10 col-xs-12 col-md-offset-1">
-      <div class="row">
-        <div class="col-xs-12">
+    <div class="col-md-10 col-xs-10 col-md-offset-1">
+      
+        
           <div class="box box-info">
             <div class="box-body over-x-sc">
               <div class="table-responsive">
@@ -22,7 +22,7 @@
                     <td data-title="'User Name'" filter="{ 'userName': 'text'}"  sortable="'userName'">{{row.userName}}</td>
                     
                     <td data-title="'Service Date'" filter="{ 'serviceDate': 'text'}" sortable="'serviceDate'">{{row.serviceDate }}</td>
-                    <td data-title="'Total price'" sortable="'totalPrice'" style="white-space:nowrap">{{row.totalPrice}}</td>
+                    <td data-title="'Status'" filter="{ 'requestStatus': 'text'}" sortable="'requestStatus'" style="white-space:nowrap">{{row.requestStatus}}</td>
                     <td data-title="'Action'">
                        <div class="btn-group">
                             <button type="button" class="btn btn-primary"><a href="" class="option-btn" ui-sref="ticketDetails(row)">Details</a>
@@ -34,8 +34,8 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        
+      
     </div>
   </div>
 </section>

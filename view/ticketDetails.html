@@ -287,21 +287,23 @@
         <div class="box-body" ng-if="!orderDetails.hasVehicleData">
           <form name="addVehicle">
           <div class="row">
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Make:</label>
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.make.$error.required && addVehicle.make.$touched}">
+              <label class=" text-left control-label">Make: *</label>
               <!-- <input type="text" class="form-control" placeholder="Make" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.make" readonly> -->
               <select class="form-control" name="make" ng-model="orderDetails.selectedVehicle"
                         ng-options="vehicle as vehicle.make for vehicle in orderDetails.vehicles"  required>
                         <option value=""><i class="fa fa-sort-desc">Vehicle Manufacturer</i></option>
               </select>
+              <span class="help-block" ng-show="addVehicle.make.$error.required && addVehicle.make.$touched">Choose a Manufacturer</span>
             </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Model:</label>
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.model.$error.required && addVehicle.model.$touched}">
+              <label class=" text-left control-label">Model: *</label>
               <!-- <input type="text" class="form-control" placeholder="Model" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle" readonly> -->
               <select class="form-control" name="model" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle" ng-options="models as models.models for models in orderDetails.selectedVehicle.vehicles"  required>
                 <option value=""><i class="fa fa-sort-desc">Model</i></option>
 
               </select>
+              <span class="help-block" ng-show="addVehicle.model.$error.required && addVehicle.model.$touched">Choose a model</span>
             </div>
             <div class="col-sm-3">
               <label class=" text-left control-label">Type:</label>
@@ -321,9 +323,10 @@
               <label class=" text-left control-label">Model Version:</label>
               <input type="text" class="form-control" placeholder="Model Version" ng-model="orderDetails.orderDtls[0].product.usrVehicle.modelVersion" >
             </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Regd. No.:</label>
-              <input type="text" class="form-control" placeholder="Regd. No" ng-model="orderDetails.orderDtls[0].product.usrVehicle.registrationNumber" >
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.regdNo.$error.required && addVehicle.regdNo.$touched}">
+              <label class=" text-left control-label">Vehicle No.: *</label>
+              <input type="text" class="form-control" name="regdNo" placeholder="Vehicle. No" ng-model="orderDetails.orderDtls[0].product.usrVehicle.registrationNumber" required >
+              <span class="help-block" ng-show="addVehicle.regdNo.$error.required && addVehicle.regdNo.$touched">Enter Vehicle No.</span>
             </div>
             <div class="col-sm-3" ng-class="{'has-error':addVehicle.variant.$error.pattern && !addVehicle.variant.$pristine}">
               <label class=" text-left control-label">Variant:</label>
@@ -344,14 +347,15 @@
               <input type="text" class="form-control" placeholder="Cubic Capacity" name="cc" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/">
               <span class="help-block" ng-show="addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine">Invalid Cubic capacity(Only numeric Allowed)</span>
             </div>
-            <div class="col-sm-3">
-                <label class=" text-left control-label">Insurane Valid:</label>
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.insValid.$error.required && addVehicle.insValid.$touched}">
+                <label class=" text-left control-label">Insurane Valid: *</label>
                 <!-- <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly> -->
-                <select class="form-control" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
+                <select class="form-control" name="insValid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" required >
                     <option ng-value="true">Yes</option>
                     <option ng-value="false">No</option>
                 </select>
-              </div>
+                <span class="help-block" ng-show="addVehicle.insValid.$error.required && addVehicle.insValid.$touched">Insurance status required</span>
+            </div>
               <div class="col-sm-3" ng-if="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid=='true'">
                 <label class=" text-left control-label">Insurance Type:</label>
                 <!-- <input type="text" class="form-control" placeholder="Insurance Type" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceType" readonly> -->

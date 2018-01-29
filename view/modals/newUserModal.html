@@ -9,7 +9,7 @@
       <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.mobile.$touched && createUserform.mobile.$invalid}">
           <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 col-md-offset-1">
-            <label>Mobile No:</label>
+            <label>Mobile No *</label>
               <input type="text" class="form-control" name="mobile" ui-mask="999-999-9999" placeholder="xxx-xxx-xxxx" ng-model="newUser.contactNbr" required>
             <span class="help-block" ng-show="createUserform.mobile.$error.required && createUserform.mobile.$touched">Please Enter Mobile No</span>
           </div>
@@ -19,7 +19,7 @@
       <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.email.$touched && createUserform.email.$invalid}">
           <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 col-md-offset-1">
-            <input type="email" class="form-control" ng-model="newUser.email" name="email" placeholder="Email" required ng-pattern="/\S+@\S+\.\S+/"/>
+            <input type="email" class="form-control" ng-model="newUser.email" name="email" placeholder="Email *" required ng-pattern="/\S+@\S+\.\S+/"/>
             <span class="help-block" ng-show="createUserform.email.$error.required && createUserform.email.$touched">Please Enter email</span>
             <span class="help-block" ng-show="createUserform.email.$error.pattern && createUserform.email.$touched">Please enter a valid email.</span>
           </div>
@@ -30,11 +30,11 @@
         <div classs="form-group" ng-class="{'has-error':createUserform.role.$touched && createUserform.role.$invalid}">
           <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 col-md-offset-1">
               <select class="form-control" name="role" ng-model="newUser.roles"  required>
-              <option value=""><i class="fa fa-sort-desc">Select Role-</i></option>
+              <option value=""><i class="fa fa-sort-desc">Select Role *</i></option>
               <option value="{{role}}" ng-repeat="role in userRole">{{role}}</option>
                   
               </select>
-              <span class="help-block" ng-show="createUserform.role.$error.required && createUserform.role.$touched">Choose a roler</span>
+              <span class="help-block" ng-show="createUserform.role.$error.required && createUserform.role.$touched">Choose a role</span>
           </div>
         </div>
       </div>
@@ -42,14 +42,14 @@
         <div class="row" class="form-group">
             <div  ng-class="{'has-error':(createUserform.fname.$touched && createUserform.fname.$invalid) ||(createUserform.fname.$error.pattern && !createUserform.fname.$pristine)}">
               <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1">
-                <input type="text" class="form-control" ng-model="newUser.firstName" name="fname" placeholder="First Name" required ng-pattern="/^[a-zA-Z ]*$/"/>
+                <input type="text" class="form-control" ng-model="newUser.firstName" name="fname" placeholder="First Name *" required ng-pattern="/^[a-zA-Z ]*$/" />
                 <span class="help-block" ng-show="createUserform.fname.$error.required && createUserform.fname.$touched">Please Enter First Name</span>
                 <span class="help-block" ng-show="createUserform.fname.$error.pattern && !createUserform.fname.$pristine">Please Enter Valid First Name(Only Alphabets Allowed)</span>
               </div>
             </div>
             <div  ng-class="{'has-error':(createUserform.lname.$touched && createUserform.lname.$invalid) ||(createUserform.lname.$error.pattern && !createUserform.lname.$pristine)}">
                 <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 ">
-                  <input type="text" class="form-control" ng-model="newUser.lastName" name="lname" placeholder="Last Name" required ng-pattern="/^[a-zA-Z ]*$/"/>
+                  <input type="text" class="form-control" ng-model="newUser.lastName" name="lname" placeholder="Last Name *" required ng-pattern="/^[a-zA-Z ]*$/"/>
                   <span class="help-block" ng-show="createUserform.lname.$error.required && createUserform.lname.$touched">Please Enter Last Name</span>
                   <span class="help-block" ng-show="createUserform.lname.$error.pattern && !createUserform.lname.$pristine">Please Enter Valid Last Name(Only Alphabets Allowed)</span>
                 </div>
@@ -60,7 +60,7 @@
         <div  ng-class="{'has-error':createUserform.state.$touched && createUserform.state.$invalid}">
         <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1 ">
           <select class="form-control" name="state" ng-model="newUser.seerviceArea.state" required ng-change="getDistrict(newUser.seerviceArea.state)">
-            <option value="">Choose State.</option>
+            <option value="">Choose State*</option>
             <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option>
           </select>
           <span class="help-block" ng-show="createUserform.state.$error.required && createUserform.state.$touched">Choose a state</span>
@@ -69,7 +69,7 @@
         
         <div class="col-xs-5  " ng-class="{'has-error':createUserform.district.$touched && createUserform.district.$invalid}" ng-init="getAllStates()">
             <select class="form-control" name="district" ng-model="newUser.seerviceArea.district" required>
-                <option value="">Choose District.</option>
+                <option value="">Choose District *</option>
                 <option value="{{district}}" ng-repeat="district in districtList">{{district}}</option>
             </select>
             <span class="help-block" ng-show="createUserform.district.$error.required && createUserform.district.$touched">Choose a district</span>
@@ -81,14 +81,14 @@
       <div class="row" class="form-group">
           <div  ng-class="{'has-error':(createUserform.locality.$touched && createUserform.locality.$invalid) ||(createUserform.locality.$error.pattern && !createUserform.locality.$pristine)}">
             <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1">
-              <input type="text" class="form-control" ng-model="newUser.seerviceArea.location" name="locality" placeholder="Location" required ng-pattern="/^[a-zA-Z ]*$/"/>
+              <input type="text" class="form-control" ng-model="newUser.seerviceArea.location" name="locality" placeholder="Location *" required ng-pattern="/^[a-zA-Z ]*$/"/>
               <span class="help-block" ng-show="createUserform.locality.$error.required && createUserform.locality.$touched">Please Enter Location</span>
               <span class="help-block" ng-show="createUserform.locality.$error.pattern && !createUserform.locality.$pristine">Please Enter Valid Location(Only Alphabets Allowed)</span>
             </div>
           </div>
           <div  ng-class="{'has-error':(createUserform.subLocality.$touched && createUserform.subLocality.$invalid) ||(createUserform.subLocality.$error.pattern && !createUserform.subLocality.$pristine)}">
               <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 ">
-                <input type="text" class="form-control" ng-model="newUser.seerviceArea.subLocation" name="subLocality" placeholder="subLocation" required ng-pattern="/^[a-zA-Z ]*$/"/>
+                <input type="text" class="form-control" ng-model="newUser.seerviceArea.subLocation" name="subLocality" placeholder="subLocation *" required ng-pattern="/^[a-zA-Z ]*$/"/>
                 <span class="help-block" ng-show="createUserform.subLocality.$error.required && createUserform.subLocality.$touched">Please Enter subLocation</span>
                 <span class="help-block" ng-show="createUserform.subLocality.$error.pattern && !createUserform.subLocality.$pristine">Please Enter Valid Sublocation(Only Alphabets Allowed)</span>
                 

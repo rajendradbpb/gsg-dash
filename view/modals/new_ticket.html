@@ -9,7 +9,7 @@
 
 
                     <div class="form-group p-l-20" ng-if="!newVehicle" ng-class="{'has-error':newOrder.vehicle.$touched && newOrder.vehicle.$invalid}">
-                        <label for="uname" class="control-label col-sm-4"> Registered Vehicles:</label>
+                        <label for="uname" class="control-label col-sm-4"> Registered Vehicles *</label>
                         <div class="col-xs-8">
                             <select class="form-control" name="vehicle" ng-model="ticket.usrVehicle" ng-options="vehicles as vehicles.vehicle.make +' '+ vehicles.vehicle.models for vehicles in userdata.userVehicles"  required>
 
@@ -33,7 +33,7 @@
                     </div>
                     <div ng-if="newVehicle">
                         <div class="form-group p-l-20" ng-class="{'has-error':newOrder.make.$touched && newOrder.make.$invalid}">
-                            <label  class="control-label col-sm-4"> Vehicle Manufacturer</label>
+                            <label  class="control-label col-sm-4"> Vehicle Manufacturer *</label>
                             <div class="col-xs-8">
                                 <select class="form-control" name="make" ng-model="ticket.extVehicle"
                                 ng-options="vehicleData as vehicleData.make for vehicleData in vehicleDatas"  required>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.model.$touched && newOrder.model.$invalid}">
-                             <label  class="control-label col-sm-4"> Model:</label>
+                             <label  class="control-label col-sm-4"> Model *</label>
                             <div class="col-xs-8">
                                     <select class="form-control" name="model" ng-model="ticket.extVehicle.selectedModel" ng-options="vehicle as vehicle.models for vehicle in ticket.extVehicle.vehicles" required>
                                         <option value=""><i class="fa fa-sort-desc">Model</i></option>
