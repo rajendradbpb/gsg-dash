@@ -12,7 +12,9 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       controller: "createUserModalCtrl",
       size: 'md',
       resolve: {
-
+        getAllUsers: function(){
+          return $scope.getAllUsers;
+        }
       }
     });
   }
@@ -358,7 +360,7 @@ app.controller('vehicleDetailsModalController', function($scope, $uibModalInstan
   };
 });
 // create user modal , used to create new user by ccare
-app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, ApiCall, MasterModel) {
+app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, ApiCall, MasterModel,getAllUsers) {
   $scope.userRole = ['ROLE_USER', 'ROLE_ENGINEER', 'ROLE_OPERATION'];
   $scope.stateList = [];
   MasterModel.getStates(function(err,states) {
@@ -394,6 +396,7 @@ app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, 
       Util.alertMessage("success", "User created");
       console.log(response.data);
       $uibModalInstance.close();
+      getAllUsers();
     }, function(error) {
       Util.alertMessage("warning", "Error in user creation");
       $uibModalInstance.close();
