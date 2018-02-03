@@ -69,7 +69,12 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
           Util.alertMessage('success', 'User Details Updated successfully...');
         }, function(error) {
           console.log(error);
+          if(error.status == 417){
+            Util.alertMessage('danger', error.data.message);
+          }
+          else{
           Util.alertMessage('danger', 'User Details Cannot be updated...');
+          }
         });
       }
     })
@@ -332,14 +337,20 @@ app.controller('vehicleModalController', function($scope, $uibModalInstance, Veh
     console.log($scope.vehicle);
     ApiCall.addVehicle($scope.vehicle, function(response) {
       console.log(response);
+      $uibModalInstance.close();
       Util.alertMessage('success', 'Vehicle added successfully...');
       // $scope.$emit("vehicleData",response.data);
       getUserDetails();
     }, function(error) {
       console.log(error);
+      $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage('danger', error.data.message);
+      }
+      else{
       Util.alertMessage('danger', 'Vehicle is not added try again');
+      }
     });
-    $uibModalInstance.close();
   };
 
 
@@ -398,8 +409,13 @@ app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, 
       $uibModalInstance.close();
       getAllUsers();
     }, function(error) {
-      Util.alertMessage("warning", "Error in user creation");
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in user creation");
+      }
     })
 
   };
@@ -466,7 +482,13 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
   //         }
   //     });
   // };
+  $scope.placeChanged = function() {
+    $scope.place = this.getPlace();
+    console.log('location', $scope.place.geometry.location);
+    $scope.map.setCenter($scope.place.geometry.location);
+  }
 
+  
   $scope.ticket = {};
   $scope.ok = function() {
 
@@ -498,8 +520,13 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
       $uibModalInstance.close();
     }, function(error) {
       console.log(error);
-      Util.alertMessage("warning", "Error in order creation.");
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in order creation.");
+      }
     });
 
   };

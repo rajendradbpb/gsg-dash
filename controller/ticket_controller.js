@@ -137,7 +137,13 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         $state.go("dashboard");
       }, function(error){
         console.log(error);
-        Util.alertMessage('danger', 'Error in order assign...');
+        if(error.status == 417){
+          Util.alertMessage('danger', error.data.message);
+        }
+        else{
+          Util.alertMessage('danger', 'Error in order assign...');
+        }
+       
       });
 
     };
@@ -163,7 +169,13 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         //$state.go("dashboard");
       }, function(error){
         console.log(error);
-        Util.alertMessage('danger', 'Error in Order  update');
+        if(error.status == 417){
+          Util.alertMessage('danger', error.data.message);
+        }
+        else{
+          Util.alertMessage('danger', 'Error in Order  update');
+        }
+        
       });
     }
   //function to get order details by orderid
@@ -245,7 +257,9 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         controller: "feedbackModalCtrl",
         size: 'md',
         resolve: {
-  
+          orderDetails : function(){
+            return  $scope.orderDetails;
+          }
         }
       });
     }
@@ -260,14 +274,33 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
   };
 });
 
-app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
-  $scope.rating1=0;
+app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDetails,$localStorage,ApiCall, Util) {
+  $scope.feedback ={};
+  $scope.feedback.rating=0;
   $scope.rateFunction = function(rating) {
     console.log('Rating selected: ' + rating);
   };
  
   $scope.ok = function() {
-    $uibModalInstance.close();
+    $scope.feedback.orderId=orderDetails.orderId;
+    $scope.feedback.submitterUserId =  $localStorage.loggedin_user.userId;
+    console.log($scope.feedback);
+    // service to take feedback
+    ApiCall.takeFeedback($scope.feedback, function(response){
+      console.log(response);
+      $uibModalInstance.close();
+      Util.alertMessage("success","Feedback taken successfully..");
+    }, function(error){
+      console.log(error);
+      $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger",error.data.message);
+      } else{
+        Util.alertMessage("danger","Error occured in feedback taking process");
+      }
+
+    });
+    
   };
   $scope.cancel = function() {
     $uibModalInstance.dismiss('cancel');

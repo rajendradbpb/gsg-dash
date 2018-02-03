@@ -5349,3 +5349,17 @@ cursor: pointer;
 .ng-table-header div{
   text-align:left;
 }
+.roleClass{
+  
+  width: 368px;
+  margin-left: -13px;
+}
+.leftClass{
+  margin-left: -13px;
+  width: 158px;
+}
+.rightClass{
+  float: right;
+  margin-right: -10px;
+  width: 183px;
+}

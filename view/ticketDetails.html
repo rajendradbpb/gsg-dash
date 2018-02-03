@@ -313,15 +313,11 @@
               <label class=" text-left control-label">Subtype:</label>
               <input type="text" class="form-control" placeholder="Subtype" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.subType"readonly >
             </div>
-            <div class="col-sm-3">
-              <label class=" text-left control-label">Wheels:</label>
-              <input type="text" class="form-control" placeholder="Wheels" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.wheels" readonly>
-            </div>
           </div>
           <div class="row">
             <div class="col-sm-3">
-              <label class=" text-left control-label">Model Version:</label>
-              <input type="text" class="form-control" placeholder="Model Version" ng-model="orderDetails.orderDtls[0].product.usrVehicle.modelVersion" >
+              <label class=" text-left control-label">Wheels:</label>
+              <input type="text" class="form-control" placeholder="Wheels" ng-model="orderDetails.orderDtls[0].product.usrVehicle.vehicle.wheels" readonly>
             </div>
             <div class="col-sm-3" ng-class="{'has-error':addVehicle.regdNo.$error.required && addVehicle.regdNo.$touched}">
               <label class=" text-left control-label">Vehicle No.: *</label>
@@ -333,6 +329,14 @@
               <input type="text" class="form-control" placeholder="Variant" name="variant" ng-model="orderDetails.orderDtls[0].product.usrVehicle.variant" ng-pattern="/^[a-zA-Z ]*$/" >
               <span class="help-block" ng-show="addVehicle.variant.$error.pattern && !addVehicle.variant.$pristine">Please Enter  Valid Variant(Only Alphabets Allowed)</span>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <label class=" text-left control-label">Model Version:</label>
+              <input type="text" class="form-control" placeholder="Model Version" ng-model="orderDetails.orderDtls[0].product.usrVehicle.modelVersion" >
+            </div>
+           
+            
             <div class="col-sm-3" ng-init="getMfgYear()">
               <label class=" text-left control-label">Manufacturing Year:</label>
               <!-- <input type="text" class="form-control" placeholder="Manufacturing Year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" > -->
@@ -340,21 +344,22 @@
                   <option value="">Manufacturing year</option>
               </select>
             </div>
-          </div>
-          <div class="row">
             <div class="col-sm-3" ng-class="{'has-error':addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine}"> 
               <label class=" text-left control-label">Cubic Capacity:</label>
               <input type="text" class="form-control" placeholder="Cubic Capacity" name="cc" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/">
               <span class="help-block" ng-show="addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine">Invalid Cubic capacity(Only numeric Allowed)</span>
             </div>
+          </div>
+          <div class="row">
+           
             <div class="col-sm-3" ng-class="{'has-error':addVehicle.insValid.$error.required && addVehicle.insValid.$touched}">
-                <label class=" text-left control-label">Insurane Valid: *</label>
+                <label class=" text-left control-label">Insurane Valid: </label>
                 <!-- <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly> -->
-                <select class="form-control" name="insValid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" required >
+                <select class="form-control" name="insValid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
                     <option ng-value="true">Yes</option>
                     <option ng-value="false">No</option>
                 </select>
-                <span class="help-block" ng-show="addVehicle.insValid.$error.required && addVehicle.insValid.$touched">Insurance status required</span>
+                <!-- <span class="help-block" ng-show="addVehicle.insValid.$error.required && addVehicle.insValid.$touched">Insurance status required</span> -->
             </div>
               <div class="col-sm-3" ng-if="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid=='true'">
                 <label class=" text-left control-label">Insurance Type:</label>
@@ -367,6 +372,7 @@
               <input type="text" class="form-control" name="expDate" placeholder="01 Jan, 2017"  ng-model="orderDetails.orderDtls[0].product.usrVehicle.expiryDate" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="maxDate2" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
             </div>
           </div>
+          <button type="submit" ng-disabled ="addVehicle.$invalid" ng-click="updateOrderDetails(orderDetails)"  class="btn btn-info pull-right">Update Order</button>
         </form>
         </div>
       </div>
@@ -400,7 +406,7 @@
                       <option value="RESOLVED" ng-if="false">RESOLVED</option>
                       <option value="CLOSED" ng-if="orderDetails.requestStatus=='RESOLVED'">CLOSED</option>
                       <option value="CANCELED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
-                        orderDetails.requestStatus=='REJECTED'">CANCELED</option>
+                        orderDetails.requestStatus=='REJECTED'||orderDetails.requestStatus=='WIP'">CANCELED</option>
 
 
                   </select>
@@ -428,15 +434,12 @@
                   <option value="">Select Engineer</option>
                 </select>
               </div>
-              <div class="col-sm-3 t-25">
-                <button type="submit" ng-click="updateStatus(statusUpdateForm)"  class="btn btn-info">Update Status</button>
-              </div>
               </ng-form>
           </div>
         </div>
 
         <div class="box-footer m-t-50">
-          <button type="submit" ng-click="updateOrderDetails(orderDetails)"  class="btn btn-info pull-right">Update Order</button>
+          <button type="submit" ng-click="updateStatus(statusUpdateForm)"  class="btn btn-info pull-right">Update Status</button>
           <button type="submit" class="btn btn-default" ui-sref="ticketList({ status :'ALL'})">Back</button>
 
         </div>

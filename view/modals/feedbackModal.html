@@ -8,7 +8,7 @@
                 <div class="col-md-10">
                     <div class="form-group p-l-20">
                         
-                        <div class="col-xs-8 col-md-offset-4" star-rating ng-model="rating1" max="05" on-rating-select="rateFunction(rating)"></div>
+                        <div class="col-xs-8 col-md-offset-4" star-rating ng-model="feedback.rating" max="05" on-rating-select="rateFunction(rating)"></div>
                     </div>
                    
 
@@ -16,7 +16,7 @@
                         <label for="uname" class="control-label col-sm-4"> Comment *</label>
                        
                         <div class="col-xs-8">
-                            <textarea class="form-control" placeholder="Give comment" required></textarea>
+                            <textarea class="form-control" ng-model="feedback.comments" placeholder="Give comment" required></textarea>
                             
                             <!-- <span class="help-block" ng-show="newOrder.vehicle.$error.required && newOrder.vehicle.$touched">Choose a vehicle.</span> -->
                         </div>

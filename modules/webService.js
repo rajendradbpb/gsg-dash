@@ -210,6 +210,15 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    takeFeedback: {
+      "url": "/gsg/api/dashboard/:orderId/feedback",
+      "method": "POST",
+      "params":{orderId:"@orderId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -241,6 +250,7 @@ angular.module('WebService', [])
     resetpwd :  ApiGenerator.getApi('resetpwd'),
     getAllVehicles :  ApiGenerator.getApi('getAllVehicles'),
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
+    takeFeedback :  ApiGenerator.getApi('takeFeedback'),
   })
 })
 

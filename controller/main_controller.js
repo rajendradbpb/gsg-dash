@@ -91,9 +91,13 @@ app.controller('changePasswordController', function($scope,$localStorage,$uibMod
       $uibModalInstance.close();
       Util.alertMessage('success','Password Changed successfully..');
     }, function(error){
-
-      Util.alertMessage('danger','Error in password change');
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage('danger',error.data.message);
+      }
+      else{
+        Util.alertMessage('danger','Error in password change');
+      }
     });
 
   };

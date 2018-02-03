@@ -544,6 +544,15 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    takeFeedback: {
+      "url": "/gsg/api/dashboard/:orderId/feedback",
+      "method": "POST",
+      "params":{orderId:"@orderId"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -575,6 +584,7 @@ app.filter('capitalize', function() {
     resetpwd :  ApiGenerator.getApi('resetpwd'),
     getAllVehicles :  ApiGenerator.getApi('getAllVehicles'),
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
+    takeFeedback :  ApiGenerator.getApi('takeFeedback'),
   })
 })
 
@@ -762,9 +772,13 @@ app.controller('changePasswordController', function($scope,$localStorage,$uibMod
       $uibModalInstance.close();
       Util.alertMessage('success','Password Changed successfully..');
     }, function(error){
-
-      Util.alertMessage('danger','Error in password change');
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage('danger',error.data.message);
+      }
+      else{
+        Util.alertMessage('danger','Error in password change');
+      }
     });
 
   };
@@ -1019,7 +1033,13 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         $state.go("dashboard");
       }, function(error){
         console.log(error);
-        Util.alertMessage('danger', 'Error in order assign...');
+        if(error.status == 417){
+          Util.alertMessage('danger', error.data.message);
+        }
+        else{
+          Util.alertMessage('danger', 'Error in order assign...');
+        }
+       
       });
 
     };
@@ -1045,7 +1065,13 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         //$state.go("dashboard");
       }, function(error){
         console.log(error);
-        Util.alertMessage('danger', 'Error in Order  update');
+        if(error.status == 417){
+          Util.alertMessage('danger', error.data.message);
+        }
+        else{
+          Util.alertMessage('danger', 'Error in Order  update');
+        }
+        
       });
     }
   //function to get order details by orderid
@@ -1127,7 +1153,9 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         controller: "feedbackModalCtrl",
         size: 'md',
         resolve: {
-  
+          orderDetails : function(){
+            return  $scope.orderDetails;
+          }
         }
       });
     }
@@ -1142,14 +1170,33 @@ app.controller('locationModalController', function($scope, $uibModalInstance, lo
   };
 });
 
-app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
-  $scope.rating1=0;
+app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDetails,$localStorage,ApiCall, Util) {
+  $scope.feedback ={};
+  $scope.feedback.rating=0;
   $scope.rateFunction = function(rating) {
     console.log('Rating selected: ' + rating);
   };
  
   $scope.ok = function() {
-    $uibModalInstance.close();
+    $scope.feedback.orderId=orderDetails.orderId;
+    $scope.feedback.submitterUserId =  $localStorage.loggedin_user.userId;
+    console.log($scope.feedback);
+    // service to take feedback
+    ApiCall.takeFeedback($scope.feedback, function(response){
+      console.log(response);
+      $uibModalInstance.close();
+      Util.alertMessage("success","Feedback taken successfully..");
+    }, function(error){
+      console.log(error);
+      $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger",error.data.message);
+      } else{
+        Util.alertMessage("danger","Error occured in feedback taking process");
+      }
+
+    });
+    
   };
   $scope.cancel = function() {
     $uibModalInstance.dismiss('cancel');
@@ -1226,7 +1273,12 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance) {
           Util.alertMessage('success', 'User Details Updated successfully...');
         }, function(error) {
           console.log(error);
+          if(error.status == 417){
+            Util.alertMessage('danger', error.data.message);
+          }
+          else{
           Util.alertMessage('danger', 'User Details Cannot be updated...');
+          }
         });
       }
     })
@@ -1489,14 +1541,20 @@ app.controller('vehicleModalController', function($scope, $uibModalInstance, Veh
     console.log($scope.vehicle);
     ApiCall.addVehicle($scope.vehicle, function(response) {
       console.log(response);
+      $uibModalInstance.close();
       Util.alertMessage('success', 'Vehicle added successfully...');
       // $scope.$emit("vehicleData",response.data);
       getUserDetails();
     }, function(error) {
       console.log(error);
+      $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage('danger', error.data.message);
+      }
+      else{
       Util.alertMessage('danger', 'Vehicle is not added try again');
+      }
     });
-    $uibModalInstance.close();
   };
 
 
@@ -1555,8 +1613,13 @@ app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, 
       $uibModalInstance.close();
       getAllUsers();
     }, function(error) {
-      Util.alertMessage("warning", "Error in user creation");
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in user creation");
+      }
     })
 
   };
@@ -1623,7 +1686,13 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
   //         }
   //     });
   // };
+  $scope.placeChanged = function() {
+    $scope.place = this.getPlace();
+    console.log('location', $scope.place.geometry.location);
+    $scope.map.setCenter($scope.place.geometry.location);
+  }
 
+  
   $scope.ticket = {};
   $scope.ok = function() {
 
@@ -1655,8 +1724,13 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
       $uibModalInstance.close();
     }, function(error) {
       console.log(error);
-      Util.alertMessage("warning", "Error in order creation.");
       $uibModalInstance.close();
+      if(error.status == 417){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in order creation.");
+      }
     });
 
   };
