@@ -484,18 +484,22 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
   // };
   $scope.placeChanged = function() {
     $scope.place = this.getPlace();
-    console.log('location', $scope.place.geometry.location);
-    $scope.map.setCenter($scope.place.geometry.location);
+    console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
+    $scope.ticket.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+    // $scope.map.setCenter($scope.place.geometry.location);
   }
 
-  
+
   $scope.ticket = {};
   $scope.ok = function() {
-
+    if(!$scope.ticket.location || $scope.ticket.location.length < 2 ){
+      Util.alertMessage("warning","Please select valid location");
+      return;
+    }
     console.log($scope.userdata.userId);
     // $scope.ticket.vehicle ={};
     $scope.ticket.userId = $scope.userdata.userId;
-    $scope.ticket.location = [0, 0];
+    // $scope.ticket.location = [0, 0];
     $scope.ticket.serviceType = "EMERGENCY";
     var req = {};
     if ($scope.newVehicle) {

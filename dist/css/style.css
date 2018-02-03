@@ -122,13 +122,13 @@ margin-top: 11px;
       .filled {
         color: #fd0;
       }
-    
-  
+
+
     .readonly .star.filled {
       color: #666;
     }
-  
-  
+
+
 /*
  * Content Wrapper - contains the main content
  * ```.right-side has been deprecated as of v2.0.0 in favor of .content-wrapper  ```
@@ -5350,7 +5350,7 @@ cursor: pointer;
   text-align:left;
 }
 .roleClass{
-  
+
   width: 368px;
   margin-left: -13px;
 }
@@ -5362,4 +5362,11 @@ cursor: pointer;
   float: right;
   margin-right: -10px;
   width: 183px;
+}
+/* google places fix for under laying */
+.pac-container {
+        z-index: 10000 !important;
+}
+.alert {
+   z-index: 10000 !important;
 }
