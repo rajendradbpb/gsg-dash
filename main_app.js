@@ -165,6 +165,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('changePassword',{
+    templateUrl:'view/changePassword.html',
+    url:'/changePwd',
+    controller:'Main_Controller',
+    resolve:{
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){

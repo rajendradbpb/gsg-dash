@@ -33,10 +33,10 @@
      
       <li class="treeview " ng-class="{'active':stateName=='orders'}">
         <a href="" ui-sref="orders({ status :'ALL'})">
-          <i class="fa fa-edit"></i> <span>Requests</span>
-          <span class="pull-right-container">
+          <i class="fa fa-edit"></i> <span>Orders</span>
+          <!-- <span class="pull-right-container">
             <small class="label pull-right bg-green">new</small>
-          </span>
+          </span> -->
         </a>
       </li>
       <!-- <li class="treeview" ng-class="{'active':stateName=='tickets'}">
@@ -68,7 +68,7 @@
         </a>
       </li> -->
       <li class="treeview" ng-class="{'active':stateName=='serviceEngineers'}">
-          <a href=""  ng-click="changePasswordModal()">
+          <a href="" ui-sref="changePassword">
             <i class="fa fa-key"></i> <span>Change Password</span>
           </a>
         </li>

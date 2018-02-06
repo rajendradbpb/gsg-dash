@@ -19,7 +19,9 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
     });
   }
   $scope.getAllUsers = function() {
+    $rootScope.showPreloader = true;
     ApiCall.getAllUsers(function(response) {
+      $rootScope.showPreloader =false;
       console.log(response);
       $scope.userList = response.data;
       $scope.userData = new NgTableParams;

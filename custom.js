@@ -165,6 +165,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('changePassword',{
+    templateUrl:'view/changePassword.html',
+    url:'/changePwd',
+    controller:'Main_Controller',
+    resolve:{
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){
@@ -739,40 +747,25 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
   };
 
   // function to open chnage password modal
-  $scope.changePasswordModal = function(){
-    var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'view/modals/changePassword.html',
-        controller: 'changePasswordController',
-        size: 'md',
-        resolve: {
 
-        }
-    });
-
-  };
-
-});
-  // controllerfor change password modal
-app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
   $scope.password ={};
   $scope.checkPassword = function(before,after){
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
     $scope.showPasswordMisMatch = false;
     if(before !== after){
     $scope.showPasswordMisMatch = true;
     }
     return $scope.showPasswordMisMatch;
-};
+  };
 
   $scope.change = function(){
     $scope.password.userId = $localStorage.loggedin_user.userId;
     ApiCall.changePassword($scope.password , function(response){
       $localStorage.loggedin_user = response.data;
-      $uibModalInstance.close();
+      
       Util.alertMessage('success','Password Changed successfully..');
     }, function(error){
-      $uibModalInstance.close();
+     
       if(error.status == 417){
         Util.alertMessage('danger',error.data.message);
       }
@@ -782,11 +775,29 @@ app.controller('changePasswordController', function($scope,$localStorage,$uibMod
     });
 
   };
-  $scope.cancel = function(){
-    $uibModalInstance.dismiss('cancel');
-  };
+
+  // $scope.changePasswordModal = function(){
+  //   var modalInstance = $uibModal.open({
+  //       animation: true,
+  //       templateUrl: 'view/modals/changePassword.html',
+  //       controller: 'changePasswordController',
+  //       size: 'md',
+  //       resolve: {
+
+  //       }
+  //   });
+
+  // };
 
 });
+  // controllerfor change password modal
+// app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
+  
+//   $scope.cancel = function(){
+//     $uibModalInstance.dismiss('cancel');
+//   };
+
+// });
 app.controller('DatePickerCtrl', ['$scope', function($scope) {
   // $scope.task = {};
   // $scope.ClosingDateLimit  = function(){
@@ -1145,6 +1156,26 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
       });
     };
+    // function to disable assign part
+    $scope.checKUser = function(){
+      if( $scope.orderDetails.assignedToUserId !=""){
+        console.log('there');
+        if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId)
+        {
+          console.log('here in 2nd if');
+          return true;
+        }
+        else{
+          console.log('in 1st else');
+          return false;
+        }
+      }
+      else
+      {
+        return false;
+      }
+      
+    }
     //function to open feedback modal
     $scope.feedbackModal = function() {
       var modalInstance = $uibModal.open({
@@ -1223,7 +1254,9 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
     });
   }
   $scope.getAllUsers = function() {
+    $rootScope.showPreloader = true;
     ApiCall.getAllUsers(function(response) {
+      $rootScope.showPreloader =false;
       console.log(response);
       $scope.userList = response.data;
       $scope.userData = new NgTableParams;

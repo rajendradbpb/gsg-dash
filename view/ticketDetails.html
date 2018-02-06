@@ -149,23 +149,27 @@
                 <!-- services loop in order details -->
                 <div class="row p-15" ng-if="orderDetails.produtType == 'SERVICE' ">
                   <div ng-repeat="service in orderDtls.product.services">
-                   <div class="col-md-3" >
-                      <label class=" text-left control-label">category</label>
-                      <input type="text" class="form-control" ng-model="service.category" readonly>
-                    </div>
+                   <div class="row">
                     <div class="col-md-3">
-                      <label class=" text-left control-label">subCategory</label>
+                      <label class=" text-left control-label">Service</label>
                       <input type="text" class="form-control" ng-model="service.subCategory" readonly>
                     </div>
                     <div class="col-md-3">
-                    <label class=" text-left control-label">price</label>
-                    <input type="text" class="form-control"ng-value="{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}">
-                    <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
-                  </div>
+                      <label class=" text-left control-label">price</label>
+                      <input type="text" class="form-control"ng-value="{{service.price[orderDetails.orderDtls[0].product.usrVehicle.vehicle.type]}}">
+                        <!-- <input type="text" class="form-control"   ng-model="service.price.small" readonly> -->
+                     </div>
                   <div class="col-md-3" ng-class="{'has-success':service.freeApplied}">
                       <label class=" text-left control-label">Free Applied</label>
                       <input type="text" class="form-control" ng-model="service.freeApplied ? 'Yes' : 'No'" readonly >
+                  </div>
+                  <div class="col-md-3" >
+                      <!-- <label class=" text-left control-label">category</label> -->
+                      <!-- <input type="text" class="form-control" ng-model="service.category" readonly> -->
+                      <br>
+                      <button type="button" class="btn btn-info">Remove</button>
                     </div>
+                </div>
                 </div>
                 </div>
                 <!-- services loop in order details -->
@@ -378,6 +382,7 @@
       </div>
       <!-- ticket status and assigned to service engineer -->
       <div class="box box-success">
+        <fieldset ng-disabled="checKUser()" >
         <div class="box-header with-border">
           <h3 class="box-title">Assign Part:</h3>
           <button type="button"  class="btn btn-primary pull-right" ng-click="feedbackModal()">
@@ -413,7 +418,7 @@
               </div>
           </div>
           <div class="row">
-            <ng-form name="statusUpdateForm"></ng-form>
+            <ng-form name="statusUpdateForm">
               <div class="col-sm-3">
                 <label class=" text-left control-label">State of Engineer:</label>
                 <select class="form-control" name="stateEngg" ng-model="orderDetails.state" ng-change="filterEngineer(orderDetails.state,orderDetails.district)" ng-options="state as state.stateCd for state in stateList">
@@ -443,6 +448,7 @@
           <button type="submit" class="btn btn-default" ui-sref="ticketList({ status :'ALL'})">Back</button>
 
         </div>
+      </fieldset>
       </div>
     </div>
   </div>

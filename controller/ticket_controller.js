@@ -249,6 +249,26 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
       });
     };
+    // function to disable assign part
+    $scope.checKUser = function(){
+      if( $scope.orderDetails.assignedToUserId !=""){
+        console.log('there');
+        if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId)
+        {
+          console.log('here in 2nd if');
+          return true;
+        }
+        else{
+          console.log('in 1st else');
+          return false;
+        }
+      }
+      else
+      {
+        return false;
+      }
+      
+    }
     //function to open feedback modal
     $scope.feedbackModal = function() {
       var modalInstance = $uibModal.open({
