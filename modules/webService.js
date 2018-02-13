@@ -219,6 +219,16 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    removeServiceFromOrder: {
+      "url": "/gsg/api/dashboard/:orderDtlId/:position/remove",
+      "method": "DELETE",
+      "params":{orderDtlId:"@orderDtlId",
+            position:'@position'},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -251,6 +261,7 @@ angular.module('WebService', [])
     getAllVehicles :  ApiGenerator.getApi('getAllVehicles'),
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
     takeFeedback :  ApiGenerator.getApi('takeFeedback'),
+    removeServiceFromOrder :  ApiGenerator.getApi('removeServiceFromOrder'),
   })
 })
 

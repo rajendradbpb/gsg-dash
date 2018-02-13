@@ -2,7 +2,9 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.orderDetails = {};
-
+  $scope.insuranceValidOption = [
+    
+  ];
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -95,10 +97,10 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       var enggState = [];
       var enggDistrict = [];
       for(var i in $scope.engineersListMaster){
-        if(state && $scope.engineersListMaster[i].seerviceArea.state && $scope.engineersListMaster[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
+        if(state && $scope.engineersListMaster[i].serviceArea.state && $scope.engineersListMaster[i].serviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
           enggState.push($scope.engineersListMaster[i]);
         }
-        if(district && $scope.engineersListMaster[i].seerviceArea.district && $scope.engineersListMaster[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
+        if(district && $scope.engineersListMaster[i].serviceArea.district && $scope.engineersListMaster[i].serviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
           enggDistrict.push($scope.engineersListMaster[i]);
         }
       }
@@ -161,12 +163,16 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       if(!orderDetails.orderDtls[0].product.usrVehicle.expiryDate || orderDetails.orderDtls[0].product.usrVehicle.expiryDate == "Invalid Date"){
         delete orderDetails.orderDtls[0].product.usrVehicle['expiryDate'];
       }
-      orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
+      else{
+        orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
+
+      }
       orderDetails.orderDtls[0].product.orderDtlId = orderDetails.orderDtls[0].id;
       ApiCall.updateOrderDetails(  orderDetails.orderDtls[0].product , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order  update successfully..');
         //$state.go("dashboard");
+        $state.reload;
       }, function(error){
         console.log(error);
         if(error.status == 417){
@@ -208,6 +214,10 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         // })
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
           console.log($scope.vehicleData);
+        // checking for insurance valid
+        // if(!$scope.orderDetails.hasVehicleData){
+        //   $scope.orderDetails.orderDtls[0].product.usrVehicle.insuranceValid = '0';
+        // }
       }, function(error){
         console.log(error);
       });
@@ -251,24 +261,43 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     };
     // function to disable assign part
     $scope.checKUser = function(){
-      if( $scope.orderDetails.assignedToUserId !=""){
-        console.log('there');
-        if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId)
-        {
-          console.log('here in 2nd if');
-          return true;
-        }
-        else{
-          console.log('in 1st else');
-          return false;
-        }
+      if( ($scope.orderDetails.assignedToUserId !="") && ($scope.orderDetails.ccUserId)){
+        console.log('here in if');
+       if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId){
+         return true;
+       }
       }
       else
       {
+        console.log("here in else");
         return false;
       }
       
     }
+    //function for auto complete location box
+    $scope.placeChanged = function() {
+      $scope.place = this.getPlace();
+      console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
+      $scope.orderDetails.orderDtls[0].product.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+      // $scope.map.setCenter($scope.place.geometry.location);
+    }
+    //function to remove service from order
+    $scope.removeOrder={};
+    $scope.removeServiceFromOrder = function(){
+      $scope.removeOrder={
+        orderDtlId:$scope.orderDetails.orderDtls[0].id
+        
+      };
+      console.log($scope.removeOrder);
+      ApiCall.removeServiceFromOrder($scope.removeOrder,function(response){
+
+      }, function(error){
+        console.log(error);
+        Util.alertMessage('danger','Service is not removed,try again');
+      })
+    }
+  
+  
     //function to open feedback modal
     $scope.feedbackModal = function() {
       var modalInstance = $uibModal.open({

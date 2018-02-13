@@ -57,14 +57,14 @@
           </div>
       <div class="row" class="form-group">
         <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1 " ng-class="{'has-error':createUserform.state.$touched && createUserform.state.$invalid}">
-          <select class="form-control leftClass" name="state" ng-model="newUser.seerviceArea.state" required ng-change="getDistrict(newUser.seerviceArea.state)">
+          <select class="form-control leftClass" name="state" ng-model="newUser.serviceArea.state" required ng-change="getDistrict(newUser.serviceArea.state)">
             <option value="">Choose State*</option>
             <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option>
           </select>
           <span class="help-block" ng-show="createUserform.state.$error.required && createUserform.state.$touched">Choose a state</span>
         </div>
         <div class="col-xs-5  " ng-class="{'has-error':createUserform.district.$touched && createUserform.district.$invalid}" ng-init="getAllStates()">
-            <select class="form-control rightClass" name="district" ng-model="newUser.seerviceArea.district" required>
+            <select class="form-control rightClass" name="district" ng-model="newUser.serviceArea.district" required>
                 <option value="">Choose District *</option>
                 <option value="{{district}}" ng-repeat="district in districtList">{{district}}</option>
             </select>
@@ -72,40 +72,41 @@
             
         </div>
       </div>
-      <div class="row" class="form-group">
+      <!-- <div class="row" class="form-group">
         <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1 " ng-class="{'has-error':createUserform.location.$touched && createUserform.location.$invalid}">
           <select class="form-control leftClass" name="location" ng-model="newUser.seerviceArea.location" required ng-change="getDistrict(newUser.seerviceArea.state)">
             <option value="">Choose Location*</option>
-            <!-- <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option> -->
+            
+           
           </select>
           <span class="help-block" ng-show="createUserform.location.$error.required && createUserform.location.$touched">Choose a Location</span>
         </div>
         <div class="col-xs-5  " ng-class="{'has-error':createUserform.subLocation.$touched && createUserform.subLocation.$invalid}" ng-init="getAllStates()">
             <select class="form-control rightClass" name="subLocation" ng-model="newUser.seerviceArea.subLocation" required>
                 <option value="">Choose SubLocation*</option>
-                <!-- <option value="{{district}}" ng-repeat="district in districtList">{{district}}</option> -->
+               
             </select>
             <span class="help-block" ng-show="createUserform.subLocation.$error.required && createUserform.subLocation.$touched">Choose a SubLocation</span>
             
         </div>
-      </div>
-      <!-- <div class="row" class="form-group">
+      </div> -->
+      <div class="row" class="form-group">
           <div  ng-class="{'has-error':(createUserform.locality.$touched && createUserform.locality.$invalid) ||(createUserform.locality.$error.pattern && !createUserform.locality.$pristine)}">
             <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4 col-md-offset-1">
-              <input type="text" class="form-control" ng-model="newUser.seerviceArea.location" name="locality" placeholder="Location *" required ng-pattern="/^[a-zA-Z ]*$/"/>
+              <input type="text" class="form-control leftClass" ng-model="newUser.serviceArea.location" name="locality" placeholder="Location *" required ng-pattern="/^[a-zA-Z ]*$/"/>
               <span class="help-block" ng-show="createUserform.locality.$error.required && createUserform.locality.$touched">Please Enter Location</span>
               <span class="help-block" ng-show="createUserform.locality.$error.pattern && !createUserform.locality.$pristine">Please Enter Valid Location(Only Alphabets Allowed)</span>
             </div>
           </div>
           <div  ng-class="{'has-error':(createUserform.subLocality.$touched && createUserform.subLocality.$invalid) ||(createUserform.subLocality.$error.pattern && !createUserform.subLocality.$pristine)}">
               <div class="col-xs-5 col-md-5 col-lg-5 col-sm-5 ">
-                <input type="text" class="form-control" ng-model="newUser.seerviceArea.subLocation" name="subLocality" placeholder="subLocation *" required ng-pattern="/^[a-zA-Z ]*$/"/>
+                <input type="text" class="form-control rightClass" ng-model="newUser.serviceArea.subLocation" name="subLocality" placeholder="subLocation *" required ng-pattern="/^[a-zA-Z ]*$/"/>
                 <span class="help-block" ng-show="createUserform.subLocality.$error.required && createUserform.subLocality.$touched">Please Enter subLocation</span>
                 <span class="help-block" ng-show="createUserform.subLocality.$error.pattern && !createUserform.subLocality.$pristine">Please Enter Valid Sublocation(Only Alphabets Allowed)</span>
                 
               </div>
             </div>
-        </div> -->
+        </div>
       </div>
       <!-- <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.password.$touched && createUserform.password.$invalid}">

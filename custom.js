@@ -234,7 +234,8 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090' // unit
+   'HTTP_HOST_APP':'http://101.53.136.166:8090'
+  //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -561,6 +562,16 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    removeServiceFromOrder: {
+      "url": "/gsg/api/dashboard/:orderDtlId/:position/remove",
+      "method": "DELETE",
+      "params":{orderDtlId:"@orderDtlId",
+            position:'@position'},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
 
 
   }
@@ -593,6 +604,7 @@ app.filter('capitalize', function() {
     getAllVehicles :  ApiGenerator.getApi('getAllVehicles'),
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
     takeFeedback :  ApiGenerator.getApi('takeFeedback'),
+    removeServiceFromOrder :  ApiGenerator.getApi('removeServiceFromOrder'),
   })
 })
 
@@ -700,7 +712,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         if($state.current.name == "dashboard"){
           // $state.reload();
           // console.log("reload >>>>>");
-          window.location.reload()
+          window.location.reload();
         }
       },Constants.refreshTime);
 
@@ -909,7 +921,9 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
   $scope.active_tab = "new";
   $scope.ticket = {};
   $scope.orderDetails = {};
-
+  $scope.insuranceValidOption = [
+    
+  ];
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
   //   {label:"EMERGENCY",disable:false },
@@ -1002,10 +1016,10 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       var enggState = [];
       var enggDistrict = [];
       for(var i in $scope.engineersListMaster){
-        if(state && $scope.engineersListMaster[i].seerviceArea.state && $scope.engineersListMaster[i].seerviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
+        if(state && $scope.engineersListMaster[i].serviceArea.state && $scope.engineersListMaster[i].serviceArea.state.toLocaleLowerCase() == state.stateCd.toLocaleLowerCase()){
           enggState.push($scope.engineersListMaster[i]);
         }
-        if(district && $scope.engineersListMaster[i].seerviceArea.district && $scope.engineersListMaster[i].seerviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
+        if(district && $scope.engineersListMaster[i].serviceArea.district && $scope.engineersListMaster[i].serviceArea.district.toLocaleLowerCase() == district.toLocaleLowerCase()){
           enggDistrict.push($scope.engineersListMaster[i]);
         }
       }
@@ -1068,12 +1082,16 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       if(!orderDetails.orderDtls[0].product.usrVehicle.expiryDate || orderDetails.orderDtls[0].product.usrVehicle.expiryDate == "Invalid Date"){
         delete orderDetails.orderDtls[0].product.usrVehicle['expiryDate'];
       }
-      orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
+      else{
+        orderDetails.orderDtls[0].product.usrVehicle.expiryDate = moment(orderDetails.orderDtls[0].product.usrVehicle.expiryDate).format('YYYY-MM-DD');
+
+      }
       orderDetails.orderDtls[0].product.orderDtlId = orderDetails.orderDtls[0].id;
       ApiCall.updateOrderDetails(  orderDetails.orderDtls[0].product , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order  update successfully..');
         //$state.go("dashboard");
+        $state.reload;
       }, function(error){
         console.log(error);
         if(error.status == 417){
@@ -1115,6 +1133,10 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
         // })
         $scope.vehicleData= response.data.orderDtls[0].product.usrVehicle;
           console.log($scope.vehicleData);
+        // checking for insurance valid
+        // if(!$scope.orderDetails.hasVehicleData){
+        //   $scope.orderDetails.orderDtls[0].product.usrVehicle.insuranceValid = '0';
+        // }
       }, function(error){
         console.log(error);
       });
@@ -1158,24 +1180,43 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     };
     // function to disable assign part
     $scope.checKUser = function(){
-      if( $scope.orderDetails.assignedToUserId !=""){
-        console.log('there');
-        if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId)
-        {
-          console.log('here in 2nd if');
-          return true;
-        }
-        else{
-          console.log('in 1st else');
-          return false;
-        }
+      if( ($scope.orderDetails.assignedToUserId !="") && ($scope.orderDetails.ccUserId)){
+        console.log('here in if');
+       if($scope.orderDetails.ccUserId != $localStorage.loggedin_user.userId){
+         return true;
+       }
       }
       else
       {
+        console.log("here in else");
         return false;
       }
       
     }
+    //function for auto complete location box
+    $scope.placeChanged = function() {
+      $scope.place = this.getPlace();
+      console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
+      $scope.orderDetails.orderDtls[0].product.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+      // $scope.map.setCenter($scope.place.geometry.location);
+    }
+    //function to remove service from order
+    $scope.removeOrder={};
+    $scope.removeServiceFromOrder = function(){
+      $scope.removeOrder={
+        orderDtlId:$scope.orderDetails.orderDtls[0].id
+        
+      };
+      console.log($scope.removeOrder);
+      ApiCall.removeServiceFromOrder($scope.removeOrder,function(response){
+
+      }, function(error){
+        console.log(error);
+        Util.alertMessage('danger','Service is not removed,try again');
+      })
+    }
+  
+  
     //function to open feedback modal
     $scope.feedbackModal = function() {
       var modalInstance = $uibModal.open({
@@ -1275,9 +1316,10 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
     };
     //service to get user by role
     console.log("obj", obj);
+    $rootScope.showPreloader = true;
     ApiCall.getUserByRole(obj, function(response) {
       console.log(response.data);
-
+      $rootScope.showPreloader =false;
       $scope.userLists = response.data;
       $scope.userDatas = new NgTableParams;
       $scope.userDatas.settings({
@@ -1664,6 +1706,7 @@ app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, 
 app.controller('orderModalController', function($scope, $uibModalInstance, Util, MasterModel, ApiCall, userData, $state) {
   $scope.userdata = userData;
   $scope.extVehicle = {};
+  
   $scope.getVehicledata = function() {
 
     // ApiCall.getVehicleMakeModal(function(response){

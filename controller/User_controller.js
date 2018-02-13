@@ -40,9 +40,10 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
     };
     //service to get user by role
     console.log("obj", obj);
+    $rootScope.showPreloader = true;
     ApiCall.getUserByRole(obj, function(response) {
       console.log(response.data);
-
+      $rootScope.showPreloader =false;
       $scope.userLists = response.data;
       $scope.userDatas = new NgTableParams;
       $scope.userDatas.settings({
@@ -429,6 +430,7 @@ app.controller('createUserModalCtrl', function($scope, $uibModalInstance, Util, 
 app.controller('orderModalController', function($scope, $uibModalInstance, Util, MasterModel, ApiCall, userData, $state) {
   $scope.userdata = userData;
   $scope.extVehicle = {};
+  
   $scope.getVehicledata = function() {
 
     // ApiCall.getVehicleMakeModal(function(response){

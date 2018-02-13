@@ -11,7 +11,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         if($state.current.name == "dashboard"){
           // $state.reload();
           // console.log("reload >>>>>");
-          window.location.reload()
+          window.location.reload();
         }
       },Constants.refreshTime);
 
