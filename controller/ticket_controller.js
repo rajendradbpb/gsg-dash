@@ -3,7 +3,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
   $scope.ticket = {};
   $scope.orderDetails = {};
   $scope.insuranceValidOption = [
-    
+
   ];
   // $scope.ticket.statuses = [
   //   {label:"CREATED",disable:false },
@@ -54,7 +54,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         $scope.orderDetails.vehicles = result;
       })
     };
-  
+
     $scope.openMap = function() {
       var modalInstance = $uibModal.open({
         animation: true,
@@ -145,7 +145,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         else{
           Util.alertMessage('danger', 'Error in order assign...');
         }
-       
+
       });
 
     };
@@ -181,7 +181,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         else{
           Util.alertMessage('danger', 'Error in Order  update');
         }
-        
+
       });
     }
   //function to get order details by orderid
@@ -233,9 +233,9 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
     };
 
-    
 
-  
+
+
     // function to get ticket lists
     $scope.getOrderByStatus = function(){
 
@@ -272,7 +272,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log("here in else");
         return false;
       }
-      
+
     }
     //function for auto complete location box
     $scope.placeChanged = function() {
@@ -283,21 +283,21 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     }
     //function to remove service from order
     $scope.removeOrder={};
-    $scope.removeServiceFromOrder = function(){
+    $scope.removeServiceFromOrder = function(orderId,index,service){
       $scope.removeOrder={
-        orderDtlId:$scope.orderDetails.orderDtls[0].id
-        
+        orderDtlId:orderId,
+        position:index
       };
       console.log($scope.removeOrder);
       ApiCall.removeServiceFromOrder($scope.removeOrder,function(response){
-
+        Util.alertMessage('success',`Service ${service} removed successfully`);
       }, function(error){
         console.log(error);
         Util.alertMessage('danger','Service is not removed,try again');
       })
     }
-  
-  
+
+
     //function to open feedback modal
     $scope.feedbackModal = function() {
       var modalInstance = $uibModal.open({
@@ -329,7 +329,7 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
   $scope.rateFunction = function(rating) {
     console.log('Rating selected: ' + rating);
   };
- 
+
   $scope.ok = function() {
     $scope.feedback.orderId=orderDetails.orderId;
     $scope.feedback.submitterUserId =  $localStorage.loggedin_user.userId;
@@ -349,7 +349,7 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
       }
 
     });
-    
+
   };
   $scope.cancel = function() {
     $uibModalInstance.dismiss('cancel');

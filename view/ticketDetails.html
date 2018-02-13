@@ -171,7 +171,7 @@
                       <!-- <label class=" text-left control-label">category</label> -->
                       <!-- <input type="text" class="form-control" ng-model="service.category" readonly> -->
                       <br>
-                      <button type="button" class="btn btn-info" ng-click="removeServiceFromOrder()">Remove</button>
+                      <button type="button" class="btn btn-info" ng-click="removeServiceFromOrder(orderDtls.id,$index,service.subCategory)">Remove</button>
                     </div>
                 </div>
                 </div>
@@ -359,8 +359,8 @@
               <label class=" text-left control-label">Model Version:</label>
               <input type="text" class="form-control" placeholder="Model Version" ng-model="orderDetails.orderDtls[0].product.usrVehicle.modelVersion" >
             </div>
-           
-            
+
+
             <div class="col-sm-3" ng-init="getMfgYear()">
               <label class=" text-left control-label">Manufacturing Year:</label>
               <!-- <input type="text" class="form-control" placeholder="Manufacturing Year" ng-model="orderDetails.orderDtls[0].product.usrVehicle.mfgYear" > -->
@@ -368,19 +368,19 @@
                   <option value="">Manufacturing year</option>
               </select>
             </div>
-            <div class="col-sm-3" ng-class="{'has-error':addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine}"> 
+            <div class="col-sm-3" ng-class="{'has-error':addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine}">
               <label class=" text-left control-label">Cubic Capacity:</label>
               <input type="text" class="form-control" placeholder="Cubic Capacity" name="cc" ng-model="orderDetails.orderDtls[0].product.usrVehicle.cubicCapacity" ng-pattern="/^(0|[1-9][0-9]*)$/">
               <span class="help-block" ng-show="addVehicle.cc.$error.pattern && !addVehicle.cc.$pristine">Invalid Cubic capacity(Only numeric Allowed)</span>
             </div>
           </div>
           <div class="row">
-           
+
             <div class="col-sm-3" ng-class="{'has-error':addVehicle.insValid.$error.required && addVehicle.insValid.$touched}">
                 <label class=" text-left control-label">Insurane Valid: </label>
                 <!-- <input type="text" class="form-control" placeholder="Insurance Valid" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" readonly> -->
                 <select class="form-control" name="insValid" ng-options="insuranceValid.key as insuranceValid.value for insuranceValid in orderDetails.insuranceValidArr" ng-model="orderDetails.orderDtls[0].product.usrVehicle.insuranceValid" >
-                  <option value="">Validity of insurance</option>  
+                  <option value="">Validity of insurance</option>
                   <!-- <option ng-value="true">Yes</option>
                     <option ng-value="false">No</option> -->
                 </select>
@@ -409,7 +409,7 @@
           <button type="button"  class="btn btn-primary pull-right" ng-disabled="orderDetails.requestStatus!='RESOLVED'" ng-click="feedbackModal()">
             <i class="fa fa-plus"></i> Take Feedback
           </button>
-    
+
         </div>
         <div class="box-body">
           <div class="row">
@@ -469,8 +469,8 @@
               </div>
               <div class="col-sm-3">
                 <br>
-                
-                  <button type="submit" ng-click="updateStatus(statusUpdateForm)" 
+
+                  <button type="submit" ng-click="updateStatus(statusUpdateForm)"
                      class="btn btn-info pull-right">Update Status</button>
               </div>
               </ng-form>
@@ -482,7 +482,7 @@
           <button type="submit" class="btn btn-default" ui-sref="ticketList({ status :'ALL'})">Back</button>
 
         </div>
-     
+
       </div>
     </div>
   </div>
