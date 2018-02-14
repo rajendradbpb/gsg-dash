@@ -172,7 +172,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         console.log(response.data);
         Util.alertMessage('success', ' Order  update successfully..');
         //$state.go("dashboard");
-        $state.reload;
+        $state.reload();
       }, function(error){
         console.log(error);
         if(error.status == 417){
@@ -291,6 +291,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       console.log($scope.removeOrder);
       ApiCall.removeServiceFromOrder($scope.removeOrder,function(response){
         Util.alertMessage('success',`Service ${service} removed successfully`);
+        $state.reload();
       }, function(error){
         console.log(error);
         Util.alertMessage('danger','Service is not removed,try again');
