@@ -107,6 +107,48 @@
                         </div>
                     </div>
                 </div>
+                <div class="box box-success " ng-if="user.roles.indexOf('ROLE_ENGINEER') > -1">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Service Area Details</h3>
+                    </div>
+                    <div class="box-body">
+                     <form name="serviceAreaForm">
+                        <div class="row"> 
+                            <div class="col-sm-3">
+                                <label class=" text-left control-label">State:</label>
+                                <!-- <input type="text" class="form-control" placeholder="User Name" ng-model="user.serviceArea.state" > -->
+                                <select class="form-control" name="state" ng-model="user.serviceArea.state" ng-options="state as state.stateCd for state in stateList"  >
+                                        <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
+                                        <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
+                                    </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class=" text-left control-label">District:</label>
+                                <!-- <input type="text" class="form-control" placeholder="District" ng-model="user.serviceArea.district"> -->
+                                <select class="form-control" name="district" ng-model="user.serviceArea.district"  ng-options="district as district for district in address.stateObj.districts" >
+                                        <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
+                                        <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
+                                    </select>
+                            </div>
+                            <!-- <div class="col-sm-3">
+                                <label class=" text-left control-label">User Id:</label>
+                                <input type="text" class="form-control" placeholder="User Id" ng-model="orderDetails.userId" readonly>
+                            </div> -->
+                            <div class="col-sm-3">
+                              <label class=" text-left control-label">Location:</label>
+                              <input type="text" class="form-control" placeholder="Location" ng-model="user.serviceArea.location">
+                            </div>
+                            <div class="col-sm-3">
+                              <label class=" text-left control-label">SubLocation:</label>
+                              <input type="text" class="form-control" placeholder="SubLocation" ng-model="user.serviceArea.subLocation">
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <button type="submit" ng-disabled ="serviceAreaForm.$invalid" ng-click="updateServiceArea()"  class="btn btn-info pull-right">Submit </button>
+                    </form>
+                    </div>
+                </div>
                 <div class="box box-success " ng-repeat="address in user.address">
                     <div class="box-header with-border">
                         <h3 class="box-title">Adress: {{$index+1}}</h3>
@@ -135,6 +177,7 @@
 
                                 <span class="help-block" ng-show="userUpdateForm.state.$error.required && userUpdateForm.state.$touched"> cannot be empty</span>
                             </div>
+                           
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}">
