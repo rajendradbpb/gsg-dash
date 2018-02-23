@@ -1,6 +1,7 @@
 app.controller("User_controller", function($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
   $scope.userList = {};
   $scope.active_tab = "BD";
+  $scope.districtList = [];
 
   $scope.tabChange = function(tab) {
     $scope.active_tab = tab;
@@ -128,12 +129,12 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       }
     })
   };
-  $scope.getDistrict = function(user) {
+  $scope.getDistrict = function(state) {
     $scope.districtList = [];
     angular.forEach($scope.stateList, function(item) {
-      if (item.stateName == user.address[0].state) {
+      if (item.stateCd == state) {
         $scope.districtList = item.districts;
-        // vm.type = item.type;
+      
       }
     });
   };
@@ -162,7 +163,12 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       // $scope.user.dob = new Date(dob);
       // get districtList based on state
       $scope.getDistrict($scope.user);
+    //   angular.forEach($scope.user.serviceArea, function(item){
+    //     $scope.districtList.push(item.district);
+    // });
+    $scope.districtList.push($scope.user.serviceArea.district);
       console.log($scope.user);
+      console.log($scope.user.serviceArea);
       if ($scope.user.address.length == 0) {
         $scope.user.address.push(domyData);
       };
@@ -223,6 +229,20 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
     });
 
   };
+  //function to update serviceArea
+  $scope.updateServiceArea = function(){
+    console.log("data",$scope.user.serviceArea);
+    $scope.user.serviceArea.userId = $scope.user.userId;
+    ApiCall.updateServiceArea($scope.user.serviceArea,function(response){
+      Util.alertMessage("success","serviceArea updated successfully..");
+     $state.reload();
+    }, function(error){
+      if(error.status == 417){
+        Util.alertMessage("danger",error.data.message);
+      }
+      else{Util.alertMessage("danger","Error in serviceArea update..");}
+    });
+  }
 
   $scope.addVehicle = function(userData) {
     var modalInstance = $uibModal.open({
@@ -489,17 +509,23 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
   $scope.placeChanged = function() {
     $scope.place = this.getPlace();
     console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
-    $scope.ticket.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+    // $scope.ticket.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+    $scope.ticket.location ={
+      lat : $scope.place.geometry.location.lat(),
+      lng : $scope.place.geometry.location.lng()
+    };
+    // $scope.ticket.location.latitude = $scope.place.geometry.location.lat();
+    // $scope.ticket.location.longitude = $scope.place.geometry.location.lng();
     // $scope.map.setCenter($scope.place.geometry.location);
   }
 
 
   $scope.ticket = {};
   $scope.ok = function() {
-    if(!$scope.ticket.location || $scope.ticket.location.length < 2 ){
-      Util.alertMessage("warning","Please select valid location");
-      return;
-    }
+    // if(!$scope.ticket.location || $scope.ticket.location.length < 2 ){
+    //   Util.alertMessage("warning","Please select valid location");
+    //   return;
+    // }
     console.log($scope.userdata.userId);
     // $scope.ticket.vehicle ={};
     $scope.ticket.userId = $scope.userdata.userId;

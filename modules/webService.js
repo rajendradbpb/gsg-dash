@@ -229,8 +229,43 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-
-
+    updateServiceArea: {
+      "url": "/gsg/api/dashboard/updateSA/:userId",
+      "method": "PUT",
+      "params":{userId:"@userId",
+        },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getOfficeDetails: {
+      "url": "/gsg/api/dashboard/office",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    saveNewOfficeAddress: {
+      "url": "/gsg/api/dashboard/office",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateOfcAddress: {
+      "url": "/gsg/api/dashboard/office/:position",
+      "method": "PUT",
+      "params":{position:"@position",
+        },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -262,6 +297,10 @@ angular.module('WebService', [])
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
     takeFeedback :  ApiGenerator.getApi('takeFeedback'),
     removeServiceFromOrder :  ApiGenerator.getApi('removeServiceFromOrder'),
+    updateServiceArea :  ApiGenerator.getApi('updateServiceArea'),
+    getOfficeDetails :  ApiGenerator.getApi('getOfficeDetails'),
+    saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
+    updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
   })
 })
 

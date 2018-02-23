@@ -173,6 +173,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('office',{
+    templateUrl:'view/office.html',
+    url:'/office',
+    controller:'Office_Controller',
+    resolve:{
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){
@@ -234,8 +242,8 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090'
-  //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+  //  'HTTP_HOST_APP':'http://101.53.136.166:8090'
+   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -572,8 +580,43 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-
-
+    updateServiceArea: {
+      "url": "/gsg/api/dashboard/updateSA/:userId",
+      "method": "PUT",
+      "params":{userId:"@userId",
+        },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    getOfficeDetails: {
+      "url": "/gsg/api/dashboard/office",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    saveNewOfficeAddress: {
+      "url": "/gsg/api/dashboard/office",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateOfcAddress: {
+      "url": "/gsg/api/dashboard/office/:position",
+      "method": "PUT",
+      "params":{position:"@position",
+        },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -605,6 +648,10 @@ app.filter('capitalize', function() {
     updateOrderDetails :  ApiGenerator.getApi('updateOrderDetails'),
     takeFeedback :  ApiGenerator.getApi('takeFeedback'),
     removeServiceFromOrder :  ApiGenerator.getApi('removeServiceFromOrder'),
+    updateServiceArea :  ApiGenerator.getApi('updateServiceArea'),
+    getOfficeDetails :  ApiGenerator.getApi('getOfficeDetails'),
+    saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
+    updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
   })
 })
 
@@ -703,164 +750,240 @@ app.filter('capitalize', function() {
 /*****************************************************************************************************************/
 /*****************************************************************************************************************/
 app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,$interval, $window, $uibModal,NgTableParams, $localStorage, Util, ApiCall) {
-
-  $rootScope.setInterval = null;
-  $rootScope.$on('$stateChangeSuccess',function(){
-    if(!$rootScope.setInterval) {
-      // alert("refresh");
-      $rootScope.setInterval = $interval(function(){
-        if($state.current.name == "dashboard"){
-          // $state.reload();
-          // console.log("reload >>>>>");
-          window.location.reload();
-        }
-      },Constants.refreshTime);
-
-    }
-    else{
-      $interval.cancel($rootScope.setInterval);
-      $rootScope.setInterval = null;
-    }
-  })
-  $scope.active_tab = 'lists';
-  var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
-  $scope.tabChange = function(tab) {
-    $scope.active_tab = tab;
-  }
-  $scope.signOut = function() {
-    $localStorage.token = null;
-    $rootScope.isLoggedin = false;
-    $state.go('login');
-  }
-  $scope.getBgColor = function(index) {
-    return (colors[index] ? colors[index] : colors[0]);
-  }
-  // function to get ticket counts
-  $scope.getOrdersCount = function() {
-    // service to get ticket count.
-
-    ApiCall.getOrdersCount(function(response) {
-      console.log(response.data);
-      $scope.counts = response.data;
-    }, function(error) {
-      console.log(error);
-    });
-  };
-  // function to get user count
-  $scope.getUserCount = function(){
-    // service to get user count
-    ApiCall.getUserCount(function(response){
-      console.log(response.data);
-      $scope.userCount = response.data;
-    }, function(error){
-      console.log(error);
-    });
-
-  };
-
-  // function to open chnage password modal
-
-  $scope.password ={};
-  $scope.checkPassword = function(before,after){
-    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
-    $scope.showPasswordMisMatch = false;
-    if(before !== after){
-    $scope.showPasswordMisMatch = true;
-    }
-    return $scope.showPasswordMisMatch;
-  };
-
-  $scope.change = function(){
-    $scope.password.userId = $localStorage.loggedin_user.userId;
-    ApiCall.changePassword($scope.password , function(response){
-      $localStorage.loggedin_user = response.data;
-      
-      Util.alertMessage('success','Password Changed successfully..');
-    }, function(error){
-     
-      if(error.status == 417){
-        Util.alertMessage('danger',error.data.message);
+  
+    $rootScope.setInterval = null;
+    $rootScope.$on('$stateChangeSuccess',function(){
+      if(!$rootScope.setInterval) {
+        // alert("refresh");
+        $rootScope.setInterval = $interval(function(){
+          if($state.current.name == "dashboard"){
+            // $state.reload();
+            // console.log("reload >>>>>");
+            window.location.reload();
+          }
+        },Constants.refreshTime);
+  
       }
       else{
-        Util.alertMessage('danger','Error in password change');
+        $interval.cancel($rootScope.setInterval);
+        $rootScope.setInterval = null;
       }
-    });
-
-  };
-
-  // $scope.changePasswordModal = function(){
-  //   var modalInstance = $uibModal.open({
-  //       animation: true,
-  //       templateUrl: 'view/modals/changePassword.html',
-  //       controller: 'changePasswordController',
-  //       size: 'md',
-  //       resolve: {
-
-  //       }
-  //   });
-
-  // };
-
-});
-  // controllerfor change password modal
-// app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
+    })
+    $scope.active_tab = 'lists';
+    var colors = ['#9575CD', '#8D6E63', '#78909C', '#66BB6A', '#42A5F5'];
+    $scope.tabChange = function(tab) {
+      $scope.active_tab = tab;
+    }
+    $scope.signOut = function() {
+      $localStorage.token = null;
+      $rootScope.isLoggedin = false;
+      $state.go('login');
+    }
+    $scope.getBgColor = function(index) {
+      return (colors[index] ? colors[index] : colors[0]);
+    }
+    // function to get ticket counts
+    $scope.getOrdersCount = function() {
+      // service to get ticket count.
   
-//   $scope.cancel = function(){
-//     $uibModalInstance.dismiss('cancel');
-//   };
-
-// });
-app.controller('DatePickerCtrl', ['$scope', function($scope) {
-  // $scope.task = {};
-  // $scope.ClosingDateLimit  = function(){
-  //   $scope.startDates = $scope.task.startDate;
-  //   console.log($scope.startDates);
-  // }
-  $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
-
-  $scope.clear = function() {
-    $scope.dt = null;
-  };
-
-  // Disable weekend selection
-  /*
-   $scope.disabled = function(date, mode) {
-   return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-   };*/
-
-  $scope.toggleMin = function() {
-    // $scope.minDate = $scope.task.startDate;
-    $scope.minDate = new Date();
-    $scope.maxDate = new Date();
-    $scope.maxDate2 = new Date("2050-01-01");
-    $scope.dateMin = null || new Date();
-  };
-  $scope.toggleMin();
-
-  $scope.open1 = function($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-
-    $scope.opened = true;
-  };
-
-  $scope.dateOptions = {
-    formatYear: 'yy',
-    startingDay: 1
-  };
-
-  $scope.mode = 'month';
-
-  $scope.initDate = new Date();
-  $scope.formats = ['MM-dd-yyyy', 'dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd/MM/yyyy', 'yyyy-MMM', 'shortDate'];
-  $scope.format = $scope.formats[4];
-  $scope.format1 = $scope.formats[5];
-
-}]);
-;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
+      ApiCall.getOrdersCount(function(response) {
+        console.log(response.data);
+        $scope.counts = response.data;
+      }, function(error) {
+        console.log(error);
+      });
+    };
+    // function to get user count
+    $scope.getUserCount = function(){
+      // service to get user count
+      ApiCall.getUserCount(function(response){
+        console.log(response.data);
+        $scope.userCount = response.data;
+      }, function(error){
+        console.log(error);
+      });
+  
+    };
+  
+    // function to open chnage password modal
+  
+    $scope.password ={};
+    $scope.checkPassword = function(before,after){
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>" + before,after);
+      $scope.showPasswordMisMatch = false;
+      if(before !== after){
+      $scope.showPasswordMisMatch = true;
+      }
+      return $scope.showPasswordMisMatch;
+    };
+  
+    $scope.change = function(){
+      $scope.password.userId = $localStorage.loggedin_user.userId;
+      ApiCall.changePassword($scope.password , function(response){
+        $localStorage.loggedin_user = response.data;
+        
+        Util.alertMessage('success','Password Changed successfully..');
+      }, function(error){
+       
+        if(error.status == 417){
+          Util.alertMessage('danger',error.data.message);
+        }
+        else{
+          Util.alertMessage('danger','Error in password change');
+        }
+      });
+  
+    };
+  
+    // $scope.changePasswordModal = function(){
+    //   var modalInstance = $uibModal.open({
+    //       animation: true,
+    //       templateUrl: 'view/modals/changePassword.html',
+    //       controller: 'changePasswordController',
+    //       size: 'md',
+    //       resolve: {
+  
+    //       }
+    //   });
+  
+    // };
+  
+  });
+    // controllerfor change password modal
+  // app.controller('changePasswordController', function($scope,$localStorage,$uibModalInstance,ApiCall, Util){
+    
+  //   $scope.cancel = function(){
+  //     $uibModalInstance.dismiss('cancel');
+  //   };
+  
+  // });
+  app.controller('DatePickerCtrl', ['$scope', function($scope) {
+    // $scope.task = {};
+    // $scope.ClosingDateLimit  = function(){
+    //   $scope.startDates = $scope.task.startDate;
+    //   console.log($scope.startDates);
+    // }
+    $scope.today = function() {
+      $scope.dt = new Date();
+    };
+    $scope.today();
+  
+    $scope.clear = function() {
+      $scope.dt = null;
+    };
+  
+    // Disable weekend selection
+    /*
+     $scope.disabled = function(date, mode) {
+     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+     };*/
+  
+    $scope.toggleMin = function() {
+      // $scope.minDate = $scope.task.startDate;
+      $scope.minDate = new Date();
+      $scope.maxDate = new Date();
+      $scope.maxDate2 = new Date("2050-01-01");
+      $scope.dateMin = null || new Date();
+    };
+    $scope.toggleMin();
+  
+    $scope.open1 = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+  
+      $scope.opened = true;
+    };
+  
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+  
+    $scope.mode = 'month';
+  
+    $scope.initDate = new Date();
+    $scope.formats = ['MM-dd-yyyy', 'dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd/MM/yyyy', 'yyyy-MMM', 'shortDate'];
+    $scope.format = $scope.formats[4];
+    $scope.format1 = $scope.formats[5];
+  
+  }]);
+  ;app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state){
+    $scope.officeDetails ={};
+    $scope.newAddress = {};
+    $scope.districtList = [];
+    //function to get office details
+    $scope.getOfficeDetails =function(){
+        ApiCall.getOfficeDetails(function(response){
+            console.log(response.data);
+            $scope.officeDetails = response.data;
+            angular.forEach($scope.officeDetails, function(item){
+                $scope.districtList.push(item.address.district);
+            });
+        }, function(error){
+    
+        });
+    }
+    //
+    $scope.stateList = [];
+    // MasterModel.getStates(function(err,states) {
+    //   if (err) {
+    //     Util.alertMessage('danger', 'Error in getting states');
+    //     $scope.stateList = [];
+    //     return;
+    //   }
+    //   $scope.stateList = states;
+    //   $scope.stateList = states;
+    // })
+    $scope.getAllStates = function(){
+        ApiCall.getAllStates(function(response){
+            $scope.stateList = response.data;
+        }, function(error){
+    
+        });
+    };
+    
+    $scope.getDistrict = function(state) {
+      $scope.districtList = [];
+      angular.forEach($scope.stateList, function(item) {
+        if (item.stateCd == state) {
+          $scope.districtList = item.districts;
+        
+        }
+      });
+    };
+    //function to post office details
+    $scope.saveNewOfficeAddress = function(){
+        console.log($scope.newAddress);
+        ApiCall.saveNewOfficeAddress($scope.newAddress, function(response){
+            console.log(response.data);
+            $state.reload();
+            Util.alertMessage('success','new Office Details saved..');
+        }, function(error){
+            if(error.status == 417){
+                Util.alertMessage('danger', error.data.message);
+            }
+            else{
+                Util.alertMessage('danger','Error in adding new office details');
+            }
+        });
+    }
+    //function to update address
+    $scope.updateOfficeAddress = function(index){
+        console.log($scope.officeDetails[index]);
+        ApiCall.saveNewOfficeAddress($scope.officeDetails[index], function(response){
+            console.log(response.data);
+            $state.reload();
+            Util.alertMessage('success',' Office Details updated..');
+        }, function(error){
+            if(error.status == 417){
+                Util.alertMessage('danger', error.data.message);
+            }
+            else{
+                Util.alertMessage('danger','Error in Updating office details');
+            }
+        });
+    }
+    });;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
     //function to get all schemes
     $scope.getSchemes = function(){
         //service to get all schemes..
@@ -952,7 +1075,8 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 
     };
     $scope.getLocationDetails = function(){
-      var url = Constants.googleApi.replace(/{{latLng}}/g,$scope.orderDetails.orderDtls[0].product.location);
+      var latlng =[$scope.orderDetails.orderDtls[0].product.location.lat,$scope.orderDetails.orderDtls[0].product.location.lng];
+      var url = Constants.googleApi.replace(/{{latLng}}/g,latlng);
       $http.get(url).then(function(response) {
         $scope.orderDetails.locationDetails = response.data.results[0] ? response.data.results[0].formatted_address : "No Address available";
       },function(err){
@@ -1110,7 +1234,6 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
       $scope.obj = {
         orderId : $stateParams.orderId
       }
-      console.log($scope.orderId);
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
@@ -1197,7 +1320,12 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
     $scope.placeChanged = function() {
       $scope.place = this.getPlace();
       console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
-      $scope.orderDetails.orderDtls[0].product.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+      $scope.orderDetails.orderDtls[0].product.location = {
+        lat : $scope.place.geometry.location.lat(),
+        lng : $scope.place.geometry.location.lng()
+      };
+      
+      
       // $scope.map.setCenter($scope.place.geometry.location);
     }
     //function to remove service from order
@@ -1278,6 +1406,7 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
 ;app.controller("User_controller", function($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
   $scope.userList = {};
   $scope.active_tab = "BD";
+  $scope.districtList = [];
 
   $scope.tabChange = function(tab) {
     $scope.active_tab = tab;
@@ -1405,12 +1534,12 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
       }
     })
   };
-  $scope.getDistrict = function(user) {
+  $scope.getDistrict = function(state) {
     $scope.districtList = [];
     angular.forEach($scope.stateList, function(item) {
-      if (item.stateName == user.address[0].state) {
+      if (item.stateCd == state) {
         $scope.districtList = item.districts;
-        // vm.type = item.type;
+      
       }
     });
   };
@@ -1439,7 +1568,12 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
       // $scope.user.dob = new Date(dob);
       // get districtList based on state
       $scope.getDistrict($scope.user);
+    //   angular.forEach($scope.user.serviceArea, function(item){
+    //     $scope.districtList.push(item.district);
+    // });
+    $scope.districtList.push($scope.user.serviceArea.district);
       console.log($scope.user);
+      console.log($scope.user.serviceArea);
       if ($scope.user.address.length == 0) {
         $scope.user.address.push(domyData);
       };
@@ -1500,6 +1634,20 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
     });
 
   };
+  //function to update serviceArea
+  $scope.updateServiceArea = function(){
+    console.log("data",$scope.user.serviceArea);
+    $scope.user.serviceArea.userId = $scope.user.userId;
+    ApiCall.updateServiceArea($scope.user.serviceArea,function(response){
+      Util.alertMessage("success","serviceArea updated successfully..");
+     $state.reload();
+    }, function(error){
+      if(error.status == 417){
+        Util.alertMessage("danger",error.data.message);
+      }
+      else{Util.alertMessage("danger","Error in serviceArea update..");}
+    });
+  }
 
   $scope.addVehicle = function(userData) {
     var modalInstance = $uibModal.open({
@@ -1766,17 +1914,23 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
   $scope.placeChanged = function() {
     $scope.place = this.getPlace();
     console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
-    $scope.ticket.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+    // $scope.ticket.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
+    $scope.ticket.location ={
+      lat : $scope.place.geometry.location.lat(),
+      lng : $scope.place.geometry.location.lng()
+    };
+    // $scope.ticket.location.latitude = $scope.place.geometry.location.lat();
+    // $scope.ticket.location.longitude = $scope.place.geometry.location.lng();
     // $scope.map.setCenter($scope.place.geometry.location);
   }
 
 
   $scope.ticket = {};
   $scope.ok = function() {
-    if(!$scope.ticket.location || $scope.ticket.location.length < 2 ){
-      Util.alertMessage("warning","Please select valid location");
-      return;
-    }
+    // if(!$scope.ticket.location || $scope.ticket.location.length < 2 ){
+    //   Util.alertMessage("warning","Please select valid location");
+    //   return;
+    // }
     console.log($scope.userdata.userId);
     // $scope.ticket.vehicle ={};
     $scope.ticket.userId = $scope.userdata.userId;

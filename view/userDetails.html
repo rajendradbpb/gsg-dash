@@ -107,6 +107,48 @@
                         </div>
                     </div>
                 </div>
+                <div class="box box-success " ng-if="user.roles.indexOf('ROLE_ENGINEER') > -1">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Service Area Details</h3>
+                    </div>
+                    <div class="box-body">
+                     <form name="serviceAreaForm">
+                        <div class="row"> 
+                            <div class="col-sm-3">
+                                <label class=" text-left control-label">State:</label>
+                                <!-- <input type="text" class="form-control" placeholder="User Name" ng-model="user.serviceArea.state" > -->
+                                <select class="form-control" name="state" ng-model="user.serviceArea.state" required ng-change="getDistrict(user.serviceArea.state)">
+                                        <option value="">Choose State*</option>
+                                        <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option>
+                                    </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class=" text-left control-label">District:</label>
+                                <!-- <input type="text" class="form-control" placeholder="District" ng-model="user.serviceArea.district"> -->
+                                <select class="form-control " name="district" ng-model="user.serviceArea.district" required>
+                                        <option value="">Choose District *</option>
+                                        <option value="{{districts}}" ng-repeat="districts in districtList track by $index">{{districts}}</option>
+                                    </select>
+                            </div>
+                            <!-- <div class="col-sm-3">
+                                <label class=" text-left control-label">User Id:</label>
+                                <input type="text" class="form-control" placeholder="User Id" ng-model="orderDetails.userId" readonly>
+                            </div> -->
+                            <div class="col-sm-3">
+                              <label class=" text-left control-label">Location:</label>
+                              <input type="text" class="form-control" placeholder="Location" ng-model="user.serviceArea.location">
+                            </div>
+                            <div class="col-sm-3">
+                              <label class=" text-left control-label">SubLocation:</label>
+                              <input type="text" class="form-control" placeholder="SubLocation" ng-model="user.serviceArea.subLocation">
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <button type="submit" ng-disabled ="serviceAreaForm.$invalid" ng-click="updateServiceArea()"  class="btn btn-info pull-right">Submit </button>
+                    </form>
+                    </div>
+                </div>
                 <div class="box box-success " ng-repeat="address in user.address">
                     <div class="box-header with-border">
                         <h3 class="box-title">Adress: {{$index+1}}</h3>
@@ -135,6 +177,7 @@
 
                                 <span class="help-block" ng-show="userUpdateForm.state.$error.required && userUpdateForm.state.$touched"> cannot be empty</span>
                             </div>
+                           
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}">
@@ -264,12 +307,12 @@
                         </div>
                     </div>
                 </div>
-                <div clas="box box-info orderHist" ng-init="getOrderByUser()">
+                <div class="box box-info" ng-init="getOrderByUser()">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Order History:</h3>
+                        <h3 class="box-title">Order History</h3>
                     </div>
                     <div class="box-body">
-                        <div class="row">
+                        <div class="row col-xs-10 col-md-10 col-md-offset-1">
                          <uib-tabset>
                             <uib-tab ng-repeat="orderlist in orderHistoryList" heading="{{orderlist.type}}">
                                 <div class="col-sm-10 col-md-offset-1">
@@ -304,12 +347,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default"  ui-sref="user-profile">Back</button>
+                    <button type="submit"  class="btn btn-info pull-right" ng-click="profileUpdate(userUpdateForm)">Submit</button>
+              </div>
             </form>
         </div>
     </div>
 </section>
 
-<div class="box-footer">
-        <button type="submit" class="btn btn-default"  ui-sref="user-profile">Back</button>
-        <button type="submit"  class="btn btn-info pull-right" ng-click="profileUpdate(userUpdateForm)">Submit</button>
-  </div>
+
