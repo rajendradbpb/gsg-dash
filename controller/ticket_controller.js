@@ -33,8 +33,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
 
     };
     $scope.getLocationDetails = function(){
-      var latlng =[$scope.orderDetails.orderDtls[0].product.location.lat,$scope.orderDetails.orderDtls[0].product.location.lng];
-      var url = Constants.googleApi.replace(/{{latLng}}/g,latlng);
+      var url = Constants.googleApi.replace(/{{latLng}}/g,$scope.orderDetails.orderDtls[0].product.location);
       $http.get(url).then(function(response) {
         $scope.orderDetails.locationDetails = response.data.results[0] ? response.data.results[0].formatted_address : "No Address available";
       },function(err){
@@ -192,6 +191,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       $scope.obj = {
         orderId : $stateParams.orderId
       }
+      console.log($scope.orderId);
       ApiCall.getOrderdetailsById($scope.obj , function(response){
         console.log(response);
         $scope.orderDetails = response.data;
@@ -278,12 +278,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     $scope.placeChanged = function() {
       $scope.place = this.getPlace();
       console.log('location', $scope.place.geometry.location.lat(),$scope.place.geometry.location.lng());
-      $scope.orderDetails.orderDtls[0].product.location = {
-        lat : $scope.place.geometry.location.lat(),
-        lng : $scope.place.geometry.location.lng()
-      };
-      
-      
+      $scope.orderDetails.orderDtls[0].product.location = [$scope.place.geometry.location.lat(),$scope.place.geometry.location.lng()];
       // $scope.map.setCenter($scope.place.geometry.location);
     }
     //function to remove service from order

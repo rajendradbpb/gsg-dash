@@ -5363,11 +5363,6 @@ cursor: pointer;
   margin-right: -10px;
   width: 183px;
 }
-.largeCheckbox{
-  height:22px;
-  width:22px;
-  margin-left: -28px;
-}
 /* google places fix for under laying */
 .pac-container {
         z-index: 10000 !important;
