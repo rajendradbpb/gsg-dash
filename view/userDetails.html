@@ -117,17 +117,17 @@
                             <div class="col-sm-3">
                                 <label class=" text-left control-label">State:</label>
                                 <!-- <input type="text" class="form-control" placeholder="User Name" ng-model="user.serviceArea.state" > -->
-                                <select class="form-control" name="state" ng-model="user.serviceArea.state" required ng-change="getDistrict(user.serviceArea.state)">
-                                        <option value="">Choose State*</option>
-                                        <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option>
+                                <select class="form-control" name="state" ng-model="user.serviceArea.state" ng-options="state as state.stateCd for state in stateList"  >
+                                        <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
+                                        <option ng-value="states.stateCd" ng-repeat="states in stateList" >{{states.stateCd}}</option> -->
                                     </select>
                             </div>
                             <div class="col-sm-3">
                                 <label class=" text-left control-label">District:</label>
                                 <!-- <input type="text" class="form-control" placeholder="District" ng-model="user.serviceArea.district"> -->
-                                <select class="form-control " name="district" ng-model="user.serviceArea.district" required>
-                                        <option value="">Choose District *</option>
-                                        <option value="{{districts}}" ng-repeat="districts in districtList track by $index">{{districts}}</option>
+                                <select class="form-control" name="district" ng-model="user.serviceArea.district"  ng-options="district as district for district in address.stateObj.districts" >
+                                        <!-- <option value="" ng-selected><i class="fa fa-sort-desc">District</i></option>
+                                        <option ng-value="states.stateCd" ng-repeat="districts in districtList" >{{districts}}</option> -->
                                     </select>
                             </div>
                             <!-- <div class="col-sm-3">
@@ -307,12 +307,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="box box-info" ng-init="getOrderByUser()">
+                <div clas="box box-info orderHist" ng-init="getOrderByUser()">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Order History</h3>
+                        <h3 class="box-title">Order History:</h3>
                     </div>
                     <div class="box-body">
-                        <div class="row col-xs-10 col-md-10 col-md-offset-1">
+                        <div class="row">
                          <uib-tabset>
                             <uib-tab ng-repeat="orderlist in orderHistoryList" heading="{{orderlist.type}}">
                                 <div class="col-sm-10 col-md-offset-1">

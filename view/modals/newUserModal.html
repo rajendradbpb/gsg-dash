@@ -19,7 +19,6 @@
       <div class="row">
         <div class="form-group" ng-class="{'has-error':createUserform.email.$touched && createUserform.email.$invalid}">
           <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 col-md-offset-1">
-              <label>Email *</label>
             <input type="email" class="form-control" ng-model="newUser.email" name="email" placeholder="Email *" required ng-pattern="/\S+@\S+\.\S+/"/>
             <span class="help-block" ng-show="createUserform.email.$error.required && createUserform.email.$touched">Please Enter email</span>
             <span class="help-block" ng-show="createUserform.email.$error.pattern && createUserform.email.$touched">Please enter a valid email.</span>
@@ -30,7 +29,6 @@
       <div class="row">
         <div classs="form-group " ng-class="{'has-error':createUserform.role.$touched && createUserform.role.$invalid}">
           <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9 col-md-offset-1">
-              <label style="margin-left:-14px">Select Role *</label>
               <select class="form-control roleClass" name="role" ng-model="newUser.roles"  required>
               <option value=""><i class="fa fa-sort-desc">Select Role *</i></option>
               <option value="{{role}}" ng-repeat="role in userRole">{{role}}</option>

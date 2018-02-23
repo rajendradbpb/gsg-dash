@@ -1,7 +1,6 @@
 app.controller("User_controller", function($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
   $scope.userList = {};
   $scope.active_tab = "BD";
-  $scope.districtList = [];
 
   $scope.tabChange = function(tab) {
     $scope.active_tab = tab;
@@ -129,12 +128,12 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       }
     })
   };
-  $scope.getDistrict = function(state) {
+  $scope.getDistrict = function(user) {
     $scope.districtList = [];
     angular.forEach($scope.stateList, function(item) {
-      if (item.stateCd == state) {
+      if (item.stateName == user.address[0].state) {
         $scope.districtList = item.districts;
-      
+        // vm.type = item.type;
       }
     });
   };
@@ -163,10 +162,6 @@ app.controller("User_controller", function($scope, $state, $rootScope, MasterMod
       // $scope.user.dob = new Date(dob);
       // get districtList based on state
       $scope.getDistrict($scope.user);
-    //   angular.forEach($scope.user.serviceArea, function(item){
-    //     $scope.districtList.push(item.district);
-    // });
-    $scope.districtList.push($scope.user.serviceArea.district);
       console.log($scope.user);
       console.log($scope.user.serviceArea);
       if ($scope.user.address.length == 0) {
