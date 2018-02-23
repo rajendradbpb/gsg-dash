@@ -94,7 +94,7 @@
                           
                             <select class="form-control " name="district" ng-model="data.address.district" required>
                                     <option value="">Choose District *</option>
-                                    <option value="{{districts}}" ng-repeat="districts in districtList">{{districts}}</option>
+                                    <option value="{{districts}}" ng-repeat="districts in districtList track by $index">{{districts}}</option>
                                 </select>
                             <span class="help-block" ng-show="addressForm.district.$error.required && addressForm.district.$touched"> cannot be empty</span>
                         </div>

@@ -770,7 +770,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
     }
   })
   $scope.active_tab = 'lists';
-  var colors = ['#34dcd6', '#7c12ca', '#efe239', '#34bb25', '#34bb25', '#34dcd6', '#7c12ca', '#efe239', '#bb25a7', '#34bb25'];
+  var colors = ['#9575CD', '#8D6E63', '#78909C', '#66BB6A', '#42A5F5'];
   $scope.tabChange = function(tab) {
     $scope.active_tab = tab;
   }
@@ -910,12 +910,15 @@ app.controller('DatePickerCtrl', ['$scope', function($scope) {
 ;app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state){
 $scope.officeDetails ={};
 $scope.newAddress = {};
-
+$scope.districtList = [];
 //function to get office details
 $scope.getOfficeDetails =function(){
     ApiCall.getOfficeDetails(function(response){
         console.log(response.data);
         $scope.officeDetails = response.data;
+        angular.forEach($scope.officeDetails, function(item){
+            $scope.districtList.push(item.address.district);
+        });
     }, function(error){
 
     });
@@ -1403,6 +1406,7 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
 ;app.controller("User_controller", function($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
   $scope.userList = {};
   $scope.active_tab = "BD";
+  $scope.districtList = [];
 
   $scope.tabChange = function(tab) {
     $scope.active_tab = tab;
@@ -1530,12 +1534,12 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
       }
     })
   };
-  $scope.getDistrict = function(user) {
+  $scope.getDistrict = function(state) {
     $scope.districtList = [];
     angular.forEach($scope.stateList, function(item) {
-      if (item.stateName == user.address[0].state) {
+      if (item.stateCd == state) {
         $scope.districtList = item.districts;
-        // vm.type = item.type;
+      
       }
     });
   };
@@ -1564,6 +1568,10 @@ app.controller('feedbackModalCtrl', function($scope, $uibModalInstance,orderDeta
       // $scope.user.dob = new Date(dob);
       // get districtList based on state
       $scope.getDistrict($scope.user);
+    //   angular.forEach($scope.user.serviceArea, function(item){
+    //     $scope.districtList.push(item.district);
+    // });
+    $scope.districtList.push($scope.user.serviceArea.district);
       console.log($scope.user);
       console.log($scope.user.serviceArea);
       if ($scope.user.address.length == 0) {

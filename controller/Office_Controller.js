@@ -1,12 +1,15 @@
 app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state){
 $scope.officeDetails ={};
 $scope.newAddress = {};
-
+$scope.districtList = [];
 //function to get office details
 $scope.getOfficeDetails =function(){
     ApiCall.getOfficeDetails(function(response){
         console.log(response.data);
         $scope.officeDetails = response.data;
+        angular.forEach($scope.officeDetails, function(item){
+            $scope.districtList.push(item.address.district);
+        });
     }, function(error){
 
     });
