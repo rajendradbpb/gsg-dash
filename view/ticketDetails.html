@@ -413,7 +413,7 @@
         </div>
         <div class="box-body">
           <div class="row">
-              <div class="col-sm-6" ng-if="orderDetails.locationDetails">
+              <div class="col-sm-6" ng-if="(orderDetails.locationDetails) && (orderDetails.locationDetails!='No Address available')">
                 <label class=" text-left control-label"> Order Location:</label>
                 <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
               </div>

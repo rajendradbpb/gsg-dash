@@ -54,14 +54,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group p-l-20">
+                    <div class="form-group p-l-20"  ng-class="{'has-error':newOrder.location.$touched && newOrder.location.$invalid}">
                         <label  class="control-label col-sm-4"> Location Search *</label>
                         <div class="col-xs-8">
-                            <input class="form-control" name="location" placeholder="Enter a location"
+                            <input class="form-control" name="location" placeholder="Enter a location" required
                             places-auto-complete size=80
                             ng-model="address"
                             component-restrictions="{country:'in'}"
                             on-place-changed="placeChanged()">
+                            <span class="help-block" ng-show="newOrder.location.$error.required && newOrder.location.$touched">Choose a Location.</span>
                         </div>
                         <!-- <div class="col-xs-8">
                             Location:{{$scope.place.geometry.location}}
