@@ -123,6 +123,10 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     }
     //funtion to update order status
     $scope.updateStatus = function(updateStatus) {
+      if(($scope.orderDetails.requestStatus =='EMERGENCY') && (!$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make)){
+        Util.alertMessage('danger','please provide user vehicle details');
+      }
+      else{
       console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
@@ -148,6 +152,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
         }
 
       });
+    }
 
     };
     //function to get mfgArr

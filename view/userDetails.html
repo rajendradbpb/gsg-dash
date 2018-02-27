@@ -63,10 +63,10 @@
                             </div>
                             <div class="col-xs-6">
                                 <div class="form-group has-feedback" ng-controller="DatePickerCtrl">
-                                        <label for="lname" class="col-sm-3 control-label">DOB *</label>
+                                        <label for="lname" class="col-sm-3 control-label">DOB </label>
                                         <div class="col-sm-9">
 
-                                            <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" required ng-model="user.dob" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
+                                            <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017" ng-model="user.dob" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"  is-open="opened"  max-date="dt" date-disabled="disabled(date, mode)" ng-click="open1($event)" close-text="Close"/>
                                             <!-- <span class="help-block" ng-show="userUpdateForm.dob.$error.required && userUpdateForm.dob.$touched">DOB is required</span> -->
                                         </div>
                                 </div>
@@ -111,42 +111,51 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Service Area Details</h3>
                     </div>
+                    <!-- <form id="serviceAreaForm" name="serviceAreaForm"></form> -->
                     <div class="box-body">
-                     <form name="serviceAreaForm">
+                     
                         <div class="row"> 
-                            <div class="col-sm-3">
-                                <label class=" text-left control-label">State:</label>
+                            <div class="col-sm-3" ng-class="{'has-error':userUpdateForm.state.$touched && userUpdateForm.state.$invalid}">
+                                <label class=" text-left control-label">State *</label>
                                 <!-- <input type="text" class="form-control" placeholder="User Name" ng-model="user.serviceArea.state" > -->
-                                <select class="form-control" name="state" ng-model="user.serviceArea.state" required ng-change="getDistrict(user.serviceArea.state)">
+                                <select class="form-control" name="state"  ng-model="user.serviceArea.state" required ng-change="getDistrict(user.serviceArea.state)">
                                         <option value="">Choose State*</option>
                                         <option value="{{state.stateCd}}" ng-repeat="state in stateList">{{state.stateCd}}</option>
                                     </select>
+                                    <span class="help-block" ng-show="userUpdateForm.state.$error.required && userUpdateForm.state.$touched"> cannot be empty</span>
                             </div>
-                            <div class="col-sm-3">
-                                <label class=" text-left control-label">District:</label>
+                            <div class="col-sm-3" ng-class="{'has-error':userUpdateForm.district.$touched && userUpdateForm.district.$invalid}">
+                                <label class=" text-left control-label">District *</label>
                                 <!-- <input type="text" class="form-control" placeholder="District" ng-model="user.serviceArea.district"> -->
                                 <select class="form-control " name="district" ng-model="user.serviceArea.district" required>
-                                        <option value="">Choose District *</option>
-                                        <option value="{{districts}}" ng-repeat="districts in districtList track by $index">{{districts}}</option>
-                                    </select>
+                                    <option value="">Choose District *</option>
+                                    <option value="{{districts}}" ng-repeat="districts in districtList track by $index">{{districts}}</option>
+                                </select>
+                                <span class="help-block" ng-show="userUpdateForm.district.$error.required && userUpdateForm.district.$touched"> cannot be empty</span>
                             </div>
                             <!-- <div class="col-sm-3">
                                 <label class=" text-left control-label">User Id:</label>
                                 <input type="text" class="form-control" placeholder="User Id" ng-model="orderDetails.userId" readonly>
                             </div> -->
-                            <div class="col-sm-3">
-                              <label class=" text-left control-label">Location:</label>
-                              <input type="text" class="form-control" placeholder="Location" ng-model="user.serviceArea.location">
+                            <div class="col-sm-3" ng-class="{'has-error':(userUpdateForm.location.$touched && userUpdateForm.location.$invalid)||
+                                    (userUpdateForm.location.$error.pattern && !userUpdateForm.location.$pristine)}">
+                              <label class=" text-left control-label">Location *</label>
+                              <input type="text" class="form-control" placeholder="Location" name="location"  ng-model="user.serviceArea.location" ng-pattern="/^[a-zA-Z ]*$/" required>
+                              <span class="help-block" ng-show="userUpdateForm.location.$error.required && userUpdateForm.location.$touched"> cannot be empty</span>
+                              <span class="help-block" ng-show="userUpdateForm.location.$error.pattern && !userUpdateForm.location.$pristine">Please Enter a Valid Location(Only Alphabets Allowed)</span>
                             </div>
-                            <div class="col-sm-3">
-                              <label class=" text-left control-label">SubLocation:</label>
-                              <input type="text" class="form-control" placeholder="SubLocation" ng-model="user.serviceArea.subLocation">
+                            <div class="col-sm-3" ng-class="{'has-error':(userUpdateForm.sublocation.$touched && userUpdateForm.sublocation.$invalid)||
+                                        (userUpdateForm.sublocation.$error.pattern && !userUpdateForm.sublocation.$pristine)}">
+                              <label class=" text-left control-label">SubLocation *</label>
+                              <input type="text" class="form-control" placeholder="SubLocation" name="sublocation"  ng-model="user.serviceArea.subLocation" ng-pattern="/^[a-zA-Z ]*$/" required>
+                              <span class="help-block" ng-show="userUpdateForm.sublocation.$error.required && userUpdateForm.sublocation.$touched"> cannot be empty</span>
+                              <span class="help-block" ng-show="userUpdateForm.sublocation.$error.pattern && !userUpdateForm.sublocation.$pristine">Please Enter a Valid SubLocation(Only Alphabets Allowed)</span>
                             </div>
                             
                         </div>
                         <br>
-                        <button type="submit" ng-disabled ="serviceAreaForm.$invalid" ng-click="updateServiceArea()"  class="btn btn-info pull-right">Submit </button>
-                    </form>
+                        <button type="submit" ng-disabled ="userUpdateForm.$invalid" ng-click="updateServiceArea()"  class="btn btn-info pull-right">Submit </button>
+                    
                     </div>
                 </div>
                 <div class="box box-success " ng-repeat="address in user.address">

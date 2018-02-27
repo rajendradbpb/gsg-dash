@@ -242,8 +242,8 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-  //  'HTTP_HOST_APP':'http://101.53.136.166:8090'
-   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+   'HTTP_HOST_APP':'http://101.53.136.166:8090'
+  //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -1165,6 +1165,10 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
     }
     //funtion to update order status
     $scope.updateStatus = function(updateStatus) {
+      if(($scope.orderDetails.requestStatus =='EMERGENCY') && (!$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make)){
+        Util.alertMessage('danger','please provide user vehicle details');
+      }
+      else{
       console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
@@ -1190,6 +1194,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         }
 
       });
+    }
 
     };
     //function to get mfgArr

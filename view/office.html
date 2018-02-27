@@ -132,15 +132,17 @@
                             <span class="help-block" ng-show="addressForm.accountNo.$error.required && addressForm.accountNo.$touched"> cannot be empty</span>
                             <span class="help-block" ng-show="addressForm.accountNo.$error.pattern && !addressForm.accountNo.$pristine">Only Numeric value is allowed.</span>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.bankname.$touched && addressForm.bankname.$invalid}">
+                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.bankname.$error.pattern && !addressForm.bankname.$pristine}">
                             <label>Bank Name</label>
-                            <input type="text" class="form-control" placeholder="Bank Name " name="bankname" ng-model="data.bankdetails.bankName" >
+                            <input type="text" class="form-control" placeholder="Bank Name " name="bankname" ng-model="data.bankdetails.bankName" ng-pattern="/^[a-zA-Z ]*$/" >
                             <span class="help-block" ng-show="addressForm.bankname.$error.required && addressForm.bankname.$touched"> cannot be empty</span>
+                            <span class="help-block" ng-show="addressForm.bankname.$error.pattern && !addressForm.bankname.$pristine">Only Alphabets value is allowed.</span>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.branch.$touched && addressForm.branch.$invalid}">
+                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.branch.$error.pattern && !addressForm.branch.$pristine}">
                             <label>Branch Name</label>
-                            <input type="text" class="form-control" placeholder="Branch Name " name="branch" ng-model="data.bankdetails.branchName" >
+                            <input type="text" class="form-control" placeholder="Branch Name " name="branch" ng-model="data.bankdetails.branchName" ng-pattern="/^[a-zA-Z ]*$/" >
                             <span class="help-block" ng-show="addressForm.branch.$error.required && addressForm.branch.$touched"> cannot be empty</span>
+                            <span class="help-block" ng-show="addressForm.branch.$error.pattern && !addressForm.branch.$pristine">Only Alphabets value is allowed.</span>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.ifsc.$touched && addressForm.ifsc.$invalid}">
                             <label>IFSC no.</label>
@@ -270,23 +272,25 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.accountNo.$error.pattern && !addressForm.accountNo.$pristine}">
                                 <label>Account no.</label>
-                                <input type="text" class="form-control" placeholder="Account No " name="accountNo" ng-model="newAddress.bankdetails.account" ng-pattern="/^(0|[0-9]*)$/" >
+                                <input type="text" class="form-control" placeholder="Account No " name="accountNo" ng-model="data.bankdetails.account" ng-pattern="/^(0|[0-9]*)$/" >
                                 <span class="help-block" ng-show="addressForm.accountNo.$error.required && addressForm.accountNo.$touched"> cannot be empty</span>
                                 <span class="help-block" ng-show="addressForm.accountNo.$error.pattern && !addressForm.accountNo.$pristine">Only Numeric value is allowed.</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.bankname.$touched && addressForm.bankname.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.bankname.$error.pattern && !addressForm.bankname.$pristine}">
                                 <label>Bank Name</label>
-                                <input type="text" class="form-control" placeholder="Bank Name " name="bankname" ng-model="newAddress.bankdetails.bankName" >
+                                <input type="text" class="form-control" placeholder="Bank Name " name="bankname" ng-model="data.bankdetails.bankName" ng-pattern="/^[a-zA-Z ]*$/" >
                                 <span class="help-block" ng-show="addressForm.bankname.$error.required && addressForm.bankname.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="addressForm.bankname.$error.pattern && !addressForm.bankname.$pristine">Only Alphabets value is allowed.</span>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.branch.$touched && addressForm.branch.$invalid}">
+                            <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.branch.$error.pattern && !addressForm.branch.$pristine}">
                                 <label>Branch Name</label>
-                                <input type="text" class="form-control" placeholder="Branch Name " name="branch" ng-model="newAddress.bankdetails.branchName" >
+                                <input type="text" class="form-control" placeholder="Branch Name " name="branch" ng-model="data.bankdetails.branchName" ng-pattern="/^[a-zA-Z ]*$/" >
                                 <span class="help-block" ng-show="addressForm.branch.$error.required && addressForm.branch.$touched"> cannot be empty</span>
+                                <span class="help-block" ng-show="addressForm.branch.$error.pattern && !addressForm.branch.$pristine">Only Alphabets value is allowed.</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.ifsc.$touched && addressForm.ifsc.$invalid}">
                                 <label>IFSC no.</label>
-                                <input type="text" class="form-control" placeholder="IFSC No " name="ifsc" ng-model="newAddress.bankdetails.ifsc" >
+                                <input type="text" class="form-control" placeholder="IFSC No " name="ifsc" ng-model="data.bankdetails.ifsc" >
                                 <span class="help-block" ng-show="addressForm.ifsc.$error.required && addressForm.ifsc.$touched"> cannot be empty</span>
                             </div>
                         </div>

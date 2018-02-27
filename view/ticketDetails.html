@@ -417,7 +417,7 @@
                 <label class=" text-left control-label"> Order Location:</label>
                 <input type="text" class="form-control" placeholder="Location" ng-model="orderDetails.locationDetails" readonly>
               </div>
-              <div class="col-sm-6" ng-if="!orderDetails.locationDetails">
+              <div class="col-sm-6" ng-if="(!orderDetails.locationDetails)||(orderDetails.locationDetails =='No Address available')">
                   <label class=" text-left control-label"> Order Location:</label>
                   <input  class="form-control" placeholder="Location" ng-model="location"
                   places-auto-complete size=80
@@ -470,7 +470,7 @@
               <div class="col-sm-3">
                 <br>
 
-                  <button type="submit" ng-click="updateStatus(statusUpdateForm)"
+                  <button type="submit" ng-click="updateStatus(statusUpdateForm)" 
                      class="btn btn-info pull-right">Update Status</button>
               </div>
               </ng-form>
