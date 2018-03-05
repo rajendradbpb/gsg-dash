@@ -1,4 +1,4 @@
-app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state){
+app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state,$stateParams,NgTableParams){
     $scope.officeDetails ={};
     $scope.newAddress = {};
     $scope.districtList = [];
@@ -10,6 +10,10 @@ app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$st
             angular.forEach($scope.officeDetails, function(item){
                 $scope.districtList.push(item.address.district);
             });
+        $scope.officeData = new NgTableParams;
+        $scope.officeData.settings({
+            dataset: $scope.officeDetails
+        })
         }, function(error){
     
         });
@@ -59,11 +63,11 @@ app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$st
         });
     }
     //function to update address
-    $scope.updateOfficeAddress = function(index){
-        console.log($scope.officeDetails[index]);
-        ApiCall.saveNewOfficeAddress($scope.officeDetails[index], function(response){
+    $scope.updateOfficeAddress = function(){
+        console.log( $scope.ofcDetails);
+        ApiCall.saveNewOfficeAddress( $scope.ofcDetails, function(response){
             console.log(response.data);
-            $state.reload();
+            $state.go('office');
             Util.alertMessage('success',' Office Details updated..');
         }, function(error){
             if(error.status == 417){
@@ -73,5 +77,17 @@ app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$st
                 Util.alertMessage('danger','Error in Updating office details');
             }
         });
+    }
+    //function to get office details by index
+    $scope.showOfcDetails = function(){
+        $scope.ofcDetails = $stateParams.ofcDetails;
+       
+        console.log($scope.ofcDetails);
+        if(!$scope.ofcDetails){
+            $state.go('office');
+        }
+        else{
+        $scope.districtList.push($scope.ofcDetails.address.district);
+        }
     }
     });

@@ -181,6 +181,25 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('officeDetails',{
+    templateUrl:'view/officeDetails.html',
+    url:'/officeDetails',
+    controller:'Office_Controller',
+    params : {
+      ofcDetails : null
+    },
+    resolve:{
+      logout: checkLoggedout
+    }
+  })
+  .state('newOffice',{
+    templateUrl:'view/newOffice.html',
+    url:'/newOffice',
+    controller:'Office_Controller',
+    resolve:{
+      logout: checkLoggedout
+    }
+  })
 function checkLoggedin($q, $timeout, $rootScope,$http, $state, $localStorage) {
   var deferred = $q.defer();
   if($localStorage.token != null){
@@ -242,8 +261,8 @@ app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout)
 app.constant('CONFIG', {
 
   //  'HTTP_HOST_APP':'http://localhost:8090',
-   'HTTP_HOST_APP':'http://101.53.136.166:8090'
-  //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+  //  'HTTP_HOST_APP':'http://101.53.136.166:8090'
+   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });
@@ -693,11 +712,20 @@ app.filter('capitalize', function() {
 
 
             ApiCall.getUserByContact($scope.user , function(response){
-                $rootScope.isLoggedin = true;
-                $localStorage.loggedin_user = response.data;
-                console.log($localStorage.loggedin_user);
-                $state.go('dashboard');
-                console.log($localStorage.token);
+                if(response.data.roles.indexOf('ROLE_OPERATION') > -1){
+                    $rootScope.isLoggedin = true;
+                    $localStorage.loggedin_user = response.data;
+                    console.log($localStorage.loggedin_user);
+                    
+                    $state.go('dashboard');
+                    console.log($localStorage.token);
+                }
+                else{
+                    Util.alertMessage('danger','User is not authorized');
+                    $state.go('login');
+                    $localStorage.token = "";
+                }
+               
             }, function(error){
 
 
@@ -907,7 +935,7 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
     $scope.format1 = $scope.formats[5];
   
   }]);
-  ;app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state){
+  ;app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$state,$stateParams,NgTableParams){
     $scope.officeDetails ={};
     $scope.newAddress = {};
     $scope.districtList = [];
@@ -919,6 +947,10 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
             angular.forEach($scope.officeDetails, function(item){
                 $scope.districtList.push(item.address.district);
             });
+        $scope.officeData = new NgTableParams;
+        $scope.officeData.settings({
+            dataset: $scope.officeDetails
+        })
         }, function(error){
     
         });
@@ -968,11 +1000,11 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         });
     }
     //function to update address
-    $scope.updateOfficeAddress = function(index){
-        console.log($scope.officeDetails[index]);
-        ApiCall.saveNewOfficeAddress($scope.officeDetails[index], function(response){
+    $scope.updateOfficeAddress = function(){
+        console.log( $scope.ofcDetails);
+        ApiCall.saveNewOfficeAddress( $scope.ofcDetails, function(response){
             console.log(response.data);
-            $state.reload();
+            $state.go('office');
             Util.alertMessage('success',' Office Details updated..');
         }, function(error){
             if(error.status == 417){
@@ -982,6 +1014,18 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
                 Util.alertMessage('danger','Error in Updating office details');
             }
         });
+    }
+    //function to get office details by index
+    $scope.showOfcDetails = function(){
+        $scope.ofcDetails = $stateParams.ofcDetails;
+       
+        console.log($scope.ofcDetails);
+        if(!$scope.ofcDetails){
+            $state.go('office');
+        }
+        else{
+        $scope.districtList.push($scope.ofcDetails.address.district);
+        }
     }
     });;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
     //function to get all schemes
@@ -1165,10 +1209,10 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
     }
     //funtion to update order status
     $scope.updateStatus = function(updateStatus) {
-      if(($scope.orderDetails.requestStatus =='EMERGENCY') && (!$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make)){
-        Util.alertMessage('danger','please provide user vehicle details');
-      }
-      else{
+      // if(($scope.orderDetails.requestStatus =='EMERGENCY') && (!$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make)){
+      //   Util.alertMessage('danger','please provide user vehicle details');
+      // }
+      // else{
       console.log($scope.orderDetails.status,$scope.orderDetails.state,$scope.orderDetails.district,$scope.orderDetails.assignedToUserId);
       $scope.orderUpdate ={};
       $scope.orderUpdate ={
@@ -1179,7 +1223,23 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         requestStatus : $scope.orderDetails.status==null ? $scope.orderDetails.requestStatus:$scope.orderDetails.status,
         orderId : $scope.orderDetails.orderId
       };
-      console.log($scope.orderUpdate);
+      // if( $scope.orderUpdate.requestStatus=='CANCELLED'){
+        
+      // }
+      // else{
+      //   if(!$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
+      //     Util.alertMessage('danger','please provide user vehicle details');
+      //   }
+      //   else{
+      //     console.log($scope.orderUpdate);
+          
+      //   }
+      // }
+
+      if($scope.orderUpdate.requestStatus!='CANCELLED' &&  !$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
+        Util.alertMessage('danger','please provide user vehicle details');
+        return;
+      }
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order status changed successfully..');
@@ -1194,8 +1254,6 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         }
 
       });
-    }
-
     };
     //function to get mfgArr
     $scope.getMfgYear = function() {

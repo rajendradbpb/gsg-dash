@@ -438,8 +438,8 @@
                       <option value="REJECTED" ng-if="orderDetails.requestStatus=='WIP'">REJECTED</option>
                       <option value="RESOLVED" ng-if="false">RESOLVED</option>
                       <option value="CLOSED" ng-if="orderDetails.requestStatus=='RESOLVED'">CLOSED</option>
-                      <option value="CANCELED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
-                        orderDetails.requestStatus=='REJECTED'||orderDetails.requestStatus=='WIP'">CANCELED</option>
+                      <option value="CANCELLED" ng-if="orderDetails.requestStatus=='CREATED' || orderDetails.requestStatus=='EMERGENCY' ||
+                        orderDetails.requestStatus=='REJECTED'">CANCELLED</option>
 
 
                   </select>

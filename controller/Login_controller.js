@@ -26,11 +26,20 @@ app.controller("Login_controller",function($scope,$state,$rootScope,$stateParams
 
 
             ApiCall.getUserByContact($scope.user , function(response){
-                $rootScope.isLoggedin = true;
-                $localStorage.loggedin_user = response.data;
-                console.log($localStorage.loggedin_user);
-                $state.go('dashboard');
-                console.log($localStorage.token);
+                if(response.data.roles.indexOf('ROLE_OPERATION') > -1){
+                    $rootScope.isLoggedin = true;
+                    $localStorage.loggedin_user = response.data;
+                    console.log($localStorage.loggedin_user);
+                    
+                    $state.go('dashboard');
+                    console.log($localStorage.token);
+                }
+                else{
+                    Util.alertMessage('danger','User is not authorized');
+                    $state.go('login');
+                    $localStorage.token = "";
+                }
+               
             }, function(error){
 
 
