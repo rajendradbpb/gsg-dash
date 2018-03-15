@@ -1,17 +1,22 @@
 <section class="content-header">
     <div class="row">
-        <h3 class=" col-md-3 col-md-offset-1">
-            Office Details
+      
+        <h3 class="col-md-8 col-xs-8 col-sm-8 col-lg-8 col-md-offset-1">
+            Office Lists
         </h3>
+      
         <!-- <button type="button"  class="btn btn-primary pull-right" ng-click="newOfcDetails()">
             <i class="fa fa-plus"></i> Add new Office Details
         </button> -->
+        <div class="col-md-4 col-md-offset-7">
         <button type="button"  class="btn btn-primary pull-right" ui-sref="newOffice">
             <i class="fa fa-plus"></i> Add new Office Details
           </button>
+        </div>
         <br>
     </div>
 </section>
+<br>
 <section  ng-init="getOfficeDetails()">
     <div class="row">
       <div class="col-md-10 col-xs-10 col-sm-10 col-lg-10 col-md-offset-1 col-xs-offset-1 col-sm-offset-1 col-lg-offset-1">
@@ -21,7 +26,7 @@
               <div class="box-body over-x-sc">
                 <div class="table-responsive">
                   <table ng-table="officeData" class="table table-bordered table-hover">
-                    <tr ng-repeat="row in $data" class="{{row.assignedToUserId !==''?'info':''}}">
+                    <tr ng-repeat="row in $data" class="info">
                       <td data-title="'Company Name'" >{{row.companyName}}</td>
                       <td data-title="'GST IN'" >{{row.gstin}}</td>
                       <td data-title="'State'" >{{row.address.state}}</td>

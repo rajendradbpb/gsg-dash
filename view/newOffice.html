@@ -1,3 +1,11 @@
+<section class="content-header m-b-40">
+    <h1>
+        Add New Office Details
+    
+    </h1>
+</section>
+
+<section class="content">
 <div class="row" >
     <div class="col-sm-10 col-md-offset-1" >
     <div class="box box-info">
@@ -58,7 +66,7 @@
                         <span class="help-block" ng-show="addressForm.po_ps_name.$error.required && addressForm.po_ps_name.$touched"> cannot be empty</span>
                         <span class="help-block" ng-show="addressForm.po_ps_name.$error.pattern && !addressForm.po_ps_name.$pristine">Please Enter a Valid City(Only Alphabets Allowed)</span>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.state.$touched && addressForm.state.$invalid}" >
+                    <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.state.$touched && addressForm.state.$invalid}" ng-init="getAllStates()">
                         <label>State</label>
                         <select class="form-control" name="state" ng-model="newAddress.address.state"  ng-change="getDistrict(newAddress.address.state)"  >
                             <!-- <option value="" ng-selected><i class="fa fa-sort-desc">State</i></option>
@@ -84,6 +92,13 @@
                    
                 </div>
                 <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.stateCd.$error.pattern && !addressForm.stateCd.$pristine}">
+                        <label>State Code</label>
+                        <input type="text" class="form-control" placeholder="State Code" name="stateCd" ng-model="ofcDetails.address.stateCd"  >
+                        
+                        <span class="help-block" ng-show="addressForm.stateCd.$error.pattern && !addressForm.stateCd.$pristine">Please Enter a Valid State Code(Only Alphabets Allowed)</span>
+                        <span class="help-block" ng-show="addressForm.stateCd.$error.required && addressForm.stateCd.$touched"> cannot be empty</span>
+                    </div>
                     <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.country.$error.pattern && !addressForm.country.$pristine}">
                         <label>Country</label>
                         <input type="text" class="form-control" placeholder="Country" name="country" ng-model="newAddress.address.country"  ng-pattern="/^[a-zA-Z ]*$/" >
@@ -142,3 +157,4 @@
     </div>
     </div>
 </div>
+</section>

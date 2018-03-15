@@ -150,10 +150,11 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
       //   }
       // }
 
-      if($scope.orderUpdate.requestStatus!='CANCELLED' &&  !$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
+      if($scope.orderUpdate.requestStatus!='CANCELED' &&  !$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
         Util.alertMessage('danger','please provide user vehicle details');
         return;
       }
+      console.log( $scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order status changed successfully..');

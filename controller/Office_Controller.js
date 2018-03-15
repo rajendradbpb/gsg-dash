@@ -51,8 +51,8 @@ app.controller("Office_Controller", function($scope,ApiCall,MasterModel,Util,$st
         console.log($scope.newAddress);
         ApiCall.saveNewOfficeAddress($scope.newAddress, function(response){
             console.log(response.data);
-            $state.reload();
             Util.alertMessage('success','new Office Details saved..');
+            $state.go('office');
         }, function(error){
             if(error.status == 417){
                 Util.alertMessage('danger', error.data.message);

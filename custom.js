@@ -988,8 +988,8 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         console.log($scope.newAddress);
         ApiCall.saveNewOfficeAddress($scope.newAddress, function(response){
             console.log(response.data);
-            $state.reload();
             Util.alertMessage('success','new Office Details saved..');
+            $state.go('office');
         }, function(error){
             if(error.status == 417){
                 Util.alertMessage('danger', error.data.message);
@@ -1236,10 +1236,11 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
       //   }
       // }
 
-      if($scope.orderUpdate.requestStatus!='CANCELLED' &&  !$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
+      if($scope.orderUpdate.requestStatus!='CANCELED' &&  !$scope.orderDetails.orderDtls[0].product.usrVehicle.vehicle.make){
         Util.alertMessage('danger','please provide user vehicle details');
         return;
       }
+      console.log( $scope.orderUpdate);
       ApiCall.updateOrder( $scope.orderUpdate , function(response){
         console.log(response.data);
         Util.alertMessage('success', ' Order status changed successfully..');

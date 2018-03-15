@@ -96,11 +96,18 @@
                        
                     </div>
                     <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.stateCd.$error.pattern && !addressForm.stateCd.$pristine}">
+                            <label>State Code</label>
+                            <input type="text" class="form-control" placeholder="State Code" name="stateCd" ng-model="ofcDetails.address.stateCd"  >
+                            
+                            <span class="help-block" ng-show="addressForm.stateCd.$error.pattern && !addressForm.stateCd.$pristine">Please Enter a Valid State Code(Only Alphabets Allowed)</span>
+                            <span class="help-block" ng-show="addressForm.stateCd.$error.required && addressForm.stateCd.$touched"> cannot be empty</span>
+                        </div>
                         <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.country.$error.pattern && !addressForm.country.$pristine}">
                             <label>Country</label>
                             <input type="text" class="form-control" placeholder="Country" name="country" ng-model="ofcDetails.address.country" ng-pattern="/^[a-zA-Z ]*$/" >
                             
-                            <span class="help-block" ng-show="addressForm.country.$error.pattern && !addressForm.country.$pristine">Please Enter a Valid City(Only Alphabets Allowed)</span>
+                            <span class="help-block" ng-show="addressForm.country.$error.pattern && !addressForm.country.$pristine">Please Enter a Valid Country(Only Alphabets Allowed)</span>
                             <span class="help-block" ng-show="addressForm.country.$error.required && addressForm.country.$touched"> cannot be empty</span>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addressForm.zip.$error.pattern && !addressForm.zip.$pristine}">
