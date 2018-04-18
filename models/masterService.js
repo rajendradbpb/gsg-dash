@@ -4,6 +4,28 @@ app.factory("MasterModel",function(ApiCall) {
     states:[],
     vehicles:[]
   };
+  var referral = [
+    {
+      "id" :"001",
+      "name" :"Santosh",
+      "refCode" :"001",
+    },
+    {
+      "id" :"002",
+      "name" :"Subhra",
+      "refCode" :"002",
+    },
+    {
+      "id" :"003",
+      "name" :"Asit",
+      "refCode" :"003",
+    },
+    {
+      "id" :"004",
+      "name" :"Chetan",
+      "refCode" :"004",
+    },
+  ]
   masterModel.getSchemes = function() {
     if(this.schemes) {
       return this.schemes;
@@ -48,6 +70,16 @@ app.factory("MasterModel",function(ApiCall) {
         callback(err,null) ;
       })
     }
+  }
+  masterModel.getReferral = function() {
+    return referral;
+  }
+  masterModel.addReferral = function(ref) {
+    referral.push(ref);
+  }
+  masterModel.deleteReferral = function(ref) {
+    console.log(referral.indexOf(ref));
+    referral.splice(referral.indexOf(ref),1);
   }
   return masterModel;
 })

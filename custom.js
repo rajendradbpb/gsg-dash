@@ -154,6 +154,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('referral',{
+    templateUrl:'view/referral.html',
+    url:'/referral',
+    controller : 'referral_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('schemeDetails',{
     templateUrl:'view/schemeDetails.html',
     url:'/schemeDetails',
@@ -635,7 +643,15 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
-    
+    getReferral: {
+      "url": "referral.json",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -671,6 +687,7 @@ app.filter('capitalize', function() {
     getOfficeDetails :  ApiGenerator.getApi('getOfficeDetails'),
     saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
     updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
+    getReferral : ApiGenerator.getApi('getReferral'),
   })
 })
 
@@ -1027,7 +1044,118 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
         $scope.districtList.push($scope.ofcDetails.address.district);
         }
     }
-    });;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
+    });;app.controller("referral_controller", function($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
+  $scope.referralList = [];
+
+  $scope.createReferral = function() {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'view/modals/addReferralModal.html',
+      controller: "ReferralModalCtrl",
+      size: 'md',
+      resolve: {
+        getReferral: function(){
+          return $scope.getReferral;
+        },
+        referral: function(){
+          return {};
+        },
+      }
+    });
+  }
+  $scope.onUpdateReferral = function(referral) {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'view/modals/updateReferralModal.html',
+      controller: "ReferralModalCtrl",
+      size: 'md',
+      resolve: {
+        getReferral: function(){
+          return $scope.getReferral;
+        },
+        referral: function(){
+          return referral;
+        },
+      }
+    });
+  }
+  $scope.onDeleteReferral = function(referral) {
+    MasterModel.deleteReferral(referral);
+    $scope.getReferral();
+  }
+  $scope.getReferral = function() {
+    // $rootScope.showPreloader = true;
+    $scope.referralList = new NgTableParams;
+      $scope.referralList.settings({
+        dataset: MasterModel.getReferral()
+      })
+
+    // ApiCall.getReferral(function(response) {
+    //   $rootScope.showPreloader =false;
+    //   console.log(response);
+    //   $scope.referralList = new NgTableParams;
+    //   $scope.referralList.settings({
+    //     dataset: response.data
+    //   })
+    // }, function(error) {
+    //   Util.alertMessage("danger", error);
+    // });
+
+  };
+
+
+
+
+});
+
+// create user modal , used to create new user by ccare
+app.controller('ReferralModalCtrl', function($scope, $uibModalInstance, Util, ApiCall,MasterModel, getReferral,referral) {
+  $scope.referral = referral || {};
+  $scope.addReferral = function(referral) {
+    MasterModel.addReferral(referral);
+    getReferral();
+    $uibModalInstance.close();
+    // ApiCall.createUser(req, function(response) {
+    //   Util.alertMessage("success", "User created");
+    //   console.log(response.data);
+    //   $uibModalInstance.close();
+    //   getReferral();
+    // }, function(error) {
+    //   $uibModalInstance.close();
+    //   if(error.status == 417){
+    //     Util.alertMessage("danger", error.data.message);
+    //   }
+    //   else{
+    //   Util.alertMessage("danger", "Error in user creation");
+    //   }
+    // })
+
+  };
+  $scope.updateReferral = function(referral) {
+    MasterModel.addReferral(referral);
+    getReferral();
+    $uibModalInstance.close();
+    // ApiCall.createUser(req, function(response) {
+    //   Util.alertMessage("success", "User created");
+    //   console.log(response.data);
+    //   $uibModalInstance.close();
+    //   getReferral();
+    // }, function(error) {
+    //   $uibModalInstance.close();
+    //   if(error.status == 417){
+    //     Util.alertMessage("danger", error.data.message);
+    //   }
+    //   else{
+    //   Util.alertMessage("danger", "Error in user creation");
+    //   }
+    // })
+
+  };
+  $scope.cancel = function() {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
+;app.controller('scheme_controller' , function($scope, ApiCall,$stateParams,NgTableParams, $state){
     //function to get all schemes
     $scope.getSchemes = function(){
         //service to get all schemes..
@@ -2145,6 +2273,28 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
     states:[],
     vehicles:[]
   };
+  var referral = [
+    {
+      "id" :"001",
+      "name" :"Santosh",
+      "refCode" :"001",
+    },
+    {
+      "id" :"002",
+      "name" :"Subhra",
+      "refCode" :"002",
+    },
+    {
+      "id" :"003",
+      "name" :"Asit",
+      "refCode" :"003",
+    },
+    {
+      "id" :"004",
+      "name" :"Chetan",
+      "refCode" :"004",
+    },
+  ]
   masterModel.getSchemes = function() {
     if(this.schemes) {
       return this.schemes;
@@ -2189,6 +2339,16 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
         callback(err,null) ;
       })
     }
+  }
+  masterModel.getReferral = function() {
+    return referral;
+  }
+  masterModel.addReferral = function(ref) {
+    referral.push(ref);
+  }
+  masterModel.deleteReferral = function(ref) {
+    console.log(referral.indexOf(ref));
+    referral.splice(referral.indexOf(ref),1);
   }
   return masterModel;
 })

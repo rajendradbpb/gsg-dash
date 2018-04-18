@@ -30,7 +30,7 @@
           </span> -->
         </a>
       </li>
-     
+
       <li class="treeview " ng-class="{'active':stateName=='orders'}">
         <a href="" ui-sref="orders({ status :'ALL'})">
           <i class="fa fa-edit"></i> <span>Orders</span>
@@ -62,6 +62,11 @@
             <i class="fa fa-file"></i> <span>Schemes</span>
           </a>
         </li>
+      <li class="treeview" ng-class="{'active':stateName == 'referral'}" >
+        <a href="" ui-sref="referral">
+          <i class="fa fa-users"></i> <span>Referral</span>
+        </a>
+      </li>
       <!-- <li class="treeview" ng-class="{'active':stateName=='serviceEngineers'}">
         <a href="" ui-sref="serviceEngineers">
           <i class="fa fa-car"></i> <span>Service Engineers</span>

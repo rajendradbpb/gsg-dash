@@ -265,7 +265,15 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
-    
+    getReferral: {
+      "url": "referral.json",
+      "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+
   }
 })
 .factory('ApiCall', function($http, $resource, API,ApiGenerator) {
@@ -301,6 +309,7 @@ angular.module('WebService', [])
     getOfficeDetails :  ApiGenerator.getApi('getOfficeDetails'),
     saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
     updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
+    getReferral : ApiGenerator.getApi('getReferral'),
   })
 })
 

@@ -154,6 +154,14 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       logout: checkLoggedout
     }
   })
+  .state('referral',{
+    templateUrl:'view/referral.html',
+    url:'/referral',
+    controller : 'referral_controller',
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
   .state('schemeDetails',{
     templateUrl:'view/schemeDetails.html',
     url:'/schemeDetails',
