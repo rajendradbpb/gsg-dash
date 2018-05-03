@@ -266,8 +266,34 @@ angular.module('WebService', [])
       },
     },
     getReferral: {
-      "url": "referral.json",
+      "url": "/gsg/api/dashboard/salesUser",
       "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    postReferral: {
+      "url": "/gsg/api/dashboard/salesUser",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateReferral: {
+      "url": "/gsg/api/dashboard/salesUser/:empid",
+      "method": "PUT",
+      "params":{empid:"@empid"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    deleteReferral: {
+      "url": "/gsg/api/dashboard/salesUser/:empid",
+      "method": "DELETE",
+      "params":{empid:"@empid"},
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -310,6 +336,9 @@ angular.module('WebService', [])
     saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
     updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
     getReferral : ApiGenerator.getApi('getReferral'),
+    postReferral : ApiGenerator.getApi('postReferral'),
+    updateReferral : ApiGenerator.getApi('updateReferral'),
+    deleteReferral : ApiGenerator.getApi('deleteReferral'),
   })
 })
 

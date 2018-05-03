@@ -16,7 +16,7 @@
             <div class="table-responsive">
                 <table ng-table="referralList" class="table table-bordered table-hover userData table-t-a-c">
                     <tr ng-repeat="row in $data" style="text-align:left">
-                        <td data-title="'Sl No'" >{{ $index + 1}}</td>
+                        <!-- <td data-title="'Sl No'" >{{ $index + 1}}</td> -->
                         <td data-title="' id'" filter="{ 'id': 'text'}" sortable="'id'">{{row.id}}</td>
                         <td data-title="' name '" filter="{ 'name': 'text'}" sortable="'name'">{{row.name}}</td>
                         <td data-title="' refCode'" filter="{ 'refCode': 'text'}" sortable="'refCode'">{{row.refCode}}</td>

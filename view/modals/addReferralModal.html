@@ -8,7 +8,7 @@
         <label class="text-left control-label col-sm-4 col-md-offset-1">Employee Id *</label>
         <div class="col-sm-6">
           <input type="text" class="form-control" name="id" ng-model="referral.id" required>
-          <span class="help-block" ng-show="addReferralForm.id.$error.required && addReferralForm.id.$touched">Enter Employee Id.</span>
+          <span class="help-block ng-invalid" ng-show="addReferralForm.id.$error.required && addReferralForm.id.$touched">Enter Employee Id.</span>
         </div>
       </div>
       <div class="row">

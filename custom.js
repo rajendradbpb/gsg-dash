@@ -644,8 +644,34 @@ app.filter('capitalize', function() {
       },
     },
     getReferral: {
-      "url": "referral.json",
+      "url": "/gsg/api/dashboard/salesUser",
       "method": "GET",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    postReferral: {
+      "url": "/gsg/api/dashboard/salesUser",
+      "method": "POST",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    updateReferral: {
+      "url": "/gsg/api/dashboard/salesUser/:empid",
+      "method": "PUT",
+      "params":{empid:"@empid"},
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
+    deleteReferral: {
+      "url": "/gsg/api/dashboard/salesUser/:empid",
+      "method": "DELETE",
+      "params":{empid:"@empid"},
       "headers": {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -688,6 +714,9 @@ app.filter('capitalize', function() {
     saveNewOfficeAddress :  ApiGenerator.getApi('saveNewOfficeAddress'),
     updateOfcAddress : ApiGenerator.getApi('updateOfcAddress'),
     getReferral : ApiGenerator.getApi('getReferral'),
+    postReferral : ApiGenerator.getApi('postReferral'),
+    updateReferral : ApiGenerator.getApi('updateReferral'),
+    deleteReferral : ApiGenerator.getApi('deleteReferral'),
   })
 })
 
@@ -1080,26 +1109,32 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
     });
   }
   $scope.onDeleteReferral = function(referral) {
-    MasterModel.deleteReferral(referral);
-    $scope.getReferral();
+    // MasterModel.deleteReferral(referral);
+    // $scope.getReferral();
+    // referral.empid = referral.id;
+    ApiCall.deleteReferral({empid:referral.id}, function(response) {
+      Util.alertMessage("success", "Referral Deleted");
+      $scope.getReferral();
+    }, function(error) {
+        Util.alertMessage("danger", "Error in Referral delete");
+    })
   }
   $scope.getReferral = function() {
     // $rootScope.showPreloader = true;
-    $scope.referralList = new NgTableParams;
-      $scope.referralList.settings({
-        dataset: MasterModel.getReferral()
-      })
-
-    // ApiCall.getReferral(function(response) {
-    //   $rootScope.showPreloader =false;
-    //   console.log(response);
-    //   $scope.referralList = new NgTableParams;
+    // $scope.referralList = new NgTableParams;
     //   $scope.referralList.settings({
-    //     dataset: response.data
+    //     dataset: MasterModel.getReferral()
     //   })
-    // }, function(error) {
-    //   Util.alertMessage("danger", error);
-    // });
+
+    ApiCall.getReferral(function(response) {
+      $rootScope.showPreloader =false;
+      $scope.referralList = new NgTableParams;
+      $scope.referralList.settings({
+        dataset: response.data
+      })
+    }, function(error) {
+      Util.alertMessage("danger", error);
+    });
 
   };
 
@@ -1109,46 +1144,43 @@ app.controller("Main_Controller", function($scope, $state, $rootScope,Constants,
 });
 
 // create user modal , used to create new user by ccare
-app.controller('ReferralModalCtrl', function($scope, $uibModalInstance, Util, ApiCall,MasterModel, getReferral,referral) {
+app.controller('ReferralModalCtrl', function($scope, $uibModalInstance, Util, ApiCall,$localStorage, getReferral,referral) {
   $scope.referral = referral || {};
   $scope.addReferral = function(referral) {
-    MasterModel.addReferral(referral);
-    getReferral();
+    // MasterModel.addReferral(referral);
+    // getReferral();
     $uibModalInstance.close();
-    // ApiCall.createUser(req, function(response) {
-    //   Util.alertMessage("success", "User created");
-    //   console.log(response.data);
-    //   $uibModalInstance.close();
-    //   getReferral();
-    // }, function(error) {
-    //   $uibModalInstance.close();
-    //   if(error.status == 417){
-    //     Util.alertMessage("danger", error.data.message);
-    //   }
-    //   else{
-    //   Util.alertMessage("danger", "Error in user creation");
-    //   }
-    // })
+    ApiCall.postReferral(referral, function(response) {
+      Util.alertMessage("success", "Referral Code created");
+      getReferral();
+      $uibModalInstance.close();
+    }, function(error) {
+      $uibModalInstance.close();
+      if(error.status != 201){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in Referral creation");
+      }
+    })
 
   };
   $scope.updateReferral = function(referral) {
-    MasterModel.addReferral(referral);
-    getReferral();
-    $uibModalInstance.close();
-    // ApiCall.createUser(req, function(response) {
-    //   Util.alertMessage("success", "User created");
-    //   console.log(response.data);
-    //   $uibModalInstance.close();
-    //   getReferral();
-    // }, function(error) {
-    //   $uibModalInstance.close();
-    //   if(error.status == 417){
-    //     Util.alertMessage("danger", error.data.message);
-    //   }
-    //   else{
-    //   Util.alertMessage("danger", "Error in user creation");
-    //   }
-    // })
+    referral.empid = $localStorage.loggedin_user.userId;
+    ApiCall.updateReferral(referral, function(response) {
+      Util.alertMessage("success", "User created");
+      console.log(response.data);
+      $uibModalInstance.close();
+      getReferral();
+    }, function(error) {
+      $uibModalInstance.close();
+      if(error.status != 201){
+        Util.alertMessage("danger", error.data.message);
+      }
+      else{
+      Util.alertMessage("danger", "Error in user creation");
+      }
+    })
 
   };
   $scope.cancel = function() {
