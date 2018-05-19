@@ -91,7 +91,8 @@ app.controller('ReferralModalCtrl', function($scope, $uibModalInstance, Util, Ap
 
   };
   $scope.updateReferral = function(referral) {
-    referral.empid = $localStorage.loggedin_user.userId;
+    referral.empid = referral.id;
+    delete referral['id'];
     ApiCall.updateReferral(referral, function(response) {
       Util.alertMessage("success", "User created");
       console.log(response.data);
