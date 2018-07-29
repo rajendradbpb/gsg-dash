@@ -9,7 +9,7 @@ app.constant("Constants", {
         "getUsername" : function() {return this.storagePrefix + "username";},
         "getPassword" : function() {return this.storagePrefix + "password";},
         "getIsRemember" : function() {return this.storagePrefix + "isRemember";},
-        "googleApi":"https://maps.googleapis.com/maps/api/geocode/json?latlng={{latLng}}&key=AIzaSyBKH-ESKu39LGz3Q9Uc4GIZTUdhAlhl0gE",
+        "googleApi":"https://maps.googleapis.com/maps/api/geocode/json?latlng={{latLng}}&key=AIzaSyAO2BvR7qPt-MYMu-P0AT15Ip5DF4jAo1A",
         "hashKey" : "goAppAccount",
         "envData" : {
           "env":"dev",
