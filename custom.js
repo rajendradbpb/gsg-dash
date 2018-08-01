@@ -1587,7 +1587,7 @@ app.controller('ReferralModalCtrl', function($scope, $uibModalInstance, Util, Ap
     }
 });
 app.controller('locationModalController', function($scope, $uibModalInstance, location) {
-  $scope.location = location;
+  $scope.location = location.lat+","+location.lng;
   $scope.ok = function(user) {
 
   };

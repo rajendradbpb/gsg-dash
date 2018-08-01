@@ -340,7 +340,7 @@ app.controller("TicketController",function($scope,$http,Constants,$state,$rootSc
     }
 });
 app.controller('locationModalController', function($scope, $uibModalInstance, location) {
-  $scope.location = location;
+  $scope.location = location.lat+","+location.lng;
   $scope.ok = function(user) {
 
   };
