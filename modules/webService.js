@@ -265,6 +265,16 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    updateWSDocs: {
+      "url": "/gsg/api/users/ws/updateDocs/:id",
+      "method": "PUT",
+      "params":{id:"@id",
+        },
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     getReferral: {
       "url": "/gsg/api/dashboard/salesUser",
       "method": "GET",
@@ -316,6 +326,7 @@ angular.module('WebService', [])
     getOrderdetailsById: ApiGenerator.getApi('getOrderdetailsById'),
     getOrders: ApiGenerator.getApi('getOrders'),
     updateUserById: ApiGenerator.getApi('updateUserById'),
+    updateWSDocs: ApiGenerator.getApi('updateWSDocs'),
     getOrdersCount: ApiGenerator.getApi('getOrdersCount'),
     getOrderByStatus  : ApiGenerator.getApi('getOrderByStatus'),
     getUserByContact : ApiGenerator.getApi('getUserByContact'),

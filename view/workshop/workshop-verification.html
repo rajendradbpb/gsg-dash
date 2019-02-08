@@ -1,0 +1,124 @@
+<section class="content-header m-b-40">
+    <h1>
+        Workshop Verification
+
+    </h1>
+</section>
+<section class="content" ng-init="getWorkshopDetails()">
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+            <div class="box box-info">
+                <div class="box-body over-x-sc">
+                    <div class="row">
+                        <form class="form-horizontal" name="documentAddForm">
+                            <div class="col-xs-12 col-lg-6 col-md-6 col-sm-6">
+                                <div class="form-group has-feedback" ng-class="{'has-error':(documentAddForm.docType.$touched && documentAddForm.docType.$invalid)}">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Document Type:</label>
+                                        <input type="text" name="docType" ng-model="demoDocument.docType" class="form-control"
+                                            placeholder="Document Type" required>
+                                        <span class="help-block" ng-show="documentAddForm.docType.$error.required && documentAddForm.docType.$touched">Document-type
+                                            is required</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error':documentAddForm.docstatus.$error.required && documentAddForm.docstatus.$touched }">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Document Status*</label>
+                                        <select class="form-control" name="docstatus" ng-model="demoDocument.docStatus" required>
+                                            <option value=""><i class="fa fa-sort-desc">Document Status</i></option>
+                                            <option value="verified">Verified</option>
+                                            <option value="rejected">Rejected</option>
+                                        </select>
+                                        <span class="help-block" ng-show="documentAddForm.docstatus.$error.required && documentAddForm.docstatus.$touched">
+                                        Document Status is required</span>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback" >
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Remarks </label>
+                                        <textarea  name="comment" ng-model="demoDocument.comment" class="form-control"
+                                            placeholder="Remarks"></textarea>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                        <button type="submit" class="btn btn-info"  ng-click="addDemoDocument()">Save and Add more</button>
+                                       
+                                  </div>
+                            </div>
+                            <div class="col-xs-12 col-lg-6 col-md-6 col-sm-6">
+                                <div class="box box-success">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Documents to be added</h3>
+                                    </div>
+                                    <div class="box-body" ng-if="demoDocumentArr.length > 0">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label class=" text-left control-label">Type</label>                                               
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class=" text-left control-label">Status</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class=" text-left control-label">Remarks</label>                                               
+                                            </div>
+                                            <div class="col-sm-3">
+                                                    <label class=" text-left control-label">Action</label>                                                   
+                                            </div>
+                                        </div> <hr>
+                                        <div class="row" ng-repeat="docs in demoDocumentArr track by $index">
+                                            <div class="col-sm-3">                                              
+                                                <input type="text" class="form-control" placeholder="Type" readonly ng-model="demoDocumentArr[$index].docType" >
+                                            </div>
+                                            <div class="col-sm-3">                                                
+                                                <input type="text" class="form-control" placeholder="Status" readonly ng-model="demoDocumentArr[$index].docStatus" >
+                                            </div>
+                                            <div class="col-sm-3">                                                
+                                                <input type="text" class="form-control" placeholder="Remarks"  readonly 
+                                                ng-model="demoDocumentArr[$index].comment" >
+                                            </div>
+                                            <div class="col-sm-3">                                                    
+                                                <button type="submit" class="btn btn-info"  ng-click="removeDemoDocument($index)">Remove</button>
+                                            </div>                                                                                                                 
+                                        </div>
+                                        <hr>
+                                        <span>Note : Please click on update after adding to reflect these documents in database</span>
+                                    </div>
+                                    <div class="box-body" ng-if="demoDocumentArr.length == 0"> 
+                                            <span>No documents in to be added list</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-info">
+                <div class="box-body over-x-sc">
+                    <div class="row" ng-if="!user.wsDocs || user.wsDocs.length == 0">
+                        <div class="col-xs-10 col-md-10 col-sm-10">
+                            <span> No Documents added/verified yet</span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="user.wsDocs && user.wsDocs.length > 0">
+                        <form class="form-horizontal" name="documentUpdateForm">
+                            <div class="col-xs-10 col-md-10 col-sm-10">
+                                <div ng-repeat="docs in user.wsDocs track by $index">
+                                    <span>{{docs.docStatus}}</span>
+                                    <span>{{docs.docType}}</span>
+                                    <span>{{docs.reviewer}}</span>
+                                    <span>{{docs.comment}}</span>
+                                    <span>{{docs.udatedBy}}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default"  ui-sref="workshopListByStatus({status : 'pending'})">Back</button>
+                    <button type="submit"  class="btn btn-info pull-right" ng-click="updateWorkshopDocument()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

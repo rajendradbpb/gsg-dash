@@ -1,0 +1,37 @@
+<section class="content-header m-b-40" >
+  <h1>
+   {{status | uppercase}} &nbsp; Workshop list
+
+  </h1>
+</section>
+<section ng-init="loadWorkshopList()" >
+<div class="row">
+  <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+      <div class="box box-info">
+        <div class="box-body over-x-sc">
+          <div class="table-responsive">
+              <table ng-table="userDatas" class="table table-bordered table-hover userDatas table-t-a-c">
+                  <tr ng-repeat="row in $data" style="text-align:left">
+                      <td data-title="'Sl No'" ng-class="{'not-covered':!row.isCover}">{{ $index + 1}}</td>
+
+                      <td data-title="' Workshop Name'" filter="{ 'Workshop name': 'text'}" sortable="'Workshop Name'">{{row.wName}}</td>
+                      <td data-title="' Owner Name'" filter="{ 'Owner name': 'text'}" sortable="'Owner Name'">{{row.name}}</td>
+                      <td data-title="' Contact No.'" filter="{ 'Contact No.': 'text'}" sortable="'Contact No. '">{{row.contactNbr}}</td>
+                      <td data-title="' Owner Email'" filter="{ 'Email': 'text'}" sortable="'Email '">{{row.email}}</td>
+                      <td data-title="' Status'" filter="{ 'Status': 'text'}" sortable="'Status'">{{row.wsStatus}}</td>
+                      <td data-title="'Action'">
+                           <div class="btn-group">
+                            <button type="button" class="btn btn-primary"  ui-sref="workshop-details({id : row.userId})">View More
+                            </button>
+                            <button type="button" class="btn btn-primary" ng-if="row.wsStatus != 'completed'"  ui-sref="workshop-verification({id : row.userId})">Verify
+                            </button>
+                          </div>
+                         </td>
+                  </tr>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -47,6 +47,28 @@
             </span>
           </a>
         </li> -->
+
+        
+
+        <li class="treeview menu-open" ng-class="{'active':stateName=='workshopListByStatus'}">
+          <a href="" >
+            <i class="fa fa-dashboard"></i> <span>Workshop Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="" ui-sref="workshopListByStatus({status:'pending'})"><i class="fa fa-circle-o"></i>New On-boarding</a></li>
+            <li class="active"><a href="" ui-sref="workshopListByStatus({status:'onhold'})"><i class="fa fa-circle-o"></i> Workshop On-hold</a></li>
+            <li class="active"><a href="" ui-sref="workshopListByStatus({status:'completed'})"><i class="fa fa-circle-o"></i> Authorized workshop</a></li>
+            <li class="active"><a href="" ui-sref="workshopListByStatus({status:'all'})"><i class="fa fa-circle-o"></i> All</a></li>
+          </ul>
+        </li>
+
+
+
+
+
       <li class="treeview" ng-class="{'active':stateName == 'users'}" >
         <a href="" ui-sref="users">
           <i class="fa fa-users"></i> <span>Users</span>

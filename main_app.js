@@ -32,6 +32,45 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     }
 
   })
+
+  .state('workshopListByStatus',{
+    templateUrl:'view/workshop/workshop-list-by-status.html',
+    url:'/workshop-list/:status',
+    controller : 'workshop_controller',
+    params : {
+      status : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('workshop-details',{
+    templateUrl:'view/workshop/workshop-details.html',
+    url:'/workshop-details/:id',
+    controller : 'workshop_controller',
+    params : {
+      id : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+  .state('workshop-verification',{
+    templateUrl:'view/workshop/workshop-verification.html',
+    url:'/workshop-verification/:id',
+    controller : 'workshop_controller',
+    params : {
+      id : null
+    },
+    resolve: {
+      logout: checkLoggedout
+    }
+  })
+
+
+
+
+
   .state('login',{
     templateUrl:'view/common/login.html',
     controller:'Login_controller',
