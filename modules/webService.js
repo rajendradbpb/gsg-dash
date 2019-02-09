@@ -202,6 +202,14 @@ angular.module('WebService', [])
           'Accept': 'application/json'
       },
     },
+    updateWorkshopStatus: {
+      "url": "/gsg/api/users/ws/status",
+      "method": "PUT",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     resetpwd: {
       "url": "/gsg/resetpwd/",
       "method": "POST",
@@ -334,6 +342,7 @@ angular.module('WebService', [])
     getOrderByUser : ApiGenerator.getApi('getOrderByUser'),
     getEngineerList : ApiGenerator.getApi('getEngineerList'),
     updateOrder : ApiGenerator.getApi('updateOrder'),
+    updateWorkshopStatus : ApiGenerator.getApi('updateWorkshopStatus'),
     getUserCount :  ApiGenerator.getApi('getUserCount'),
     getUserByRole :  ApiGenerator.getApi('getUserByRole'),
     preresetpwd :  ApiGenerator.getApi('preresetpwd'),

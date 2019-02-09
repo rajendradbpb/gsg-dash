@@ -5,12 +5,16 @@
     </h1>
 </section>
 <section class="content" ng-init="getWorkshopDetails()">
+        
     <div class="row">
         <div class="col-sm-10 col-md-offset-1">
             <form class="form-horizontal" name="userUpdateForm">
                 <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Update Your Profile Here</h3>
+                        <button type="button"  class="btn btn-primary pull-right" ui-sref="workshop-verification({id:user.userId})">
+                                <i class="fa fa-plus"></i> Verify Now
+                              </button>
                     </div>
                     <div class="box-body">
                         <div class="row">

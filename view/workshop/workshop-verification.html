@@ -3,18 +3,24 @@
         Workshop Verification
 
     </h1>
+    <button type="button"  class="btn btn-primary pull-right" ng-click="openChangeWorkshopStatusModal()">
+            <i class="fa fa-plus"></i> Quick Verify
+          </button>
 </section>
 <section class="content" ng-init="getWorkshopDetails()">
     <div class="row">
         <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
             <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">New Documents to be added/verified</h3>
+                </div>
                 <div class="box-body over-x-sc">
                     <div class="row">
                         <form class="form-horizontal" name="documentAddForm">
                             <div class="col-xs-12 col-lg-6 col-md-6 col-sm-6">
                                 <div class="form-group has-feedback" ng-class="{'has-error':(documentAddForm.docType.$touched && documentAddForm.docType.$invalid)}">
                                     <div class="col-sm-12">
-                                        <label class="control-label">Document Type:</label>
+                                        <label class="control-label">Document Type*</label>
                                         <input type="text" name="docType" ng-model="demoDocument.docType" class="form-control"
                                             placeholder="Document Type" required>
                                         <span class="help-block" ng-show="documentAddForm.docType.$error.required && documentAddForm.docType.$touched">Document-type
@@ -33,7 +39,7 @@
                                         Document Status is required</span>
                                     </div>
                                 </div>
-                                <div class="form-group has-feedback" ng-class="{'has-error':(documentAddForm.docType.$touched && documentAddForm.docType.$invalid)}">
+                                <div class="form-group has-feedback" ng-class="{'has-error':(documentAddForm.reviewer.$touched && documentAddForm.reviewer.$invalid)}">
                                     <div class="col-sm-12">
                                         <label class="control-label">Reviewer:*</label>
                                         <input type="text" name="reviewer" ng-model="demoDocument.reviewer" class="form-control"
@@ -59,7 +65,7 @@
                             <div class="col-xs-12 col-lg-6 col-md-6 col-sm-6">
                                 <div class="box box-success">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Documents to be added</h3>
+                                        <h3 class="box-title">Documents to be added List</h3>
                                     </div>
                                     <div class="box-body" ng-if="demoDocumentArr.length > 0">
                                         <div class="row">
@@ -113,13 +119,64 @@
                     </div>
                     <div class="row" ng-if="user.wsDocs && user.wsDocs.length > 0">
                         <form class="form-horizontal" name="documentUpdateForm">
-                            <div class="col-xs-10 col-md-10 col-sm-10">
-                                <div ng-repeat="docs in user.wsDocs track by $index">
-                                    <span>{{docs.docStatus}}</span>
-                                    <span>{{docs.docType}}</span>
-                                    <span>{{docs.reviewer}}</span>
-                                    <span>{{docs.comment}}</span>
-                                    <span>{{docs.udatedBy}}</span>
+                            <div class="col-xs-12 col-md-12 col-sm-12">                                
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label class=" text-left control-label">Type*</label>                                               
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class=" text-left control-label">Status*</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class=" text-left control-label">Reviewer*</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class=" text-left control-label">Remarks</label>                                               
+                                    </div>
+                                </div> <hr>
+                                <div class="row" ng-repeat="docs in user.wsDocs track by $index">
+                                    <div class="col-sm-3">                                              
+                                        <div class="form-group has-feedback" ng-class="{'has-error':(documentUpdateForm.docType.$touched && documentUpdateForm.docType.$invalid)}">
+                                            <div class="col-sm-12">
+                                                <input type="text" name="docType" ng-model="user.wsDocs[$index].docType" class="form-control"
+                                                    placeholder="Document Type" required>
+                                                <span class="help-block" ng-show="documentUpdateForm.docType.$error.required && documentUpdateForm.docType.$touched">Document-type
+                                                    is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">   
+                                        <div class="form-group" ng-class="{'has-error':documentUpdateForm.docstatus.$error.required && documentUpdateForm.docstatus.$touched }">
+                                            <div class="col-sm-12">                                             
+                                                <select class="form-control" name="docstatus" ng-model="user.wsDocs[$index].docStatus" required>
+                                                    <option value=""><i class="fa fa-sort-desc">Document Status</i></option>
+                                                    <option value="verified">Verified</option>
+                                                    <option value="rejected">Rejected</option>
+                                                </select>
+                                                <span class="help-block" ng-show="documentUpdateForm.docstatus.$error.required && documentUpdateForm.docstatus.$touched">
+                                                Document Status is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">                                                
+                                        <div class="form-group has-feedback" ng-class="{'has-error':(documentUpdateForm.reviewer.$touched && documentUpdateForm.reviewer.$invalid)}">
+                                            <div class="col-sm-12">    
+                                                <input type="text" name="reviewer" ng-model="user.wsDocs[$index].reviewer" class="form-control"
+                                                    placeholder="reviewer" required>
+                                                <span class="help-block" ng-show="documentUpdateForm.reviewer.$error.required && documentUpdateForm.reviewer.$touched">Reviewer
+                                                    is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">                                                
+                                        <div class="form-group has-feedback" >
+                                            <div class="col-sm-12">    
+                                                <textarea  name="comment" ng-model="user.wsDocs[$index].comment" class="form-control"
+                                                    placeholder="Remarks"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                                                                                                  
                                 </div>
                             </div>
                         </form>
@@ -127,7 +184,7 @@
                 </div>
                 <div class="box-footer">
                     <button type="submit" class="btn btn-default"  ui-sref="workshopListByStatus({status : 'pending'})">Back</button>
-                    <button type="submit"  class="btn btn-info pull-right" ng-click="updateWorkshopDocument()">Update</button>
+                    <button type="submit" ng-disabled="documentUpdateForm.$invalid" class="btn btn-info pull-right" ng-click="updateWorkshopDocument()">Update</button>
                 </div>
             </div>
         </div>

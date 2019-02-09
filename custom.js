@@ -618,6 +618,14 @@ app.filter('capitalize', function() {
           'Accept': 'application/json'
       },
     },
+    updateWorkshopStatus: {
+      "url": "/gsg/api/users/ws/status",
+      "method": "PUT",
+      "headers": {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    },
     resetpwd: {
       "url": "/gsg/resetpwd/",
       "method": "POST",
@@ -750,6 +758,7 @@ app.filter('capitalize', function() {
     getOrderByUser : ApiGenerator.getApi('getOrderByUser'),
     getEngineerList : ApiGenerator.getApi('getEngineerList'),
     updateOrder : ApiGenerator.getApi('updateOrder'),
+    updateWorkshopStatus : ApiGenerator.getApi('updateWorkshopStatus'),
     getUserCount :  ApiGenerator.getApi('getUserCount'),
     getUserByRole :  ApiGenerator.getApi('getUserByRole'),
     preresetpwd :  ApiGenerator.getApi('preresetpwd'),
@@ -2277,22 +2286,11 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
                 obj.wsDocs.push(item);
             })
         }
-        // ApiCall.updateWSDocs(obj, function (response) {
-        //     console.log(response.data);
-        // }, function (error) {
-
-        // });
-        // return $resource(CONFIG.HTTP_HOST_APP+"/gsg/api/users/ws/updateDocs/"+$scope.user.userId, obj.wsDocs, {
-        //     update: {method: 'PUT'}
-        //   }).success(function(data) {
-        //       alert(1)
-        //   })
-        //   .success(function(data) {
-        //       alert(1)
-        //   })
         $http.put(CONFIG.HTTP_HOST_APP+"/gsg/api/users/ws/updateDocs/"+$scope.user.userId, obj.wsDocs)
         .then(function(data) {
+            console.log(data);
             Util.alertMessage('info','document updated');
+            $scope.user = data.data.data;
         }, function(err) {
             Util.alertMessage('error','Error in document update');
             console.log('Error in document update'+err);
@@ -2390,7 +2388,83 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
         });
     };
 
-})
+    $scope.openChangeWorkshopStatusModal =function(){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'view/modals/changeWorkshopStatus.html',
+            controller: "ChangeWorkshopStatusModalCtrl",
+            size: 'md',
+            resolve: {
+                getFullWorkshop: function(){
+                    return $scope.user;
+                }
+            }
+          });
+    }
+
+});
+
+// chnage workshop status modal controller starts here
+app.controller('ChangeWorkshopStatusModalCtrl', function($scope,$state, $uibModalInstance, Util, ApiCall, getFullWorkshop) {
+    $scope.done = {
+        value : false,
+        password :"",
+        primaryGET:"",
+        assistantGET:[]
+    };
+    $scope.allVerified = true;
+    $scope.engineersList = [];
+    $scope.engineersList1 = [];
+    
+    $scope.ngOnInit = function(){
+        $scope.workshopDetails = getFullWorkshop;
+        angular.forEach($scope.workshopDetails.wsDocs , function(item){
+            if(item.docStatus == "rejected"){
+                $scope.allVerified = false;
+            }
+        })
+    }
+    console.log("verify" , $scope.allVerified);
+
+    $scope.changeEngineerList1 = function() {
+        $scope.engineersList1 = $scope.engineersList.filter(function(item){return item.userId != $scope.done.primaryGET;})
+    };
+    $scope.getEngineerList = function(){
+        ApiCall.getEngineerList(function(response){
+          console.log(response.data);
+          $scope.engineersList = response.data;
+        } , function(error){
+          console.log(error);
+        });
+      };
+
+    $scope.changeWorkshopStatus = function(status) {
+        if($scope.done.password){
+            $scope.workshopDetails.password = $scope.done.password;
+        }
+        $scope.workshopDetails.wsStatus = status;
+        $scope.workshopDetails.primaryGET = $scope.done.primaryGET;
+        $scope.workshopDetails.assistantGET = $scope.done.assistantGET;
+        ApiCall.updateWorkshopStatus($scope.workshopDetails, function(response) {
+        Util.alertMessage("success", "Status updated");
+        $uibModalInstance.close();
+        $state.go('workshop-details', { 'id':response.data.userId });
+      }, function(error) {
+        $uibModalInstance.close();
+        if(error.status == 417){
+          Util.alertMessage("danger", error.data.message);
+        }
+        else{
+        Util.alertMessage("danger", "Error in status update");
+        }
+      })
+  
+    };
+    $scope.cancel = function() {
+        $state.go('workshopListByStatus', { 'status':"all" });
+      $uibModalInstance.dismiss('cancel');
+    };
+  });
 ;angular.module('serviceModule', ['ngResource'])
 .factory('loginService', function ($resource,CONFIG,$http) {
     return{
