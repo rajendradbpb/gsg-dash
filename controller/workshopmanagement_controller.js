@@ -203,7 +203,6 @@ app.controller('ChangeWorkshopStatusModalCtrl', function($scope,$state, $uibModa
   
     };
     $scope.cancel = function() {
-        $state.go('workshopListByStatus', { 'status':"all" });
       $uibModalInstance.dismiss('cancel');
     };
   });
