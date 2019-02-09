@@ -1,4 +1,4 @@
-app.controller("workshop_controller", function ($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, ApiCall) {
+app.controller("workshop_controller", function ($scope, $state, $rootScope, MasterModel, NgTableParams, FormService, $stateParams, Util, $localStorage, UserService, $uibModal, MasterService, CONFIG,$http,ApiCall) {
     $scope.workshopList = {};
     $scope.workshopByStatusList = [];
     $scope.user = {};
@@ -7,7 +7,7 @@ app.controller("workshop_controller", function ($scope, $state, $rootScope, Mast
     $scope.demoDocumentArr = [];
 
     $scope.addDemoDocument = function(){
-        $scope.demoDocument.reviewer = $localStorage.loggedin_user.userId;
+        $scope.demoDocument.udatedBy = $localStorage.loggedin_user.userId;
         $scope.demoDocumentArr.push($scope.demoDocument);
         $scope.demoDocument = {};
     }
@@ -28,10 +28,25 @@ app.controller("workshop_controller", function ($scope, $state, $rootScope, Mast
                 obj.wsDocs.push(item);
             })
         }
-        ApiCall.updateWSDocs(obj.id , obj.wsDocs, function (response) {
-            console.log(response.data);
-        }, function (error) {
+        // ApiCall.updateWSDocs(obj, function (response) {
+        //     console.log(response.data);
+        // }, function (error) {
 
+        // });
+        // return $resource(CONFIG.HTTP_HOST_APP+"/gsg/api/users/ws/updateDocs/"+$scope.user.userId, obj.wsDocs, {
+        //     update: {method: 'PUT'}
+        //   }).success(function(data) {
+        //       alert(1)
+        //   })
+        //   .success(function(data) {
+        //       alert(1)
+        //   })
+        $http.put(CONFIG.HTTP_HOST_APP+"/gsg/api/users/ws/updateDocs/"+$scope.user.userId, obj.wsDocs)
+        .then(function(data) {
+            Util.alertMessage('info','document updated');
+        }, function(err) {
+            Util.alertMessage('error','Error in document update');
+            console.log('Error in document update'+err);
         });
 
     }

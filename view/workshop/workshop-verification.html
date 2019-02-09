@@ -33,6 +33,17 @@
                                         Document Status is required</span>
                                     </div>
                                 </div>
+                                <div class="form-group has-feedback" ng-class="{'has-error':(documentAddForm.docType.$touched && documentAddForm.docType.$invalid)}">
+                                    <div class="col-sm-12">
+                                        <label class="control-label">Reviewer:*</label>
+                                        <input type="text" name="reviewer" ng-model="demoDocument.reviewer" class="form-control"
+                                            placeholder="reviewer" required>
+                                        <span class="help-block" ng-show="documentAddForm.reviewer.$error.required && documentAddForm.reviewer.$touched">Reviewer
+                                            is required</span>
+                                    </div>
+                                </div>
+
+                                
                                 <div class="form-group has-feedback" >
                                     <div class="col-sm-12">
                                         <label class="control-label">Remarks </label>
