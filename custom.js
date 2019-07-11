@@ -309,7 +309,8 @@ app.constant('CONFIG', {
 
    // 'HTTP_HOST_APP':'http://localhost:8090'
   //  'HTTP_HOST_APP':'http://101.53.136.166:8090'
-   'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+  //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
+   'HTTP_HOST_APP':'http://209.105.243.223:8092' // unit
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });;app.filter('dateformat', function(){
@@ -2461,7 +2462,6 @@ app.controller('ChangeWorkshopStatusModalCtrl', function($scope,$state, $uibModa
   
     };
     $scope.cancel = function() {
-        $state.go('workshopListByStatus', { 'status':"all" });
       $uibModalInstance.dismiss('cancel');
     };
   });
