@@ -11,8 +11,8 @@
             <form class="form-horizontal" name="userUpdateForm">
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Update Your Profile Here</h3>
-                        <button type="button" ng-if="!user.active"  class="btn btn-primary pull-right" ui-sref="workshop-verification({id:user.userId})">
+                        <h3 class="box-title">Update Your Profile Here- {{user.wsStatus}}</h3>
+                        <button type="button" ng-if="user.wsStatus != 'completed' "  class="btn btn-primary pull-right" ui-sref="workshop-verification({id:user.userId})">
                                 <i class="fa fa-plus"></i> Verify Now
                               </button>
                     </div>
