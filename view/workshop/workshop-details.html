@@ -12,7 +12,7 @@
                 <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Update Your Profile Here</h3>
-                        <button type="button"  class="btn btn-primary pull-right" ui-sref="workshop-verification({id:user.userId})">
+                        <button type="button" ng-if="!user.active"  class="btn btn-primary pull-right" ui-sref="workshop-verification({id:user.userId})">
                                 <i class="fa fa-plus"></i> Verify Now
                               </button>
                     </div>
@@ -125,16 +125,15 @@
                                                 
                                             </div>
                                         </div>
-                                <div class="form-group has-feedback" ng-controller="DatePickerCtrl">
+                                <!-- <div class="form-group has-feedback" ng-controller="DatePickerCtrl">
                                     <div class="col-sm-12">
                                             <label for="lname" class="control-label">DOB </label>
                                         <input type="text" class="form-control" name="dob" placeholder="01 Jan, 2017"
                                             ng-model="user.dob" datepicker-popup="yyyy-MM-dd" datepicker-options="dateOptions"
                                             is-open="opened" max-date="dt" date-disabled="disabled(date, mode)"
                                             ng-click="open1($event)" close-text="Close" />
-                                        <!-- <span class="help-block" ng-show="userUpdateForm.dob.$error.required && userUpdateForm.dob.$touched">DOB is required</span> -->
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group has-feedback" ng-class="{'has-error':userUpdateForm.mobile.$touched && userUpdateForm.mobile.$invalid}">
                                     <div class="col-sm-12">
                                             <label for="pass" class="control-label">Mobile *</label>
