@@ -89,7 +89,7 @@
                                 <div class="form-group" ng-class="{'has-error':(userUpdateForm.wage.$touched && userUpdateForm.wage.$invalid)}">
                                     <div class="col-sm-12">
                                             <label class="control-label">Created By*</label>
-                                        <input type="text" name="" ng-model="user.wsCreatedBy" readonly class="form-control"
+                                        <input type="text" name="" ng-model="user.wsCreatedBy.firstName" readonly class="form-control"
                                             placeholder="Created by"  >
                                         <span class="help-block" ng-show="userUpdateForm.wage.$error.required && userUpdateForm.wage.$touched">Workshop age is required</span>
                                         

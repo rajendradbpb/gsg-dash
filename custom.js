@@ -311,6 +311,7 @@ app.constant('CONFIG', {
   //  'HTTP_HOST_APP':'http://101.53.136.166:8090'
   //  'HTTP_HOST_APP':'http://101.53.136.166:8091' // unit
    'HTTP_HOST_APP':'http://209.105.243.223:8092' // unit
+  //  'HTTP_HOST_APP':'http://localhost:8091' // local
   //  'HTTP_HOST_APP':'http://192.168.0.9:8090' // chetan
    // 'HTTP_HOST_APP':'http://192.168.0.12:8090' // sarbe
 });;app.filter('dateformat', function(){
@@ -2351,13 +2352,21 @@ app.controller('orderModalController', function($scope, $uibModalInstance, Util,
         ApiCall.getUserById($scope.obj, function (response) {
             $scope.user = response.data;
             $scope.getDistrict($scope.user);
+            // get created by user details
+            (function(user){
+                ApiCall.getUserById({user_id:user.wsCreatedBy},function(response){
+                    user.wsCreatedBy = response.data;
+                },function(error) {
+                    console.error(error);
+                })
+            })($scope.user)
             $scope.districtList.push($scope.user.serviceArea.district);
             if ($scope.user.address.length == 0) {
                 $scope.user.address.push(domyData);
             };
             console.log($scope.user);
         }, function (error) {
-
+            console.error(error);
         });
 
 

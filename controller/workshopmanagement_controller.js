@@ -92,13 +92,21 @@ app.controller("workshop_controller", function ($scope, $state, $rootScope, Mast
         ApiCall.getUserById($scope.obj, function (response) {
             $scope.user = response.data;
             $scope.getDistrict($scope.user);
+            // get created by user details
+            (function(user){
+                ApiCall.getUserById({user_id:user.wsCreatedBy},function(response){
+                    user.wsCreatedBy = response.data;
+                },function(error) {
+                    console.error(error);
+                })
+            })($scope.user)
             $scope.districtList.push($scope.user.serviceArea.district);
             if ($scope.user.address.length == 0) {
                 $scope.user.address.push(domyData);
             };
             console.log($scope.user);
         }, function (error) {
-
+            console.error(error);
         });
 
 
